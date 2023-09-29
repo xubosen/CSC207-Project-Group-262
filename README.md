@@ -14,5 +14,7 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 ## Example of running our code
 `joe.requestLeave('10/13/2023')`
 
+Example #2: Email Verification
+
 ## List of Technical Problems
 - 
