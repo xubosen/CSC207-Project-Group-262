@@ -14,41 +14,10 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 ## Example of running our code
 `joe.requestLeave('10/13/2023')`
 
-Example #2: Email Verification
-{
-    "email": "yoohamj@gmail.com",
-    "autocorrect": "",
-    "deliverability": "DELIVERABLE",
-    "quality_score": "0.95",
-    "is_valid_format": {
-        "value": true,
-        "text": "TRUE"
-    },
-    "is_free_email": {
-        "value": true,
-        "text": "TRUE"
-    },
-    "is_disposable_email": {
-        "value": false,
-        "text": "FALSE"
-    },
-    "is_role_email": {
-        "value": false,
-        "text": "FALSE"
-    },
-    "is_catchall_email": {
-        "value": false,
-        "text": "FALSE"
-    },
-    "is_mx_found": {
-        "value": true,
-        "text": "TRUE"
-    },
-    "is_smtp_valid": {
-        "value": true,
-        "text": "TRUE"
-    }
-}
+Example #2: Email Verification API
+![Screen Shot 2023-09-29 at 8 11 33 PM](https://github.com/xubosen/CSC207-Project-Group-262/assets/97214246/f92e0c99-6d98-4711-9bbf-9896d56865cc)
+
+
 
 
 ## List of Technical Problems
