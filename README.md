@@ -9,6 +9,7 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 
 ## Link to API Documentation used
 - https://calendarific.com/api-documentation
+- https://docs.abstractapi.com/email-validation
 
 ## Screen shot of tool for trying API
 
