@@ -15,6 +15,7 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 `joe.requestLeave('10/13/2023')`
 
 Example #2: Email Verification
+```
 {
     "email": "yoohamj@gmail.com",
     "autocorrect": "",
@@ -49,7 +50,7 @@ Example #2: Email Verification
         "text": "TRUE"
     }
 }
-
+```
 
 ## List of Technical Problems
 - 
