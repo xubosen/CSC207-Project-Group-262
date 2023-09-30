@@ -23,10 +23,11 @@ Screenshot #2: Email Verification API
 ## Example of running our code
 `joe.requestLeave('10/13/2023')`
 
+## Minimal Example of Calling APIs from Java
 Email Verification API: https://github.com/xubosen/CSC207-Project-Group-262/blob/main/apiDocuments/emailValidationAPI.java
 
-## Minimal Example of Calling Calendarific API from Java
-See [src/CalendarificAPIAccessExample.java](https://github.com/xubosen/CSC207-Project-Group-262/blob/0caa7469006427fdb4fb71c89daffad34a697c88/src/CalendarificAPIAccessExample.java)
+Holday API: [src/CalendarificAPIAccessExample.java](https://github.com/xubosen/CSC207-Project-Group-262/blob/0caa7469006427fdb4fb71c89daffad34a697c88/src/CalendarificAPIAccessExample.java)
+
 
 ## List of Technical Problems
 - Calendarific API only allows 500 API calls per month. Our team does not foresee this being a problem, but it is something to keep in mind.
