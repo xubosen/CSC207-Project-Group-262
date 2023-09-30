@@ -25,7 +25,7 @@ Screenshot #2: Email Verification API
 Email Verification API: https://github.com/xubosen/CSC207-Project-Group-262/blob/main/apiDocuments/emailValidationAPI.java
 
 ## Minimal Example of Calling Calendarific API from Java
-See ""src/CalendarificAPIAccessExample.java""
+See [src/CalendarificAPIAccessExample.java](https://github.com/xubosen/CSC207-Project-Group-262/blob/0caa7469006427fdb4fb71c89daffad34a697c88/src/CalendarificAPIAccessExample.java)
 
 ## List of Technical Problems
 - Calendarify API only allows 500 API calls per month. Our team does not foresee this being a problem, but it is something to keep in mind.

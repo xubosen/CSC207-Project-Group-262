@@ -19,6 +19,7 @@ public class CalendarificAPIAccessExample {
     public static void main(String[] args) throws Exception
     {
         // Code copied off stack overflow. Put the url you put on hoppscotch in the string below
+        // Don't leave your api token on the string like I did!
         String urlOnHoppScotch = "https://calendarific.com/api/v2/holidays?api_key=kCEKqxdNSAyLKA1TmlqoEevXsAo0s6TS&country=ca&year=2023";
         System.out.println(getHTML(urlOnHoppScotch));
     }
