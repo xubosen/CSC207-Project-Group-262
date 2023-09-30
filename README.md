@@ -8,7 +8,7 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 - A feature which allows the user to see whether a particular day is a public holiday, for which leaves would not be necessary.
 
 ## Link to API Documentation used
-- https://developers.google.com/calendar/api/v3/reference/events
+- 
 
 ## Screen shot of tool for trying API
 
