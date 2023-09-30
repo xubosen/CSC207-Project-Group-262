@@ -19,12 +19,8 @@ https://i.postimg.cc/zBJ4bL6q/Screenshot-2023-09-29-at-7-52-06-PM.png
 Screenshot #2: Email Verification API
 ![Screen Shot 2023-09-29 at 8 11 33 PM](https://github.com/xubosen/CSC207-Project-Group-262/assets/97214246/f92e0c99-6d98-4711-9bbf-9896d56865cc)
 
-
-## Example of running our code
-`joe.requestLeave('10/13/2023')`
-
 ## Minimal Example of Calling APIs from Java
-Email Verification API: https://github.com/xubosen/CSC207-Project-Group-262/blob/main/apiDocuments/emailValidationAPI.java
+Email Verification API: [Email Verification API](https://github.com/xubosen/CSC207-Project-Group-262/blob/main/src/apiDocuments/emailValidationAPI.java)
 
 Holday API: [src/CalendarificAPIAccessExample.java](https://github.com/xubosen/CSC207-Project-Group-262/blob/0caa7469006427fdb4fb71c89daffad34a697c88/src/CalendarificAPIAccessExample.java)
 
