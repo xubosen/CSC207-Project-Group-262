@@ -1,3 +1,5 @@
+package entity;
+
 import entity.CalendarEvent;
 
 public class Session {
