@@ -9,45 +9,51 @@ import java.util.HashMap;
 
 public class Calendar {
 
-    private HashMap<DateTimeSpan, CalendarEvent> events;
+    private HashMap<DateTimeSpan, CalendarEvent> timeToCalEvents;
 
     public Calendar(){
-        events = new HashMap<DateTimeSpan, CalendarEvent>();
+        timeToCalEvents = new HashMap<DateTimeSpan, CalendarEvent>();
     }
 
     /**
      * Adds an event to the calendar
-     * @param event
+     * @param calEvent
      * @return true if the event does not overlap with any other events
      */
-    public boolean addEvent(CalendarEvent event){
-        DateTimeSpan newTimeSpan = event.getDateTimeSpan();
-        for (DateTimeSpan existingTime : events.keySet()) {
+    public boolean addEvent(CalendarEvent calEvent){
+        DateTimeSpan newTimeSpan = calEvent.getDateTimeSpan();
+
+        // Loop through all existing events and check if the new event overlaps with any of them
+        for (DateTimeSpan existingTime : timeToCalEvents.keySet()) {
+
+            // If the new event overlaps with any existing event, return false
             if (existingTime.overlaps(newTimeSpan)) {
                 return false;
             }
         }
-        events.put(event.getDateTimeSpan(), event);
+
+        // If the new event does not overlap with any existing events, add it to the calendar and return true
+        timeToCalEvents.put(calEvent.getDateTimeSpan(), calEvent);
         return true;
     }
 
     /**
      * Removes an event from the calendar
-     * @param event
+     * @param calEvent
      * @return true if the event was removed
      */
-    public boolean removeEvent(CalendarEvent event) {
-        if (events.containsKey(event.getDateTimeSpan())) {
-            events.remove(event.getDateTimeSpan());
+    public boolean removeEvent(CalendarEvent calEvent) {
+        if (timeToCalEvents.containsKey(calEvent.getDateTimeSpan())) {
+            timeToCalEvents.remove(calEvent.getDateTimeSpan());
             return true;
         }
         return false;
     }
 
     /**
-     * @return a copy of the events in the calendar as a list
+     * @return a copy of the calendar events in the calendar as a list
      */
     public ArrayList<CalendarEvent> listCalendarEvents() {
-        return new ArrayList<>(events.values());
+        return new ArrayList<>(timeToCalEvents.values());
     }
 }
