@@ -1,3 +1,5 @@
+package entity;
+
 import entity.Session;
 
 import java.util.HashMap;
