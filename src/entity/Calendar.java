@@ -12,6 +12,7 @@ public class Calendar {
     private HashMap<DateTimeSpan, CalendarEvent> events;
 
     public Calendar(){
+        events = new HashMap<DateTimeSpan, CalendarEvent>();
     }
 
     /**
