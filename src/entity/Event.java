@@ -1,6 +1,11 @@
 package entity;
 import java.util.HashMap;
 
+/**
+ * Abstract class representing an event.
+ * An event can have a name, an event ID, a course, associated sessions,
+ * and a list of staff members.
+ */
 public abstract class Event {
     private String name;
     private String eventId;
@@ -8,7 +13,13 @@ public abstract class Event {
     private HashMap<String, ClassSession> mySessions;
     private HashMap<String, Employee> staff;
 
-    // Constructor
+    /**
+     * Constructs a new Event object with the given name, event ID, and course.
+     *
+     * @param name     The name of the event.
+     * @param eventId  The unique identifier for the event.
+     * @param course   The course associated with the event.
+     */
     public Event(String name, String eventId, Course course) {
         this.name = name;
         this.eventId = eventId;
@@ -17,22 +28,39 @@ public abstract class Event {
         this.staff = new HashMap<String, Employee>();
     }
 
-    // Getter method for name
+    /**
+     * Get the name of the event.
+     *
+     * @return The name of the event.
+     */
     public String getName() {
         return name;
     }
 
-    // Getter method for eventId
+    /**
+     * Get the event ID of the event.
+     *
+     * @return The event ID of the event.
+     */
     public String getEventId() {
         return eventId;
     }
 
-    // Getter method for course
+    /**
+     * Get the course associated with the event.
+     *
+     * @return The course associated with the event.
+     */
     public Course getCourse() {
         return course;
     }
 
-    // Add staff to the event
+    /**
+     * Add an employee to the event's staff.
+     *
+     * @param employee The employee to be added to the staff.
+     * @return true if the employee was added successfully, false if the employee is already in the staff.
+     */
     public boolean addStaff(Employee employee) {
         if (employee != null && !staff.containsKey(employee.getUserId())) {
             staff.put(employee.getUserId(), employee);
@@ -41,7 +69,12 @@ public abstract class Event {
         return false;
     }
 
-    // Remove staff from the event using userID
+    /**
+     * Remove an employee from the event's staff using their userID.
+     *
+     * @param userId The userID of the employee to be removed.
+     * @return true if the employee was successfully removed, false if the employee is not in the staff.
+     */
     public boolean removeStaff(String userId) {
         if (staff.containsKey(userId)) {
             staff.remove(userId);
@@ -50,7 +83,12 @@ public abstract class Event {
         return false;
     }
 
-    // Add a session to the event
+    /**
+     * Add a class session to the event.
+     *
+     * @param session The class session to be added.
+     * @return true if the session was added successfully, false if the session already exists in the event.
+     */
     public boolean addSession(ClassSession session) {
         if (session != null && !mySessions.containsKey(session.getSessionId())) {
             mySessions.put(session.getSessionId(), session);
@@ -59,7 +97,12 @@ public abstract class Event {
         return false;
     }
 
-    // Remove a session from the event using session ID
+    /**
+     * Remove a class session from the event using its session ID.
+     *
+     * @param sessionId The session ID of the class session to be removed.
+     * @return true if the session was successfully removed, false if the session is not in the event.
+     */
     public boolean removeSession(String sessionId) {
         if (mySessions.containsKey(sessionId)) {
             mySessions.remove(sessionId);
@@ -68,8 +111,12 @@ public abstract class Event {
         return false;
     }
 
-    // List all staff members associated with the event
+    /**
+     * Get a copy of the list of staff members associated with the event.
+     *
+     * @return A copy of the list of staff members.
+     */
     public HashMap<String, Employee> listStaff() {
-        return staff;
+        return new HashMap<>(staff);
     }
 }
