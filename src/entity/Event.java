@@ -62,7 +62,7 @@ public abstract class Event {
      * @return true if the employee was added successfully, false if the employee is already in the staff.
      */
     public boolean addStaff(Employee employee) {
-        if (employee != null && !staff.containsKey(employee.getUserId())) {
+        if (!staff.containsKey(employee.getUserId())) {
             staff.put(employee.getUserId(), employee);
             return true;
         }
@@ -90,7 +90,7 @@ public abstract class Event {
      * @return true if the session was added successfully, false if the session already exists in the event.
      */
     public boolean addSession(ClassSession session) {
-        if (session != null && !mySessions.containsKey(session.getSessionId())) {
+        if (!mySessions.containsKey(session.getSessionId())) {
             mySessions.put(session.getSessionId(), session);
             return true;
         }
