@@ -1,3 +1,5 @@
+import entity.CalendarEvent;
+
 public class Session {
     private CalendarEvent dateTime;
     // private ? people // TODO: need to figure out what data structure to use

@@ -1,3 +1,7 @@
+package entity;
+
+import entity.Calendar;
+
 public class CourseAdmin extends Employee {
 
     public CourseAdmin(String userID, String name, String email, String password) {
