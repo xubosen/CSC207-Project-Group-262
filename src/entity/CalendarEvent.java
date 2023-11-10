@@ -34,4 +34,12 @@ public class CalendarEvent {
         // Notice that DateTimeSpan is an immutable class, so we can return it directly.
         return this.dateTimeSpan;
     }
+
+    /** Checks if this calendar event overlaps with another calendar event.
+     * @param other The other calendar event to check against
+     * @return true if the two calendar events overlap, false otherwise
+     */
+    public boolean clashesWith(CalendarEvent other) {
+        return this.dateTimeSpan.overlaps(other.dateTimeSpan);
+    }
 }

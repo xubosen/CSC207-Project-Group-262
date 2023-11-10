@@ -62,8 +62,8 @@ public abstract class Event {
      * @return true if the employee was added successfully, false if the employee is already in the staff.
      */
     public boolean addStaff(Employee employee) {
-        if (!staff.containsKey(employee.getUserId())) {
-            staff.put(employee.getUserId(), employee);
+        if (!staff.containsKey(employee.getUID())) {
+            staff.put(employee.getUID(), employee);
             return true;
         }
         return false;
@@ -90,8 +90,8 @@ public abstract class Event {
      * @return true if the session was added successfully, false if the session already exists in the event.
      */
     public boolean addSession(ClassSession session) {
-        if (!mySessions.containsKey(session.getSessionId())) {
-            mySessions.put(session.getSessionId(), session);
+        if (!mySessions.containsKey(session.getSessionID()) && !this.conflictsWith(session)) {
+            mySessions.put(session.getSessionID(), session);
             return true;
         }
         return false;
@@ -118,5 +118,19 @@ public abstract class Event {
      */
     public HashMap<String, Employee> listStaff() {
         return new HashMap<>(staff);
+    }
+
+    /**
+     * Checks if the given session clashes with any of the sessions in the event.
+     * @param session
+     * @return true if the session clashes with any of the sessions in the event, false otherwise
+     */
+    public boolean conflictsWith(ClassSession session) {
+        for (ClassSession s : mySessions.values()) {
+            if (s.toCalendarEvent().clashesWith(session.toCalendarEvent())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
