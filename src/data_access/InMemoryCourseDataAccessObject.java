@@ -8,7 +8,7 @@ public class InMemoryCourseDataAccessObject {
     private final HashMap<String, Course> course = new HashMap<String, Course>();
 
     public void save(Course course) {
-        this.course.put(course.getCourseCode());
+        this.course.put(course.getCourseCode(), course);
     }
 
     public boolean existsByID(String courseCode) {
