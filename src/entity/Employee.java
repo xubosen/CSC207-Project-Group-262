@@ -44,11 +44,11 @@ abstract class Employee {
         return this.mySessions;
     }
     abstract boolean addSession(ClassSession session);
-    abstract boolean removeSession(); // TODO: how to identify which session to remove?
+    abstract boolean removeSession(ClassSession session); // TODO: how to identify which session to remove?
 
     abstract boolean addCourse(Course course);
 
-    abstract boolean removeCourse(); // TODO: how to identify which course to remove?
+    abstract boolean removeCourse(Course course); // TODO: how to identify which course to remove?
 
     abstract Calendar makeCalendar();
 
