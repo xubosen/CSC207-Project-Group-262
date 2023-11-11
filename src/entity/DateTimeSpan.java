@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * A class that represents a span of time between two dates with times.
  */
-final class DateTimeSpan {
+public final class DateTimeSpan {
     private LocalDateTime start;
     private LocalDateTime end;
 
