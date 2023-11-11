@@ -1,3 +1,7 @@
+package entity;
+
+import entity.Calendar;
+
 public class CourseAdmin extends Employee {
 
     public CourseAdmin(String userID, String name, String email, String password) {
@@ -7,7 +11,7 @@ public class CourseAdmin extends Employee {
     public boolean addSession(Session session) {
         // TODO: implement this method
         return true;
-    } // needs implementation of Session class
+    } // needs implementation of entity.Session class
 
     public boolean removeSession() {
         // TODO: implement this method
