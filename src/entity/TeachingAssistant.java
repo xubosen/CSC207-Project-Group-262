@@ -8,8 +8,8 @@ public class TeachingAssistant extends Employee {
     private String email;
     private String password;
     private Calendar myCalendar = new Calendar();
-    private Hashmap<String, ClassSessions> mySessions = new HashMap<String, ClassSessions>();
-    private HashMap<String, Course> myCourses = new HashMap<String, Course;
+    private HashMap<String, ClassSession> mySessions = new HashMap<String, ClassSession>();
+    private HashMap<String, Course> myCourses = new HashMap<String, Course>();
 
     /**
      * Creates instance of Teaching Assistant with no session and courses right now.
@@ -25,14 +25,14 @@ public class TeachingAssistant extends Employee {
     /**
      * Adds this session to mySessions with the key being session id and value being the session.
      */
-    public boolean addSession(ClassSessions classSessions) {
+    public boolean addSession(ClassSession classSessions) {
         for (String sessionID : mySessions.keySet())
         {
-            if (sessionID == classSessions.getSessionId()) {
+            if (sessionID == classSessions.getSessionID()) {
                 return false;
             }
         }
-        mySessions.put(classSessions.getSessionId(), classSessions);
+        mySessions.put(classSessions.getSessionID(), classSessions);
         return true;
     }
 
@@ -49,7 +49,7 @@ public class TeachingAssistant extends Employee {
                 return false;
             }
         }
-        myCourses.put(course.getCourseId(), course);
+        myCourses.put(course.getCourseCode(), course);
         return true;
     }
 
@@ -61,9 +61,9 @@ public class TeachingAssistant extends Employee {
     public boolean removeSession(ClassSession classSessions) {
         for (String sessionID : mySessions.keySet())
         {
-            if (sessionConflict(sessionID, classSessions)sessionID == classSessions.getSessionId()) {
+            if (sessionConflict(sessionID, classSessions)) {
             mySessions.remove(sessionID);
-            return true
+            return true;
         }
         }
         return false;
@@ -72,7 +72,7 @@ public class TeachingAssistant extends Employee {
 
     /**
      * Removes the Teaching Assistant from the Course.
-     * @param classSessions
+     * @param course
      * @return whether the TA actually had this course.
      */
     public boolean removeCourse(Course course) {
@@ -92,7 +92,7 @@ public class TeachingAssistant extends Employee {
      * @return if the TA already has the course.
      */
     private boolean courseConflict(String identifier, Course course) {
-        return identifier == course.getCourseId();
+        return identifier == course.getCourseCode();
     }
 
     /**
@@ -102,14 +102,14 @@ public class TeachingAssistant extends Employee {
      * @return if the TA already has the class session.
      */
     private boolean sessionConflict(String identifier, ClassSession session) {
-        return identifier == session.getSessionId();
+        return identifier == session.getSessionID();
     }
 
     public Calendar makeCalendar() {
         // Todo: Implement this method in both Instructor and TeachingAssistant.
         // Probaby for loop through the values of sessions and then making a Calendar with those values
         for (String sessionID : this.mySessions.keySet()) {
-            myCalendar.addEvent(mySessions[sessionID].getDateTime());
+            myCalendar.addEvent(mySessions.get(sessionID).toCalendarEvent());
         }
         return myCalendar;
     }

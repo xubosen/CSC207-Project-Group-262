@@ -1,7 +1,6 @@
 package entity;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Instructor extends Employee{
     private String userID;
@@ -9,7 +8,7 @@ public class Instructor extends Employee{
     private String email;
     private String password;
     private Calendar myCalendar = new Calendar();
-    private Hashmap<String, ClassSession> mySessions = new HashMap<String, ClassSession>();
+    private HashMap<String, ClassSession> mySessions = new HashMap<String, ClassSession>();
     private HashMap<String, Course> myCourses = new HashMap<String, Course>();
 
     /**
@@ -29,7 +28,7 @@ public class Instructor extends Employee{
     public boolean addSession(ClassSession classSessions) {
         for (String sessionID : mySessions.keySet())
         {
-            if (sessionID == classSessions.getSessionId()) {
+            if (sessionID == classSessions.getSessionID()) {
                 return false;
             }
         }
@@ -60,7 +59,7 @@ public class Instructor extends Employee{
     public boolean removeSession(ClassSession classSessions) {
         for (String sessionID : mySessions.keySet())
         {
-            if (sessionConflict(sessionID, classSessions) == classSessions.getSessionID()) {
+            if (sessionConflict(sessionID, classSessions)) {
             mySessions.remove(sessionID);
             return true;
         }
@@ -71,7 +70,7 @@ public class Instructor extends Employee{
 
     /**
      * Removes the Instructor from the Course.
-     * @param classSessions
+     * @param course
      * @return whether the Instructor actually had this course.
      */
     public boolean removeCourse(Course course) {
@@ -91,7 +90,7 @@ public class Instructor extends Employee{
      * @return if the Instructor already has the course.
      */
     private boolean courseConflict(String identifier, Course course) {
-        return identifier == course.getCourseId();
+        return identifier == course.getCourseCode();
     }
 
     /**
@@ -101,14 +100,14 @@ public class Instructor extends Employee{
      * @return if the Instructor already has the class session.
      */
     private boolean sessionConflict(String identifier, ClassSession session) {
-        return identifier == session.getSessionId();
+        return identifier == session.getSessionID();
     }
 
     public Calendar makeCalendar() {
         // Todo: Implement this method in both Instructor and TeachingAssistant.
         // Probaby for loop through the values of sessions and then making a Calendar with those values
-        for (String sessionID : this.mySessions.keySet()) {
-            myCalendar.addEvent(mySessions[sessionID].getDateTime());
+        for (String sessionID : mySessions.keySet()) {
+            myCalendar.addEvent(mySessions.get(sessionID).toCalendarEvent());
         }
         return myCalendar;
     }
