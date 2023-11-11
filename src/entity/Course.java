@@ -1,5 +1,9 @@
 package entity;
 
-public class Course {
-    // TODO: implement this class
+import java.util.Collection;
+
+public interface Course {
+    String getName();
+    Collection getMyEvents();
+    CourseAdmin getAdmin();
 }
