@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public abstract class Event {
     private String name;
-    private String eventId;
+    private String eventID;
     private Course course;
     private HashMap<String, ClassSession> mySessions;
     private HashMap<String, Employee> staff;
@@ -17,12 +17,12 @@ public abstract class Event {
      * Constructs a new Event object with the given name, event ID, and course.
      *
      * @param name     The name of the event.
-     * @param eventId  The unique identifier for the event.
+     * @param eventID  The unique identifier for the event.
      * @param course   The course associated with the event.
      */
-    public Event(String name, String eventId, Course course) {
+    public Event(String name, String eventID, Course course) {
         this.name = name;
-        this.eventId = eventId;
+        this.eventID = eventID;
         this.course = course;
         this.mySessions = new HashMap<String, ClassSession>();
         this.staff = new HashMap<String, Employee>();
@@ -42,8 +42,8 @@ public abstract class Event {
      *
      * @return The event ID of the event.
      */
-    public String getEventId() {
-        return eventId;
+    public String getEventID() {
+        return eventID;
     }
 
     /**
@@ -62,8 +62,8 @@ public abstract class Event {
      * @return true if the employee was added successfully, false if the employee is already in the staff.
      */
     public boolean addStaff(Employee employee) {
-        if (!staff.containsKey(employee.getUserId())) {
-            staff.put(employee.getUserId(), employee);
+        if (!staff.containsKey(employee.getUID())) {
+            staff.put(employee.getUID(), employee);
             return true;
         }
         return false;
@@ -72,12 +72,12 @@ public abstract class Event {
     /**
      * Remove an employee from the event's staff using their userID.
      *
-     * @param userId The userID of the employee to be removed.
+     * @param userID The userID of the employee to be removed.
      * @return true if the employee was successfully removed, false if the employee is not in the staff.
      */
-    public boolean removeStaff(String userId) {
-        if (staff.containsKey(userId)) {
-            staff.remove(userId);
+    public boolean removeStaff(String userID) {
+        if (staff.containsKey(userID)) {
+            staff.remove(userID);
             return true;
         }
         return false;
@@ -90,8 +90,8 @@ public abstract class Event {
      * @return true if the session was added successfully, false if the session already exists in the event.
      */
     public boolean addSession(ClassSession session) {
-        if (!mySessions.containsKey(session.getSessionId())) {
-            mySessions.put(session.getSessionId(), session);
+        if (!mySessions.containsKey(session.getSessionID())) {
+            mySessions.put(session.getSessionID(), session);
             return true;
         }
         return false;
@@ -100,12 +100,12 @@ public abstract class Event {
     /**
      * Remove a class session from the event using its session ID.
      *
-     * @param sessionId The session ID of the class session to be removed.
+     * @param sessionID The session ID of the class session to be removed.
      * @return true if the session was successfully removed, false if the session is not in the event.
      */
-    public boolean removeSession(String sessionId) {
-        if (mySessions.containsKey(sessionId)) {
-            mySessions.remove(sessionId);
+    public boolean removeSession(String sessionID) {
+        if (mySessions.containsKey(sessionID)) {
+            mySessions.remove(sessionID);
             return true;
         }
         return false;
