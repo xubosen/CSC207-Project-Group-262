@@ -7,10 +7,11 @@ import view.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // We use JFrame ato Build the main program window.
         // The main panel contains cards and layout.
 
