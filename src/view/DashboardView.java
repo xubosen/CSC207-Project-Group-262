@@ -5,12 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.*;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import interface_adapter.ViewManagerModel;
 
@@ -20,6 +14,7 @@ public class DashboardView extends JPanel implements ActionListener {
 
     private final ViewManagerModel viewManagerModel;
     private final String leaveRequestViewName;
+    private final String myCoursesViewName;
 
     private final JButton coursesButton = new JButton("Courses");
     private final JButton eventsButton = new JButton("Events");
@@ -28,9 +23,10 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName) {
+    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
         this.viewManagerModel = viewManagerModel;
         this.leaveRequestViewName = leaveRequestViewName;
+        this.myCoursesViewName = myCoursesViewName;
 
         // Set layout to GridLayout
         setLayout(new GridLayout(2, 3, 10, 10)); // 2 rows, 3 columns, and gaps
@@ -63,6 +59,9 @@ public class DashboardView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == leavesOfAbsencesButton) {
             viewManagerModel.setActiveView(leaveRequestViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if  (e.getSource() == coursesButton) {
+            viewManagerModel.setActiveView(myCoursesViewName);
             viewManagerModel.firePropertyChanged();
         }
         // Other links to be fixed.
