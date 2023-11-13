@@ -21,7 +21,7 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     public final String viewName = "enroll";
     private EnrollViewModel enrollViewModel;
     private ViewManagerModel viewManagerModel;
-    private String dashboardViewName;
+    private String mySessionsViewName;
     private EnrollController enrollController;
     private String userToEnroll = "";
 
@@ -35,11 +35,11 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     private JLabel errorDisplayField = new JLabel(error_message);
 
     public EnrollView(EnrollController enrollController, EnrollViewModel enrollViewModel,
-                      ViewManagerModel viewManagerModel, String dashboardViewName){
+                      ViewManagerModel viewManagerModel, String mySessionsViewName){
         this.enrollController = enrollController;
         this.enrollViewModel = enrollViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.dashboardViewName = dashboardViewName;
+        this.mySessionsViewName = mySessionsViewName;
         enrollViewModel.addPropertyChangeListener(this);
         setupUI();
     }
@@ -136,7 +136,7 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
 
         // Close the window and return to the dashboard
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.setActiveView(mySessionsViewName);
             viewManagerModel.firePropertyChanged();
 
         // Something went wrong. Throw an error.
