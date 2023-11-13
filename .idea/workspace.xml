@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members">
+      <change beforePath="$PROJECT_DIR$/src/view/DashboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/DashboardView.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;yoohamj&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="d58a104a-7604-4dcd-93fa-7e1ee7add385" />
+        <option name="url" value="https://github.com/xubosen/CSC207-Project-Group-262.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2Y0J54FJk8kP6j4cFHRyQxSUA3s" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;yoohamj&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/yoohamjung/IdeaProjects/CSC207-Project-Group-262/src/entity&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15527344&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/entity" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/entity" />
+      <recent name="$PROJECT_DIR$/src/data_access" />
+      <recent name="$PROJECT_DIR$/src/images" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="use_case" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CSC207-Project-Group-262" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CSC207-Project-Group-262" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="" />
+      <created>1699656376280</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1699656376280</updated>
+      <workItem from="1699656377497" duration="1491000" />
+      <workItem from="1699657919871" duration="307000" />
+      <workItem from="1699658287319" duration="40000" />
+      <workItem from="1699658341884" duration="20000" />
+      <workItem from="1699658373463" duration="98000" />
+      <workItem from="1699658558103" duration="56000" />
+      <workItem from="1699658630807" duration="15000" />
+      <workItem from="1699658654273" duration="272000" />
+      <workItem from="1699659402668" duration="328000" />
+      <workItem from="1699659748865" duration="10000" />
+      <workItem from="1699659913510" duration="19000" />
+      <workItem from="1699659946772" duration="22000" />
+      <workItem from="1699659982000" duration="16000" />
+      <workItem from="1699660089095" duration="19000" />
+      <workItem from="1699660117708" duration="30000" />
+      <workItem from="1699660252997" duration="16000" />
+      <workItem from="1699660432660" duration="14000" />
+      <workItem from="1699660456214" duration="39000" />
+      <workItem from="1699660533756" duration="15000" />
+      <workItem from="1699660608157" duration="37000" />
+      <workItem from="1699660674057" duration="52000" />
+      <workItem from="1699660794837" duration="43000" />
+      <workItem from="1699661539465" duration="153000" />
+      <workItem from="1699661708516" duration="140000" />
+      <workItem from="1699661860026" duration="11000" />
+      <workItem from="1699661880525" duration="10000" />
+      <workItem from="1699661905857" duration="36000" />
+      <workItem from="1699661948260" duration="5000" />
+      <workItem from="1699661978916" duration="82000" />
+      <workItem from="1699662079621" duration="59000" />
+      <workItem from="1699662147947" duration="118000" />
+      <workItem from="1699662323191" duration="21000" />
+      <workItem from="1699662359317" duration="620000" />
+      <workItem from="1699663194301" duration="4603000" />
+      <workItem from="1699668078512" duration="167000" />
+      <workItem from="1699832208302" duration="3533000" />
+      <workItem from="1699835816915" duration="36000" />
+      <workItem from="1699837501294" duration="36000" />
+      <workItem from="1699837539875" duration="18000" />
+      <workItem from="1699837568610" duration="930000" />
+      <workItem from="1699840391596" duration="33000" />
+      <workItem from="1699840431169" duration="194000" />
+      <workItem from="1699840774724" duration="164000" />
+      <workItem from="1699840953666" duration="135000" />
+      <workItem from="1699841101288" duration="33000" />
+      <workItem from="1699841144787" duration="108000" />
+      <workItem from="1699841274042" duration="720000" />
+      <workItem from="1699842054505" duration="71000" />
+      <workItem from="1699842144449" duration="497000" />
+    </task>
+    <task id="LOCAL-00001" summary="Created a Login Class">
+      <option name="closed" value="true" />
+      <created>1699656670559</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699656670559</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Created ViewModel.java under interface_adapter">
+      <option name="closed" value="true" />
+      <created>1699661667270</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699661667270</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added all the use cases needed for signup: Signup Input Boundary, SignupInput Data, Signup Interactor, SignupOutput Boundary, SignupOutput Data">
+      <option name="closed" value="true" />
+      <created>1699663358283</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1699663358284</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated the Loginview and Main. Update logo picture and courses file">
+      <option name="closed" value="true" />
+      <created>1699834532477</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1699834532477</updated>
+    </task>
+    <task id="LOCAL-00005" summary="git adding tests written by other team members">
+      <option name="closed" value="true" />
+      <created>1699835772357</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699835772357</updated>
+    </task>
+    <task id="LOCAL-00006" summary="git adding tests written by other team members">
+      <option name="closed" value="true" />
+      <created>1699836175772</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1699836175772</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Created a Login Class" />
+    <MESSAGE value="Created ViewModel.java under interface_adapter" />
+    <MESSAGE value="Added all the use cases needed for signup: Signup Input Boundary, SignupInput Data, Signup Interactor, SignupOutput Boundary, SignupOutput Data" />
+    <MESSAGE value="Updated the Loginview and Main. Update logo picture and courses file" />
+    <MESSAGE value="git adding tests written by other team members" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+</project>
