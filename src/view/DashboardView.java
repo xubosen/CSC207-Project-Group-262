@@ -1,53 +1,173 @@
 package view;
 
-import javax.swing.*;
+import interface_adapter.LoginState;
+import interface_adapter.LoginViewModel;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.LoginViewModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.*;
 
-public class DashboardView extends JPanel implements ActionListener {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-    public final String viewName = "dashboard";
+import java.io.*;
+import javax.imageio.ImageIO;
 
-    // Buttons for the dashboard
-    private final JButton coursesButton = new JButton("Courses");
-    private final JButton eventsButton = new JButton("Events");
-    private final JButton sessionsButton = new JButton("Sessions");
-    private final JButton calendarButton = new JButton("Calendar");
-    private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
-    private final JButton employeeInformationButton = new JButton("Employee Information");
+import javax.swing.*;
+import javax.swing.border.Border;
 
-    public DashboardView() {
-        // Set layout
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Style and add buttons to the view
-        styleButton(coursesButton);
-        styleButton(eventsButton);
-        styleButton(sessionsButton);
-        styleButton(calendarButton);
-        styleButton(leavesOfAbsencesButton);
-        styleButton(employeeInformationButton);
+public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
-        // Add action listeners to the buttons
-        coursesButton.addActionListener(this);
-        eventsButton.addActionListener(this);
-        sessionsButton.addActionListener(this);
-        calendarButton.addActionListener(this);
-        leavesOfAbsencesButton.addActionListener(this);
-        employeeInformationButton.addActionListener(this);
+    public final String viewName = "log in";
+    private final LoginViewModel loginViewModel;
+
+    private final ViewManagerModel viewManagerModel;
+
+    private final String dashboardViewName;
+
+    /**
+     * The username chosen by the user
+     */
+    final JTextField usernameInputField = new JTextField(15);
+    private final JLabel usernameErrorField = new JLabel();
+    /**
+     * The password
+     */
+    final JPasswordField passwordInputField = new JPasswordField(15);
+    private final JLabel passwordErrorField = new JLabel();
+
+    final JButton logIn;
+    final JButton signUp;
+    final JButton cancel;
+
+    /**
+     * A window with a title and a JButton.
+     */
+    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, String dashboardViewName) throws IOException {
+        this.loginViewModel = loginViewModel;
+        this.loginViewModel.addPropertyChangeListener(this);
+        this.viewManagerModel = viewManagerModel;
+        this.dashboardViewName = dashboardViewName;
+
+        JLabel title = new JLabel("University of Toronto HR System");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        BufferedImage image = ImageIO.read(new File("./src/images/logo.jpeg"));
+        JLabel logo = new JLabel(new ImageIcon(image));
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // From here the elements of the right column
+
+        // Create welcome message
+        JLabel welcomeMessage = new JLabel("<html><center>Welcome to the <b>University of Toronto</b> Human Resources Manager<br>Connecting Staff, Faculty, and Students</center></html>", JLabel.CENTER);
+        welcomeMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        LabelTextPanel usernameInfo = new LabelTextPanel(
+                new JLabel("Username"), usernameInputField);
+        LabelTextPanel passwordInfo = new LabelTextPanel(
+                new JLabel("Password"), passwordInputField);
+
+        JPanel buttons = new JPanel();
+        logIn = new JButton(loginViewModel.LOGIN_BUTTON_LABEL);
+        buttons.add(logIn);
+        signUp = new JButton(loginViewModel.SIGNUP_BUTTON_LABEL);
+        buttons.add(signUp);
+        cancel = new JButton(loginViewModel.CANCEL_BUTTON_LABEL);
+        buttons.add(cancel);
+
+        logIn.addActionListener(this);
+        signUp.addActionListener(this);
+        cancel.addActionListener(this);
+
+        usernameInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                LoginState currentState = loginViewModel.getState();
+                currentState.setUsername(usernameInputField.getText());
+                loginViewModel.setState(currentState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Adding the title
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Adding the logo
+        gbc.gridy = 1;
+        this.add(logo, gbc);
+
+        // Setting up the right column for inputs and buttons
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10); // Top, left, bottom, right padding
+
+        Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+
+        // Apply the border to the text fields
+        usernameInputField.setBorder(BorderFactory.createCompoundBorder(
+                usernameInputField.getBorder(), paddingBorder));
+        passwordInputField.setBorder(BorderFactory.createCompoundBorder(
+                passwordInputField.getBorder(), paddingBorder));
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.add(welcomeMessage); // Add the welcome message here
+        // Add a vertical strut for spacing after the welcome message
+        rightPanel.add(Box.createVerticalStrut(20)); // Adjust the height (20) as needed
+
+        rightPanel.add(usernameInfo);
+        rightPanel.add(usernameErrorField);
+        rightPanel.add(Box.createVerticalStrut(2)); // Smaller strut for closer fields
+        rightPanel.add(passwordInfo);
+        rightPanel.add(passwordErrorField);
+        rightPanel.add(buttons);
+
+        this.add(rightPanel, gbc);
     }
 
-    private void styleButton(JButton button) {
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setPreferredSize(new Dimension(200, 50)); // Set preferred size for medium-sized buttons
-        this.add(button);
-    }
+    /**
+     * React to a button click that results in evt.
+     */
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource() == logIn) {
+            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (evt.getSource() == signUp) {
+            // Handle sign up action
+        } else if (evt.getSource() == cancel) {
+            // Handle cancel action
+        }
+    };
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // Handle button click events
-        // Your action handling code here
+    public void propertyChange(PropertyChangeEvent evt) {
+        LoginState state = (LoginState) evt.getNewValue();
+        setFields(state);
     }
+
+    private void setFields(LoginState state) {
+        usernameInputField.setText(state.getUsername());
+        passwordInputField.setText(state.getPassword());
+    }
+
 }
