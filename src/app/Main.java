@@ -1,5 +1,7 @@
 package app;
 
+import data_access.HardCodedDAO;
+import data_access.HardCodedDAO;
 import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
 import interface_adapter.*;
@@ -57,8 +59,9 @@ public class Main {
         views.add(loginView, loginView.viewName);
 
         // Instantiate Enroll Use Case
-        InMemoryEmployeeDataAccessObject employeeDAO = new InMemoryEmployeeDataAccessObject();
-        InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
+        HardCodedDAO dataAccess = new HardCodedDAO();
+        InMemoryEmployeeDataAccessObject employeeDAO = dataAccess.getEmployeeDAO();
+        InMemoryCourseDataAccessObject courseDAO = dataAccess.getCourseDAO();
         EnrollViewModel enrollViewModel = new EnrollViewModel();
         EnrollPresenter enrollPresenter = new EnrollPresenter(enrollViewModel);
         EnrollInteractor enrollInteractor = new EnrollInteractor(enrollPresenter, employeeDAO, courseDAO);

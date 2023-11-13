@@ -13,6 +13,8 @@ public class Course {
         this.courseCode = courseCode;
         this.admin = admin;
         this.staff = new HashMap<>();
+        staff.put(admin.getUID(), admin);
+
         this.myEvents = new HashMap<>();
     }
 
