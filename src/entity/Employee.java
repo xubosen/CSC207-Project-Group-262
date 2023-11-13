@@ -36,6 +36,10 @@ public abstract class Employee {
         return this.email;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
     public HashMap<String, Course> getCourses() {
         return this.myCourses;
     }
