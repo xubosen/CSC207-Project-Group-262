@@ -1,2 +1,5 @@
-package use_case;public class LoginOutputBoundary {
+package use_case;
+
+public interface LoginOutputBoundary {
+    void execute(LoginInputData loginInputData);
 }
