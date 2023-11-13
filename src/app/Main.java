@@ -1,7 +1,6 @@
 package app;
 
 import data_access.HardCodedDAO;
-import data_access.HardCodedDAO;
 import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
 import interface_adapter.*;

@@ -16,8 +16,6 @@ public abstract class Employee {
     private Calendar myCalendar;
 
     public Employee(String userID, String name, String email, String password) {
-        // TODO: implement this method & change the parameters
-
         this.userID = userID;
         this.name = name;
         this.email = email;
@@ -41,18 +39,59 @@ public abstract class Employee {
     }
 
     public HashMap<String, Course> getCourses() {
-        return this.myCourses;
+        return new HashMap<String, Course>(myCourses);
     }
     public HashMap<String, ClassSession> getSessions() {
-        return this.mySessions;
+        return new HashMap<String, ClassSession>(mySessions);
     }
-    abstract boolean addSession(ClassSession session);
-    abstract boolean removeSession(ClassSession classSession);
+    public boolean addSession(ClassSession curSession) {
+        for (String sessionID : mySessions.keySet()){
+            ClassSession otherSession = mySessions.get(sessionID);
+            if (curSession.conflictsWith(otherSession)) {
+                return false;
+            }
+        }
+        mySessions.put(curSession.getSessionID(), curSession);
+        return true;
+    }
 
-    abstract boolean addCourse(Course course);
+    public boolean removeSession(ClassSession classSessions) {
+        for (String sessionID : mySessions.keySet())
+        {
+            if (sessionID == classSessions.getSessionID()) {
+                mySessions.remove(sessionID);
+                return true;
+            }
+        }
+        return false;
+    }
 
-    abstract boolean removeCourse(Course course);
 
-    abstract Calendar makeCalendar();
+    public boolean addCourse(Course course) {
+        for (String courseID : myCourses.keySet()) {
+            if (courseID == course.getCourseCode()) {
+                return false;
+            }
+        }
+        myCourses.put(course.getCourseCode(), course);
+        return true;
+    };
+
+    public boolean removeCourse(Course course) {
+        for (String courseID : myCourses.keySet()) {
+            if (courseID == course.getCourseCode()) {
+                myCourses.remove(courseID);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Calendar makeCalendar() {
+        for (String sessionID : this.mySessions.keySet()) {
+            myCalendar.addEvent(mySessions.get(sessionID).toCalendarEvent());
+        }
+        return myCalendar;
+    }
 
 }
