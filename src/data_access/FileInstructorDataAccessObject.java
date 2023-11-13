@@ -2,8 +2,8 @@ package data_access;
 
 import entity.ClassSession;
 import entity.Course;
-import entity.TeachingAssistant;
-import entity.TeachingAssistantFactory;
+import entity.Instructor;
+import entity.InstructorFactory;
 
 import java.io.*;
 import java.util.HashMap;
@@ -15,12 +15,12 @@ public class FileInstructorDataAccessObject {
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
-    public static final Map<String, TeachingAssistant> accounts = new HashMap<>();
+    public static final Map<String, Instructor> accounts = new HashMap<>();
 
-//    private TeachingAssistantFactory teachingAssistantFactory; Maybe InstructorFactory.
+    private InstructorFactory instructorFactory;
 
-    public FileInstructorDataAccessObject(String csvPath, TeachingAssistantFactory teachingAssistantFactory) throws IOException {
-        this.teachingAssistantFactory = teachingAssistantFactory;
+    public FileInstructorDataAccessObject(String csvPath, InstructorFactory instructorFactory) throws IOException {
+        this.instructorFactory = instructorFactory;
 
         csvFile = new File(csvPath);
         headers.put("userID", 0);
@@ -95,21 +95,21 @@ public class FileInstructorDataAccessObject {
                     }
 
                     // I need to create an exact copy of the teaching assistant with all their courses, sessions, calendar
-                    TeachingAssistant teachingAssistant1 = teachingAssistantFactory.create(username, name, email,
+                    Instructor instructor = instructorFactory.create(username, name, email,
                             password, deserializedSessions, deserializedCourses);
 
-                    accounts.put(username, teachingAssistant1);
+                    accounts.put(username, instructor);
                 }
             }
         }
     }
 
-    public void save(TeachingAssistant teachingAssistant) {
-        accounts.put(teachingAssistant.getUID(), teachingAssistant);
+    public void save(Instructor instructor) {
+        accounts.put(instructor.getUID(), instructor);
         this.save();
     }
 
-    public TeachingAssistant get(String userID) {
+    public Instructor get(String userID) {
         return accounts.get(userID);
     }
 
@@ -123,15 +123,15 @@ public class FileInstructorDataAccessObject {
             writer.write(String.join(",", headers.keySet()));
             writer.newLine();
 
-            for (TeachingAssistant teachingAssistants : accounts.values()) {
+            for (Instructor instructor : accounts.values()) {
 
-                String courseSerFile = teachingAssistants.getUID() + "Courses.ser";
+                String courseSerFile = instructor.getUID() + "Courses.ser";
 
-                String sessionSerFile = teachingAssistants.getUID() + "Sessions.ser";
+                String sessionSerFile = instructor.getUID() + "Sessions.ser";
 
                 String line = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
-                        teachingAssistants.getUID(), teachingAssistants.getName(), teachingAssistants.getEmail(),
-                        teachingAssistants.getPassword(), courseSerFile, sessionSerFile);
+                        instructor.getUID(), instructor.getName(), instructor.getEmail(),
+                        instructor.getPassword(), courseSerFile, sessionSerFile);
                 writer.write(line);
                 writer.newLine();
             }
@@ -155,7 +155,7 @@ public class FileInstructorDataAccessObject {
 
     public String getAccounts() {
         StringBuilder accounts = new StringBuilder();
-        for (Map.Entry<String, TeachingAssistant> entry : this.accounts.entrySet()) {
+        for (HashMap.Entry<String, Instructor> entry : this.accounts.entrySet()) {
             accounts.append(entry.getKey()).append("\n");
         }
         return accounts.toString();

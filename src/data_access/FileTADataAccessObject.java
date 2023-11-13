@@ -21,7 +21,7 @@ public class FileTADataAccessObject implements Serializable {
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
-    public static final Map<String, TeachingAssistant> accounts = new HashMap<>();
+    public final Map<String, TeachingAssistant> accounts = new HashMap<>();
 
     private TeachingAssistantFactory teachingAssistantFactory;
 
@@ -38,7 +38,7 @@ public class FileTADataAccessObject implements Serializable {
 
         headers.put("sessions", 5);
 
-        headers.put("calendar", 6);
+        // headers.put("calendar", 6);
 
         // Must recast the serializable information back into original object type
 
@@ -52,7 +52,7 @@ public class FileTADataAccessObject implements Serializable {
                 String header = reader.readLine();
 
                 // For later: clean this up by creating a new Exception subclass and handling it in the UI.
-                assert header.equals("userID,name,email,password,courses,sessions,calendar");
+                assert header.equals("userID,name,email,password,courses,sessions");
 
                 String row;
 
@@ -67,9 +67,10 @@ public class FileTADataAccessObject implements Serializable {
 
                     // Maybe just keep calendar out of the headers because it would make the calendar off of sessions
                     // and it's a different data type than String
-                    String calendar = String.valueOf(col[headers.get("calendar")]);
 
-                    //
+                    // String calendar = String.valueOf(col[headers.get("calendar")]);
+
+
                     HashMap<String, ClassSession> deserializedSessions = new HashMap<String, ClassSession>();
                     HashMap<String, Course> deserializedCourses = new HashMap<String, Course>();
 
@@ -132,10 +133,35 @@ public class FileTADataAccessObject implements Serializable {
             for (TeachingAssistant teachingAssistants : accounts.values()) {
 
                 String courseSerFile = teachingAssistants.getUID() + "Courses.ser";
+                try
+                {
+                    FileOutputStream fos =
+                            new FileOutputStream(courseSerFile);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(teachingAssistants.getCourses());
+                    oos.close();
+                    fos.close();
+                }catch(IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
 
+                // This writes the .ser file
                 String sessionSerFile = teachingAssistants.getUID() + "Sessions.ser";
+                try
+                {
+                    FileOutputStream fos =
+                            new FileOutputStream(sessionSerFile);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(teachingAssistants.getSessions());
+                    oos.close();
+                    fos.close();
+                }catch(IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
 
-                String line = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
+                String line = String.format("%s,%s,%s,%s,%s,%s",
                         teachingAssistants.getUID(), teachingAssistants.getName(), teachingAssistants.getEmail(),
                         teachingAssistants.getPassword(), courseSerFile, sessionSerFile);
                 writer.write(line);
@@ -165,5 +191,9 @@ public class FileTADataAccessObject implements Serializable {
             accounts.append(entry.getKey()).append("\n");
         }
         return accounts.toString();
+    }
+
+    public Map<String, TeachingAssistant> getAccount() {
+        return accounts;
     }
 }
