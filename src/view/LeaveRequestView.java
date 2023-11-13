@@ -2,8 +2,12 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 
 public class LeaveRequestView extends JPanel {
 
@@ -12,8 +16,68 @@ public class LeaveRequestView extends JPanel {
     private JComboBox<Integer> endDay, endMonth, endYear;
 
     public LeaveRequestView() {
-        setLayout(new GridLayout(3, 1)); // Layout for start date, end date, and submit button
+        setLayout(new GridLayout(1, 2)); // 1 row, 2 columns layout
 
+        // Left Panel with Icon
+        JPanel leftPanel = new JPanel();
+        try {
+            BufferedImage image = ImageIO.read(new File("./src/images/leaveRequestIcon.jpeg")); // Replace with your image path
+            JLabel logo = new JLabel(new ImageIcon(image));
+            leftPanel.add(logo);
+        } catch (IOException ex) {
+            leftPanel.add(new JLabel("Image not found")); // Fallback text
+        }
+
+        // Right Panel with Date Selection and Buttons
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+
+        // Date Selection Components
+        initializeDateComponents();
+
+        // Panels for start and end dates
+        JPanel startDatePanel = new JPanel();
+        startDatePanel.add(new JLabel("Start Date:"));
+        startDatePanel.add(startDay);
+        startDatePanel.add(startMonth);
+        startDatePanel.add(startYear);
+
+        JPanel endDatePanel = new JPanel();
+        endDatePanel.add(new JLabel("End Date:"));
+        endDatePanel.add(endDay);
+        endDatePanel.add(endMonth);
+        endDatePanel.add(endYear);
+
+        rightPanel.add(startDatePanel);
+        rightPanel.add(endDatePanel);
+
+        // Buttons
+        JPanel buttonsPanel = new JPanel(new FlowLayout());
+        JButton submitButton = new JButton("Request Leave");
+        submitButton.addActionListener(e -> handleSubmit());
+        buttonsPanel.add(submitButton);
+
+        JButton returnButton = new JButton("Return to Dashboard");
+        // Add action listener for returnButton if needed
+        buttonsPanel.add(returnButton);
+
+        rightPanel.add(buttonsPanel);
+
+        // Add panels to the main panel
+        add(leftPanel);
+        add(rightPanel);
+    }
+
+    private void addDateSelectionComponent(JPanel panel, String label, JComboBox<Integer> day, JComboBox<Integer> month, JComboBox<Integer> year) {
+        JPanel datePanel = new JPanel();
+        datePanel.add(new JLabel(label));
+        datePanel.add(day);
+        datePanel.add(month);
+        datePanel.add(year);
+        panel.add(datePanel);
+    }
+
+    private void initializeDateComponents() {
         // Initialize JComboBoxes for start date
         startDay = new JComboBox<>(getIntArray(1, 31));
         startMonth = new JComboBox<>(getIntArray(1, 12));
@@ -38,33 +102,13 @@ public class LeaveRequestView extends JPanel {
         endDay.setSelectedItem(todayDay);
         endMonth.setSelectedItem(todayMonth);
         endYear.setSelectedItem(todayYear);
-
-        // Panels for start and end dates
-        JPanel startDatePanel = new JPanel();
-        startDatePanel.add(new JLabel("Start Date:"));
-        startDatePanel.add(startDay);
-        startDatePanel.add(startMonth);
-        startDatePanel.add(startYear);
-
-        JPanel endDatePanel = new JPanel();
-        endDatePanel.add(new JLabel("End Date:"));
-        endDatePanel.add(endDay);
-        endDatePanel.add(endMonth);
-        endDatePanel.add(endYear);
-
-        // Submit button
-        JButton submitButton = new JButton("Request Leave");
-        submitButton.addActionListener(e -> handleSubmit());
-
-        // Add panels to LeaveRequestView
-        add(startDatePanel);
-        add(endDatePanel);
-        add(submitButton);
     }
+
 
     private Integer[] getIntArray(int start, int end) {
         return IntStream.rangeClosed(start, end).boxed().toArray(Integer[]::new);
     }
+
     private void handleSubmit() {
         int startDayValue = (int) startDay.getSelectedItem();
         int startMonthValue = (int) startMonth.getSelectedItem();
