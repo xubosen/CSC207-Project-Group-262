@@ -1,0 +1,29 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]" date="1699837441643" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2023-11-12, 8:04 p.m. [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CSC207-Project-Group-262/view/LoginView.class" />
+    <option name="AFTER_PATH" value="out/production/CSC207-Project-Group-262/view/LoginView.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/LoginView.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CSC207-Project-Group-262/app/Main.class" />
+    <option name="AFTER_PATH" value="out/production/CSC207-Project-Group-262/app/Main.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/Main.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CSC207-Project-Group-262/images/logo.jpeg" />
+    <option name="AFTER_PATH" value="out/production/CSC207-Project-Group-262/images/logo.jpeg" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/logo.jpeg" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="src/images/logo.jpeg" />
+    <option name="AFTER_PATH" value="src/images/logo.jpeg" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/logo1.jpeg" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/CSC207-Project-Group-262/view/LoginView$1.class" />
+    <option name="AFTER_PATH" value="out/production/CSC207-Project-Group-262/view/LoginView$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-12,_8_04_p_m__[Changes]/LoginView$1.class" />
+  </binary>
+</changelist>

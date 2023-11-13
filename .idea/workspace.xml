@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members" />
+    <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CSC207-Project-Group-262.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,14 +60,19 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "yoohamj",
+    "jdk.selected.JAVA_MODULE": "1.8",
     "last_opened_file_path": "/Users/yoohamjung/IdeaProjects/CSC207-Project-Group-262/src/entity",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15527344",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -136,6 +146,9 @@
       <workItem from="1699668078512" duration="167000" />
       <workItem from="1699832208302" duration="3533000" />
       <workItem from="1699835816915" duration="36000" />
+      <workItem from="1699837501294" duration="36000" />
+      <workItem from="1699837539875" duration="18000" />
+      <workItem from="1699837568610" duration="115000" />
     </task>
     <task id="LOCAL-00001" summary="Created a Login Class">
       <option name="closed" value="true" />
@@ -208,6 +221,6 @@
     <MESSAGE value="Added all the use cases needed for signup: Signup Input Boundary, SignupInput Data, Signup Interactor, SignupOutput Boundary, SignupOutput Data" />
     <MESSAGE value="Updated the Loginview and Main. Update logo picture and courses file" />
     <MESSAGE value="git adding tests written by other team members" />
-    <option name="LAST_COMMIT_MESSAGE" value="git adding tests written by other team members" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
