@@ -2,6 +2,8 @@ package view;
 
 import interface_adapter.LoginState;
 import interface_adapter.LoginViewModel;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.LoginViewModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,6 +27,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public final String viewName = "log in";
     private final LoginViewModel loginViewModel;
 
+    private final ViewManagerModel viewManagerModel;
+
+    private final String dashboardViewName;
+
     /**
      * The username chosen by the user
      */
@@ -43,9 +49,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     /**
      * A window with a title and a JButton.
      */
-    public LoginView(LoginViewModel loginViewModel) throws IOException {
+    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, String dashboardViewName) throws IOException {
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
+        this.viewManagerModel = viewManagerModel;
+        this.dashboardViewName = dashboardViewName;
 
         JLabel title = new JLabel("University of Toronto HR System");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -141,8 +149,15 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      * React to a button click that results in evt.
      */
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
-    }
+        if (evt.getSource() == logIn) {
+            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (evt.getSource() == signUp) {
+            // Handle sign up action
+        } else if (evt.getSource() == cancel) {
+            // Handle cancel action
+        }
+    };
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CSC207-Project-Group-262.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interface_adapter/DashboardState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interface_adapter/DashboardViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interface_adapter/LoginPresenter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/use_case/LoginInputBoundary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/use_case/LoginInputData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/use_case/LoginOutputBoundary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/use_case/LoginOutputData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/DashboardView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/app/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/LoginView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,26 +66,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "yoohamj",
-    "jdk.selected.JAVA_MODULE": "1.8",
-    "last_opened_file_path": "/Users/yoohamjung/IdeaProjects/CSC207-Project-Group-262/src/entity",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15527344",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;yoohamj&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/yoohamjung/IdeaProjects/CSC207-Project-Group-262/src/entity&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15527344&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/entity" />
@@ -85,21 +95,9 @@
       <recent name="$PROJECT_DIR$/src/data_access" />
       <recent name="$PROJECT_DIR$/src/images" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CSC207-Project-Group-262" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CSC207-Project-Group-262" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="use_case" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -148,7 +146,16 @@
       <workItem from="1699835816915" duration="36000" />
       <workItem from="1699837501294" duration="36000" />
       <workItem from="1699837539875" duration="18000" />
-      <workItem from="1699837568610" duration="115000" />
+      <workItem from="1699837568610" duration="930000" />
+      <workItem from="1699840391596" duration="33000" />
+      <workItem from="1699840431169" duration="194000" />
+      <workItem from="1699840774724" duration="164000" />
+      <workItem from="1699840953666" duration="135000" />
+      <workItem from="1699841101288" duration="33000" />
+      <workItem from="1699841144787" duration="108000" />
+      <workItem from="1699841274042" duration="720000" />
+      <workItem from="1699842054505" duration="71000" />
+      <workItem from="1699842144449" duration="497000" />
     </task>
     <task id="LOCAL-00001" summary="Created a Login Class">
       <option name="closed" value="true" />
