@@ -1,2 +1,1 @@
-package entity;public class Courses {
-}
+package entity;
