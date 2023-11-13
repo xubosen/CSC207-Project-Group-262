@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class TeachingAssistant extends Employee {
     private String userID;
@@ -102,12 +103,10 @@ public class TeachingAssistant extends Employee {
      * @return if the TA already has the class session.
      */
     private boolean sessionConflict(String identifier, ClassSession session) {
-        return identifier == session.getSessionID();
+        return Objects.equals(identifier, session.getSessionID());
     }
 
     public Calendar makeCalendar() {
-        // Todo: Implement this method in both Instructor and TeachingAssistant.
-        // Probaby for loop through the values of sessions and then making a Calendar with those values
         for (String sessionID : this.mySessions.keySet()) {
             myCalendar.addEvent(mySessions.get(sessionID).toCalendarEvent());
         }
