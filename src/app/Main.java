@@ -20,6 +20,9 @@ public class Main {
         JFrame application = new JFrame("Human Resources Manager");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        // Set the size of the application window.
+        application.setSize(1000, 600);
+
         CardLayout cardLayout = new CardLayout();
 
         // Panel that contains the views.
@@ -33,17 +36,17 @@ public class Main {
         // ViewModels for the views.
         LoginViewModel loginViewModel = new LoginViewModel();
 
+        // Initialize my sessions view
+        MySessionsView mySessionsView= new MySessionsView(viewManagerModel);
+        views.add(mySessionsView, mySessionsView.viewName);
+
+        // Instantiate MyCoursesView
+        MyCoursesView myCoursesView = new MyCoursesView(viewManagerModel);
+        views.add(myCoursesView, myCoursesView.viewName);
+
         // Instantiate LeaveReqeustView
         LeaveRequestView leaveRequestView = new LeaveRequestView();
         views.add(leaveRequestView, leaveRequestView.viewName);
-
-        // Instantiate MyCoursesView
-        MyCoursesView myCoursesView = new myCoursesView();
-        views.add(myCoursesView, myCoursesView.viewName);
-
-        // Instantiate MySessionsView
-        MySessionsView mySessionsView = new MySessionsView();
-        views.add(mySessionsView, mySessionsView.viewName);
 
         // Instantiate DashboardView.
         DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName);
@@ -54,23 +57,21 @@ public class Main {
         views.add(loginView, loginView.viewName);
 
         // Instantiate Enroll Use Case
-        InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
         InMemoryEmployeeDataAccessObject employeeDAO = new InMemoryEmployeeDataAccessObject();
+        InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
         EnrollViewModel enrollViewModel = new EnrollViewModel();
         EnrollPresenter enrollPresenter = new EnrollPresenter(enrollViewModel);
         EnrollInteractor enrollInteractor = new EnrollInteractor(enrollPresenter, employeeDAO, courseDAO);
         EnrollController enrollController = new EnrollController(enrollInteractor);
-        EnrollView enrollView = new EnrollView(enrollController, enrollViewModel, viewManagerModel,
-                mySessionsView.viewName);
+        EnrollView enrollView = new EnrollView(enrollController, enrollViewModel, viewManagerModel, mySessionsView.viewName);
+        views.add(enrollView.viewName, enrollView);
 
         // Set the initial view.
-        views.add(enrollView, enrollView.viewName);
-
-
-        viewManagerModel.setActiveView(enrollView.viewName);
+        viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();
         application.setVisible(true);
     }
+
 }
