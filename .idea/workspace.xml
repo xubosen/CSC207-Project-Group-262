@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members">
-      <change afterPath="$PROJECT_DIR$/src/interface_adapter/DashboardState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interface_adapter/DashboardViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interface_adapter/LoginPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/use_case/LoginInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/use_case/LoginInputData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/use_case/LoginOutputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/use_case/LoginOutputData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/DashboardView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/app/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/LoginView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/LoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/DashboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/DashboardView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +85,21 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="use_case" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CSC207-Project-Group-262" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CSC207-Project-Group-262" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
