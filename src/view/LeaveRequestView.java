@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.stream.IntStream;
 
 public class LeaveRequestView extends JPanel {
+
+    public final String viewName = "leaveRequest";
     private JComboBox<Integer> startDay, startMonth, startYear;
     private JComboBox<Integer> endDay, endMonth, endYear;
 
@@ -21,6 +23,21 @@ public class LeaveRequestView extends JPanel {
         endDay = new JComboBox<>(getIntArray(1, 31));
         endMonth = new JComboBox<>(getIntArray(1, 12));
         endYear = new JComboBox<>(getIntArray(2020, 2030)); // Adjust range as needed
+
+        // Get current date
+        Calendar today = Calendar.getInstance();
+        int todayDay = today.get(Calendar.DAY_OF_MONTH);
+        int todayMonth = today.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+        int todayYear = today.get(Calendar.YEAR);
+
+        // Set default start and end dates to today's date
+        startDay.setSelectedItem(todayDay);
+        startMonth.setSelectedItem(todayMonth);
+        startYear.setSelectedItem(todayYear);
+
+        endDay.setSelectedItem(todayDay);
+        endMonth.setSelectedItem(todayMonth);
+        endYear.setSelectedItem(todayYear);
 
         // Panels for start and end dates
         JPanel startDatePanel = new JPanel();
@@ -48,7 +65,6 @@ public class LeaveRequestView extends JPanel {
     private Integer[] getIntArray(int start, int end) {
         return IntStream.rangeClosed(start, end).boxed().toArray(Integer[]::new);
     }
-
     private void handleSubmit() {
         int startDayValue = (int) startDay.getSelectedItem();
         int startMonthValue = (int) startMonth.getSelectedItem();

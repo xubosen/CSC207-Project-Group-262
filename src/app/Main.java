@@ -1,7 +1,9 @@
 package app;
 
+import interface_adapter.DashboardViewModel;
 import interface_adapter.LoginViewModel;
 import interface_adapter.ViewManagerModel;
+import view.LeaveRequestView;
 import view.LoginView;
 import view.DashboardView;
 import view.ViewManager;
@@ -33,8 +35,12 @@ public class Main {
         // ViewModels for the views.
         LoginViewModel loginViewModel = new LoginViewModel();
 
+        // Instantiate LeaveReqeustView
+        LeaveRequestView leaveRequestView = new LeaveRequestView();
+        views.add(leaveRequestView, leaveRequestView.viewName);
+
         // First, instantiate DashboardView.
-        DashboardView dashboardView = new DashboardView();
+        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName);
         views.add(dashboardView, dashboardView.viewName);
 
         // Now instantiate LoginView with reference to DashboardView's name.
