@@ -11,7 +11,6 @@ import entity.DateTimeSpan;
 
 // Java imports
 import java.time.LocalDateTime;
-import java.time. *;
 
 public class CalendarEventTest {
     private CalendarEvent calendarEvent;
