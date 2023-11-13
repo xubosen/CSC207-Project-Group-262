@@ -1,1 +1,2 @@
-username,password,first name,last name,date of birth,employee id
+username,password,firstname,lastname,email
+professor,1234,Yooham,Jung,yooham.jung@mail.utoronto.ca
