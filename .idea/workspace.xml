@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97f0f7cd-fdae-4dc9-86cd-caab40b4d8af" name="Changes" comment="git adding tests written by other team members">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/DashboardView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC207-Project-Group-262/view/DashboardView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/DashboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/DashboardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/LeaveRequestView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/LeaveRequestView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,21 +90,6 @@
       <recent name="use_case" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CSC207-Project-Group-262" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CSC207-Project-Group-262" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -158,6 +147,9 @@
       <workItem from="1699841274042" duration="720000" />
       <workItem from="1699842054505" duration="71000" />
       <workItem from="1699842144449" duration="497000" />
+      <workItem from="1699850709525" duration="123000" />
+      <workItem from="1699889273319" duration="142000" />
+      <workItem from="1699889463416" duration="2541000" />
     </task>
     <task id="LOCAL-00001" summary="Created a Login Class">
       <option name="closed" value="true" />
