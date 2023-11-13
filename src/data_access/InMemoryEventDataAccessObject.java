@@ -11,15 +11,15 @@ public class InMemoryEventDataAccessObject {
     private final Map<String, Event> event = new HashMap<String, Event>();
 
     public void save(Event event) {
-        this.event.put(event.getEventId(), event);
+        this.event.put(event.getEventID(), event);
     }
 
-    public boolean existsByID(String eventId) {
-        return event.containsKey(eventId);
+    public boolean existsByID(String eventID) {
+        return event.containsKey(eventID);
     }
 
-    public Event getEvent(String eventId) {
-        return event.get(eventId);
+    public Event getEvent(String eventID) {
+        return event.get(eventID);
     }
 
     public Set<String> getAllEventIDS() {

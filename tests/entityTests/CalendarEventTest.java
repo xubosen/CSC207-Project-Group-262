@@ -13,39 +13,39 @@ import entity.DateTimeSpan;
 import java.time.LocalDateTime;
 
 public class CalendarEventTest {
-    private CalendarEvent calendarEvent;
+    private CalendarEvent myEvent;
 
     @Before
     public void init() {
         LocalDateTime startDateTime = LocalDateTime.of(2023, 11, 10, 7, 57);
         LocalDateTime endDateTime = LocalDateTime.of(2023, 11, 10, 8, 57);
         DateTimeSpan dateTimeSpan = new DateTimeSpan(startDateTime, endDateTime);
-        calendarEvent = new CalendarEvent("Write Tests for Entities",
+        myEvent = new CalendarEvent("Write Tests for Entities",
                 "Need to write tests for entities", dateTimeSpan);
     }
 
     @Test
     public void testGetName() {
-        assertEquals("Write Tests for Entities", calendarEvent.getName());
+        assertEquals("Write Tests for Entities", myEvent.getName());
     }
 
     @Test
     public void testGetDescription() {
-        assertEquals("Need to write tests for entities", calendarEvent.getDescription());
+        assertEquals("Need to write tests for entities", myEvent.getDescription());
     }
 
     @Test
     public void testChangeName() {
-        assertEquals("Need to write tests for entities", calendarEvent.getDescription());
-        calendarEvent.changeName("Write Tests for Use Cases");
-        assertEquals("Write Tests for Use Cases", calendarEvent.getName());
+        assertEquals("Need to write tests for entities", myEvent.getDescription());
+        myEvent.changeName("Write Tests for Use Cases");
+        assertEquals("Write Tests for Use Cases", myEvent.getName());
     }
 
     @Test
     public void testChangeDescription() {
-        assertEquals("Need to write tests for entities", calendarEvent.getDescription());
-        calendarEvent.changeDescription("Need to write tests for use cases");
-        assertEquals("Need to write tests for use cases", calendarEvent.getDescription());
+        assertEquals("Need to write tests for entities", myEvent.getDescription());
+        myEvent.changeDescription("Need to write tests for use cases");
+        assertEquals("Need to write tests for use cases", myEvent.getDescription());
     }
 
     @Test
@@ -53,6 +53,49 @@ public class CalendarEventTest {
         LocalDateTime startDateTime = LocalDateTime.of(2023, 11, 10, 7, 57);
         LocalDateTime endDateTime = LocalDateTime.of(2023, 11, 10, 8, 57);
         DateTimeSpan dateTimeSpan = new DateTimeSpan(startDateTime, endDateTime);
-        assert calendarEvent.getDateTimeSpan().equals(dateTimeSpan);
+        assertTrue(myEvent.getDateTimeSpan().equals(dateTimeSpan));
+    }
+
+    @Test
+    public void testClashesWithOverlappingEvents() {
+        LocalDateTime time1 = LocalDateTime.of(2023, 11, 10, 7, 0);
+        LocalDateTime time2 = LocalDateTime.of(2023, 11, 10, 8, 0);
+        LocalDateTime time3 = LocalDateTime.of(2023, 11, 10, 9, 0);
+        LocalDateTime time4 = LocalDateTime.of(2023, 11, 10, 10, 0);
+
+        CalendarEvent event1 = new CalendarEvent("Write Tests for Entities",
+                "Need to write tests for entities", new DateTimeSpan(time1, time3));
+        CalendarEvent event2 = new CalendarEvent("Write Tests for Usecases",
+                "Need to write tests for usecases", new DateTimeSpan(time2, time4));
+
+        assertTrue(event1.clashesWith(event2));
+        assertTrue(event2.clashesWith(event1));
+    }
+
+    @Test
+    public void testClashesWithContainedEvents() {
+        LocalDateTime time1 = LocalDateTime.of(2023, 11, 10, 7, 0);
+        LocalDateTime time2 = LocalDateTime.of(2023, 11, 10, 8, 0);
+        LocalDateTime time3 = LocalDateTime.of(2023, 11, 10, 9, 0);
+        LocalDateTime time4 = LocalDateTime.of(2023, 11, 10, 10, 0);
+
+        CalendarEvent event1 = new CalendarEvent("Write Tests for Entities",
+                "Need to write tests for entities", new DateTimeSpan(time1, time4));
+        CalendarEvent event2 = new CalendarEvent("Write Tests for Usecases",
+                "Need to write tests for usecases", new DateTimeSpan(time2, time3));
+
+        assertTrue(event1.clashesWith(event2));
+        assertTrue(event2.clashesWith(event1));
+    }
+
+    @Test
+    public void testClashesWithNoClash() {
+        LocalDateTime time1 = LocalDateTime.of(2023, 11, 10, 6, 0);
+        LocalDateTime time2 = LocalDateTime.of(2023, 11, 10, 6, 30);
+
+        CalendarEvent event1 = new CalendarEvent("Dinner",
+                "Eat.", new DateTimeSpan(time1, time2));
+
+        assertFalse(myEvent.clashesWith(event1));
     }
 }
