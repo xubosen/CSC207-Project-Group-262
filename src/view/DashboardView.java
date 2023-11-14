@@ -15,6 +15,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private final ViewManagerModel viewManagerModel;
     private final String leaveRequestViewName;
     private final String myCoursesViewName;
+    private final String myEventsViewName;
 
     private final JButton coursesButton = new JButton("Courses");
     private final JButton eventsButton = new JButton("Events");
@@ -23,10 +24,11 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
+    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName, String myEventsViewName) {
         this.viewManagerModel = viewManagerModel;
         this.leaveRequestViewName = leaveRequestViewName;
         this.myCoursesViewName = myCoursesViewName;
+        this.myEventsViewName = myEventsViewName;
 
         // Set layout to GridLayout
         setLayout(new GridLayout(2, 3, 10, 10)); // 2 rows, 3 columns, and gaps
@@ -62,6 +64,10 @@ public class DashboardView extends JPanel implements ActionListener {
             viewManagerModel.firePropertyChanged();
         } else if  (e.getSource() == coursesButton) {
             viewManagerModel.setActiveView(myCoursesViewName);
+            viewManagerModel.firePropertyChanged();
+        }
+        else if (e.getSource() == eventsButton) {  // Handle Events button click
+            viewManagerModel.setActiveView("my events view");  // Assuming the view name for MyEventsView is "my events view"
             viewManagerModel.firePropertyChanged();
         }
         // Other links to be fixed.

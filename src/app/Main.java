@@ -49,8 +49,12 @@ public class Main {
         LeaveRequestView leaveRequestView = new LeaveRequestView();
         views.add(leaveRequestView, leaveRequestView.viewName);
 
+        // Initialize my events view
+        MyEventsView myEventsView = new MyEventsView(viewManagerModel);
+        views.add(myEventsView, myEventsView.viewName);
+
         // Instantiate DashboardView.
-        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName);
+        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName, myEventsView.viewName);
         views.add(dashboardView, dashboardView.viewName);
 
         // Instantiate LoginView with reference to DashboardView's name.
