@@ -96,5 +96,14 @@ public class ClassSession {
             return true;
         }
     }
+
+    /**
+     * Check if the class session clashes with another class session
+     * @param otherSession The class session to check against
+     * @return true if the class session clashes with another class session, false otherwise
+     */
+    public boolean conflictsWith(ClassSession otherSession) {
+        return calEvent.clashesWith(otherSession.toCalendarEvent());
+    }
 }
 

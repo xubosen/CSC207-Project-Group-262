@@ -5,7 +5,15 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class InMemoryEmployeeDataAccessObject {
-    private final HashMap<String, Employee> employee = new HashMap<String, Employee>();
+    private HashMap<String, Employee> employee;
+
+    public InMemoryEmployeeDataAccessObject() {
+        employee = new HashMap<String, Employee>();
+    }
+
+    public InMemoryEmployeeDataAccessObject(HashMap<String, Employee> employees) {
+        employee = employees;
+    }
 
     public void save(Employee employee) {
         this.employee.put(employee.getUID(), employee);
@@ -21,6 +29,18 @@ public class InMemoryEmployeeDataAccessObject {
 
     public Set<String> getAllIDs() {
         return employee.keySet();
+    }
+
+    public void addEmployee(Employee employee) {
+        this.employee.put(employee.getUID(), employee);
+    }
+
+    public boolean removeEmployee(Employee employee) {
+        if (this.employee.containsKey(employee.getUID())){
+            this.employee.remove(employee.getUID());
+            return true;
+        }
+        return false;
     }
 
 }
