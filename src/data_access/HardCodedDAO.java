@@ -1,11 +1,10 @@
 package data_access;
-import entity.TeachingAssistant;
-import entity.Instructor;
-import entity.Course;
+import entity.*;
 
 public class HardCodedDAO {
     private InMemoryEmployeeDataAccessObject employeeDAO = new InMemoryEmployeeDataAccessObject();
     private InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
+    private InMemoryEventDataAccessObject eventDAO = new InMemoryEventDataAccessObject();
 
     public HardCodedDAO() {
         Instructor employee1 = new Instructor("001", "John", "John@gmail.com", "123");
@@ -26,6 +25,19 @@ public class HardCodedDAO {
 
         courseDAO.addCourse(course1);
         courseDAO.addCourse(course2);
+
+        Lecture lecture1 = new Lecture("CSC207 Lecture", "LEC0101", course1);
+        Tutorial tutorial1 = new Tutorial("UBW2000 Tutorial", "TUT0202", course2);
+
+        course1.addEvent(lecture1);
+        course2.addEvent(tutorial1);
+
+        lecture1.addStaff(employee1);
+        tutorial1.addStaff(employee2);
+
+        eventDAO.save(lecture1);
+        eventDAO.save(tutorial1);
+
     }
 
     public InMemoryEmployeeDataAccessObject getEmployeeDAO() {
@@ -35,4 +47,6 @@ public class HardCodedDAO {
     public InMemoryCourseDataAccessObject getCourseDAO() {
         return courseDAO;
     }
+
+    public InMemoryEventDataAccessObject getEventDAO() {return eventDAO;};
 }

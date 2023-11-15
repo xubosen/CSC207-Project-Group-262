@@ -79,9 +79,13 @@ public class MyEventsView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == lecturesButton) {
             System.out.println("Lectures button pressed");
+            viewManagerModel.setActiveView("event addition");
+            viewManagerModel.firePropertyChanged();
             // Perform action for Lectures button
         } else if (e.getSource() == tutorialsButton) {
             System.out.println("Tutorials button pressed");
+            viewManagerModel.setActiveView("event addition");
+            viewManagerModel.firePropertyChanged();
             // Perform action for Tutorials button
         } else if (e.getSource() == backButton) {
             viewManagerModel.setActiveView("dashboard");

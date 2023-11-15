@@ -3,8 +3,10 @@ package app;
 import data_access.HardCodedDAO;
 import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
+import data_access.InMemoryEventDataAccessObject;
 import interface_adapter.*;
 import use_case.EnrollInteractor;
+import use_case.EventAdditionInteractor;
 import view.*;
 
 import javax.swing.*;
@@ -49,7 +51,7 @@ public class Main {
         LeaveRequestView leaveRequestView = new LeaveRequestView();
         views.add(leaveRequestView, leaveRequestView.viewName);
 
-        // Initialize my events view
+        // Initialize MyEvents view
         MyEventsView myEventsView = new MyEventsView(viewManagerModel);
         views.add(myEventsView, myEventsView.viewName);
 
@@ -71,6 +73,15 @@ public class Main {
         EnrollController enrollController = new EnrollController(enrollInteractor);
         EnrollView enrollView = new EnrollView(enrollController, enrollViewModel, viewManagerModel, mySessionsView.viewName);
         views.add(enrollView.viewName, enrollView);
+
+        // Initialize EventAdditionView
+        InMemoryEventDataAccessObject eventDAO = dataAccess.getEventDAO();
+        EventAdditionViewModel eventAdditionViewModel = new EventAdditionViewModel();
+        EventAdditionPresenter eventAdditionPresenter = new EventAdditionPresenter(eventAdditionViewModel);
+        EventAdditionInteractor eventAdditionInteractor = new EventAdditionInteractor(eventAdditionPresenter, employeeDAO, eventDAO);
+        EventAdditionController eventAdditionController = new EventAdditionController(eventAdditionInteractor);
+        EventAdditionView eventAdditionView = new EventAdditionView(eventAdditionController, eventAdditionViewModel, viewManagerModel, myEventsView.viewName);
+        views.add(eventAdditionView.viewName, eventAdditionView);
 
         // Set the initial view.
         viewManagerModel.setActiveView(loginView.viewName);
