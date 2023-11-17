@@ -130,9 +130,9 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
             String inviteeID = eventAdditionViewModel.getState().getUserInvited();
-            String courseCode = "CSC207";
+            String eventID = "CSC207 Lecture";
             System.out.println(inviteeID);
-            eventAdditionController.addEmployeeToEvent(inviteeID, courseCode);
+            eventAdditionController.addEmployeeToEvent(inviteeID, eventID);
 
             // Close the window and return to the previous screen
         } else if (event.getSource() == close) {

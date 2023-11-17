@@ -32,7 +32,7 @@ public class EventAdditionInteractor implements EventAdditionInputBoundary {
             output = new EventAdditionOutputData(false, "Event does not exist");
         }
 
-        // If the employee exists and the course exists, try to add the employee to the course
+        // If the employee exists and the event exists, try to add the employee to the event
 
         else {
             Employee curEmployee = getEmployeeFromInputData(inputData);
