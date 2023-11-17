@@ -36,6 +36,7 @@ public class Main {
 
         // ViewModels for the views.
         LoginViewModel loginViewModel = new LoginViewModel();
+        LeaveRequestViewModel leaveRequestViewModel = new LeaveRequestViewModel();
 
         // Initialize my sessions view
         MySessionsView mySessionsView= new MySessionsView(viewManagerModel);
@@ -46,7 +47,7 @@ public class Main {
         views.add(myCoursesView, myCoursesView.viewName);
 
         // Instantiate LeaveReqeustView
-        LeaveRequestView leaveRequestView = new LeaveRequestView();
+        LeaveRequestView leaveRequestView = new LeaveRequestView(leaveRequestViewModel, viewManagerModel, "dashboard");
         views.add(leaveRequestView, leaveRequestView.viewName);
 
         // Instantiate DashboardView.
