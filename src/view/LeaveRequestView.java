@@ -2,20 +2,35 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 
-public class LeaveRequestView extends JPanel {
+import interface_adapter.LeaveRequestViewModel;
+import interface_adapter.LoginViewModel;
+import interface_adapter.ViewManagerModel;
+
+public class LeaveRequestView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "leaveRequest";
+    private final String dashboardViewName;
+
+    private final ViewManagerModel viewManagerModel;
     private JComboBox<Integer> startDay, startMonth, startYear;
     private JComboBox<Integer> endDay, endMonth, endYear;
+    final JButton returnButton;
 
-    public LeaveRequestView() {
+    public LeaveRequestView(LeaveRequestViewModel leaveRequestViewModel, ViewManagerModel viewManagerModel, String dashboardViewName) throws IOException  {
+        this.viewManagerModel = viewManagerModel;
+        this.dashboardViewName = dashboardViewName;
+
         setLayout(new GridLayout(1, 2)); // 1 row, 2 columns layout
 
         // Left Panel with Icon
@@ -57,8 +72,9 @@ public class LeaveRequestView extends JPanel {
         submitButton.addActionListener(e -> handleSubmit());
         buttonsPanel.add(submitButton);
 
-        JButton returnButton = new JButton("Return to Dashboard");
+        returnButton = new JButton("Return to Dashboard");
         // Add action listener for returnButton if needed
+        returnButton.addActionListener(this);
         buttonsPanel.add(returnButton);
 
         rightPanel.add(buttonsPanel);
@@ -123,4 +139,16 @@ public class LeaveRequestView extends JPanel {
         System.out.println("End Date: " + endDayValue + "/" + endMonthValue + "/" + endYearValue);
         // Further processing can be done here (like validation, sending data to backend, etc.)
     }
-}
+
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource() == returnButton) {
+            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.firePropertyChanged();
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+};
