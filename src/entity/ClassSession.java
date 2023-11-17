@@ -55,7 +55,7 @@ public class ClassSession {
      */
     public boolean addStaff(Employee staff) {
         // If staff is already in the staff hashmap, return false
-        if (!this.staff.containsKey(staff.getUID())) {
+        if (containsStaff(staff.getUID())) {
             return false;
         }
 
@@ -78,6 +78,15 @@ public class ClassSession {
         // Otherwise, remove staff from the hashmap and return true
         this.staff.remove(staff.getUID());
         return true;
+    }
+
+    /**
+     * Check if staff is in the class session
+     * @param staffID The user id of the staff to check
+     * @return true if staff is in the class session, false otherwise
+     */
+    public boolean containsStaff(String staffID) {
+        return this.staff.containsKey(staffID);
     }
 
     /**
