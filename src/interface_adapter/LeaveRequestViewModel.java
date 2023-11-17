@@ -1,2 +1,4 @@
-package interface_adapter;public class LeaveRequestViewModel {
+package interface_adapter;
+
+public class LeaveRequestViewModel {
 }
