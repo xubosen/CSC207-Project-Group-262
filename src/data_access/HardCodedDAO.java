@@ -75,7 +75,7 @@ public class HardCodedDAO {
         // Add employees to sessions
         System.out.println(session1.addStaff(employee1));
         System.out.println(employee1.addSession(session1));
-        System.out.println(session1.containsStaff(employee1.getUID()));
+        System.out.println(session1.containsStaff(employee1));
     }
 
     public InMemoryEmployeeDataAccessObject getEmployeeDAO() {

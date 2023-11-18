@@ -59,7 +59,7 @@ public class Main {
         LoginView loginView = new LoginView(loginViewModel, viewManagerModel, dashboardView.viewName);
         views.add(loginView, loginView.viewName);
 
-        // Load Data
+        // Load Data (TODO: Replace this with our actual database access once it is implemented.)
         HardCodedDAO dataAccess = new HardCodedDAO();
         InMemoryEmployeeDataAccessObject employeeDAO = dataAccess.getEmployeeDAO();
         InMemoryCourseDataAccessObject courseDAO = dataAccess.getCourseDAO();

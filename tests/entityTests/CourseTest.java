@@ -35,8 +35,9 @@ public class CourseTest {
         assertFalse("Adding an already existing staff member should return false", course.addStaff(staffMember));
 
         // Test removeStaff
-        assertTrue("Removing an existing staff member should return true", course.removeStaff(staffMember.getUID()));
-        assertFalse("Removing a non-existing staff member should return false", course.removeStaff("nonExistentID"));
+        assertTrue("Removing an existing staff member should return true", course.removeStaff(staffMember));
+        Employee nonExistentStaff = new Instructor("nonExistentID", "NonExistent", "123", "123");
+        assertFalse("Removing a non-existing staff member should return false", course.removeStaff(nonExistentStaff));
     }
 
     @Test
@@ -47,8 +48,9 @@ public class CourseTest {
         assertFalse("Adding an already existing event should return false", course.addEvent(event));
 
         // Test removeEvent
-        assertTrue("Removing an existing event should return true", course.removeEvent(event.getEventID()));
-        assertFalse("Removing a non-existing event should return false", course.removeEvent("nonExistentID"));
+        assertTrue("Removing an existing event should return true", course.removeEvent(event));
+        Event nonExistentEvent = new Lecture("nonExistentEvent", "EVENT02", course);
+        assertFalse("Removing a non-existing event should return false", course.removeEvent(nonExistentEvent));
     }
 
     @Test
