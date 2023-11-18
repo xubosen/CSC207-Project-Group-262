@@ -57,22 +57,33 @@ public class Course {
 
     /**
      * Remove an employee from the course's staff. When doing so, remove the employee from all events associated with
-     * the course and all the sessions associated with those events.
+     * the course and all the sessions associated with those events. If the course is still in the employee's list of
+     * courses, remove the course from the employee's list of courses.
      *
      * @param employee The employee to be removed.
      * @return true if the employee was successfully removed, false if the employee is not in the staff of the course.
      */
     public boolean removeStaff(Employee employee) {
         String userID = employee.getUID();
+
+        // If the employee is in the staff, remove the employee from the staff.
         if (staff.containsKey(userID)) {
             staff.remove(userID);
+
+            // Remove the employee from all events associated with the course and all the sessions associated with
+            // those events.
             for (Event event : myEvents.values()) {
                 event.removeStaff(employee); // event.removeStaff() will remove the employee from all its sessions
             }
+
+            // If the course is still in the employee's list of courses, remove the course from the employee's list of
+            // courses.
+            if (employee.containsCourse(this)) {
+                employee.removeCourse(this);
+            }
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean containsStaff(Employee employee) {
@@ -80,16 +91,29 @@ public class Course {
     }
 
     public boolean addEvent(Event event) {
-        if (event == null || myEvents.containsKey(event.getEventID())) {
+        if (event == null || containsEvent(event)) {
             return false;
         }
         myEvents.put(event.getEventID(), event);
         return true;
     }
 
+    /**
+     * Remove an event from the course. When doing so, change the event's course attribute to null and remove all its
+     * sessions.
+     * @param event
+     * @return true iff the event was successfully removed
+     */
     public boolean removeEvent(Event event) {
+        // If the event is in the course, remove the event from the course
         if (containsEvent(event)) {
             myEvents.remove(event.getEventID());
+
+            // If the event is still associated to the course, delete the event.
+            if (event.getCourse() == this) {
+                event.delete();
+            }
+
             return true;
         }
         return false;
@@ -99,11 +123,11 @@ public class Course {
         return myEvents.containsKey(event.getEventID());
     }
 
-    public HashMap<String, Employee> listStaff() {
+    public HashMap<String, Employee> getStaff() {
         return new HashMap<>(staff);
     }
 
-    public HashMap<String, Event> listEvents() {
+    public HashMap<String, Event> getEvents() {
         return new HashMap<>(myEvents);
     }
 }
