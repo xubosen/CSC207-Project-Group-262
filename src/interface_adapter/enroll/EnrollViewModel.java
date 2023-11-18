@@ -1,9 +1,11 @@
-package interface_adapter;
+package interface_adapter.enroll;
+
+import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class EnrollViewModel extends ViewModel{
+public class EnrollViewModel extends ViewModel {
     public final String ENROLL_BUTTON_LABEL = "Invite";
     public final String CLOSE_BUTTON_LABEL = "Close";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

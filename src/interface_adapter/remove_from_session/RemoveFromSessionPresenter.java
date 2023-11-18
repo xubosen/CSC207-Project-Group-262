@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.remove_from_session;
 
-import use_case.RemoveFromSessionOutputBoundary;
-import use_case.RemoveFromSessionOutputData;
+import use_case.remove_from_session.RemoveFromSessionOutputBoundary;
+import use_case.remove_from_session.RemoveFromSessionOutputData;
 
 public class RemoveFromSessionPresenter implements RemoveFromSessionOutputBoundary {
     private RemoveFromSessionViewModel viewModel;

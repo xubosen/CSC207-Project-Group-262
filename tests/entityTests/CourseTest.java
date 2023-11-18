@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 
 public class CourseTest {
     private Course course;
-    private Employee admin;
-    private Employee staffMember;
+    private Instructor admin;
+    private TeachingAssistant staffMember;
     private Event event;
     private ClassSession classSession;
 
@@ -19,7 +19,7 @@ public class CourseTest {
     public void setUp() {
         admin = new Instructor("adminID", "Admin", "admin@example.com", "password");
         course = new Course("CourseName", "CSE101", admin);
-        staffMember = new Instructor("staffID", "Staff", "staff@example.com", "pass");
+        staffMember = new TeachingAssistant("staffID", "Staff", "staff@example.com", "pass");
         event = new Lecture("LectureEvent", "EVENT01", course);
 
         // Create a class session

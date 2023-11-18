@@ -1,9 +1,9 @@
 package view;
 
-import interface_adapter.EnrollViewModel;
+import interface_adapter.enroll.EnrollViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.EnrollController;
-import interface_adapter.EnrollState;
+import interface_adapter.enroll.EnrollController;
+import interface_adapter.enroll.EnrollState;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

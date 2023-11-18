@@ -6,9 +6,9 @@ public class Course {
     private String courseCode;
     private HashMap<String, Employee> staff;
     private HashMap<String, Event> myEvents;
-    private Employee admin;
+    private Instructor admin;
 
-    public Course(String name, String courseCode, Employee admin) {
+    public Course(String name, String courseCode, Instructor admin) {
         this.name = name;
         this.courseCode = courseCode;
         this.admin = admin;
@@ -26,7 +26,7 @@ public class Course {
         return courseCode;
     }
 
-    public Employee getAdmin() {
+    public Instructor getAdmin() {
         return admin;
     }
 

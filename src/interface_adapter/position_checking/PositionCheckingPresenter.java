@@ -1,6 +1,6 @@
-package interface_adapter;
+package interface_adapter.position_checking;
 
-import use_case.PositionCheckingOutputBoundary;
+import use_case.position_checking.PositionCheckingOutputBoundary;
 
 public class PositionCheckingPresenter implements PositionCheckingOutputBoundary {
     private boolean isAdmin;

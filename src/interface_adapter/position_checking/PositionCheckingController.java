@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.position_checking;
 
-import use_case.PositionCheckingInputBoundary;
-import use_case.PositionCheckingInputData;
+import use_case.position_checking.PositionCheckingInputBoundary;
+import use_case.position_checking.PositionCheckingInputData;
 
 public class PositionCheckingController {
     private PositionCheckingInputBoundary isAdminInteractor;
