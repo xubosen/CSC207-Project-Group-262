@@ -30,20 +30,53 @@ public class Course {
         return admin;
     }
 
+    /**
+     * Add an employee to the course's staff. If the employee is already in the staff, return false. If the course is
+     * not already in the employee's list of courses, add the course to the employee's list of courses.
+     *
+     * @param employee
+     * @return
+     */
     public boolean addStaff(Employee employee) {
-        if (employee == null || staff.containsKey(employee.getUID())) {
+        // If the employee is null or already in the staff, return false.
+        if (employee == null || containsStaff(employee)) {
             return false;
-        }
-        staff.put(employee.getUID(), employee);
-        return true;
-    }
+        } else {
+            // Otherwise, add the employee to the staff
+            staff.put(employee.getUID(), employee);
 
-    public boolean removeStaff(String userID) {
-        if (staff.containsKey(userID)) {
-            staff.remove(userID);
+            // If the course is not already in the employee's list of courses, add the course to the list
+            if (!employee.containsCourse(this)) {
+                employee.addCourse(this);
+            }
             return true;
         }
-        return false;
+
+    }
+
+
+    /**
+     * Remove an employee from the course's staff. When doing so, remove the employee from all events associated with
+     * the course and all the sessions associated with those events.
+     *
+     * @param employee The employee to be removed.
+     * @return true if the employee was successfully removed, false if the employee is not in the staff of the course.
+     */
+    public boolean removeStaff(Employee employee) {
+        String userID = employee.getUID();
+        if (staff.containsKey(userID)) {
+            staff.remove(userID);
+            for (Event event : myEvents.values()) {
+                event.removeStaff(employee); // event.removeStaff() will remove the employee from all its sessions
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean containsStaff(Employee employee) {
+        return staff.containsKey(employee.getUID());
     }
 
     public boolean addEvent(Event event) {
@@ -54,12 +87,16 @@ public class Course {
         return true;
     }
 
-    public boolean removeEvent(String eventID) {
-        if (myEvents.containsKey(eventID)) {
-            myEvents.remove(eventID);
+    public boolean removeEvent(Event event) {
+        if (containsEvent(event)) {
+            myEvents.remove(event.getEventID());
             return true;
         }
         return false;
+    }
+
+    public boolean containsEvent(Event event) {
+        return myEvents.containsKey(event.getEventID());
     }
 
     public HashMap<String, Employee> listStaff() {

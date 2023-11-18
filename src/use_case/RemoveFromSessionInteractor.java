@@ -34,7 +34,7 @@ public class RemoveFromSessionInteractor implements RemoveFromSessionInputBounda
         // Check if the employee is in the session
         Employee curEmployee = employeeDAO.getByID(employeeId);
         ClassSession curSession = sessionDAO.getEvent(inputData.getSessionId());
-        if (!curSession.containsStaff(employeeId)) {
+        if (!curSession.containsStaff(curEmployee)) {
             RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(false,
                     "Employee is not in the session");
             myPresenter.prepareView(outputData);
