@@ -10,7 +10,6 @@ public class EventAdditionPresenter implements EventAdditionOutputBoundary {
     }
 
     public void prepareView(EventAdditionOutputData outputData) {
-        System.out.println(outputData.getMessage());
         EventAdditionState curState = eventAdditionViewModel.getState();
         curState.setInviteSuccessful(outputData.isSuccessful());
         curState.setInviteResponseMessage(outputData.getMessage());

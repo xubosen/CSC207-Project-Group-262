@@ -1,5 +1,6 @@
 package use_case;
 
+import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
 import data_access.InMemoryEventDataAccessObject;
 import entity.Employee;
@@ -11,8 +12,8 @@ public class EventAdditionInteractor implements EventAdditionInputBoundary {
     private InMemoryEventDataAccessObject eventsDAO;
 
 
-    public EventAdditionInteractor(EventAdditionOutputBoundary eventAdditionPresenter, InMemoryEmployeeDataAccessObject employeesDAO,
-                            InMemoryEventDataAccessObject eventsDAO) {
+
+    public EventAdditionInteractor(EventAdditionOutputBoundary eventAdditionPresenter, InMemoryEmployeeDataAccessObject employeesDAO, InMemoryEventDataAccessObject eventsDAO) {
         this.eventAdditionPresenter = eventAdditionPresenter;
         this.employeesDAO = employeesDAO;
         this.eventsDAO = eventsDAO;
@@ -26,13 +27,16 @@ public class EventAdditionInteractor implements EventAdditionInputBoundary {
         if (! doesEmployeeExist(inputData)) {
             output = new EventAdditionOutputData(false, "Employee does not exist");
         }
+
         // If the event does not exist return false and a corresponding message in output data
 
         else if (! doesEventExist(inputData)) {
             output = new EventAdditionOutputData(false, "Event does not exist");
         }
 
-        // If the employee exists and the event exists, try to add the employee to the event
+        // TODO If the employee is not currently added to the course, return false and a corresponding message in output data
+
+        // If the employee exists, the event exists and the employee is in the course, try to add the employee to the event
 
         else {
             Employee curEmployee = getEmployeeFromInputData(inputData);

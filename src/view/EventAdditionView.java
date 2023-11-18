@@ -130,8 +130,7 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
             String inviteeID = eventAdditionViewModel.getState().getUserInvited();
-            String eventID = "CSC207 Lecture";
-            System.out.println(inviteeID);
+            String eventID = "002";
             eventAdditionController.addEmployeeToEvent(inviteeID, eventID);
 
             // Close the window and return to the previous screen
@@ -147,7 +146,6 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        System.out.println("Listener is triggered");
 
         // Display the response message
         EventAdditionState curState = eventAdditionViewModel.getState();
