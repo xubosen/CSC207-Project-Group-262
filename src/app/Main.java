@@ -1,11 +1,9 @@
 package app;
 
-import data_access.HardCodedDAO;
-import data_access.InMemoryCourseDataAccessObject;
-import data_access.InMemoryEmployeeDataAccessObject;
-import data_access.InMemorySessionDataAccessObject;
+import data_access.*;
 import interface_adapter.*;
 import use_case.EnrollInteractor;
+import use_case.EventAdditionInteractor;
 import use_case.RemoveFromSessionInteractor;
 import view.*;
 
@@ -51,8 +49,12 @@ public class Main {
         LeaveRequestView leaveRequestView = new LeaveRequestView();
         views.add(leaveRequestView, leaveRequestView.viewName);
 
+        // Initialize MyEvents view
+        MyEventsView myEventsView = new MyEventsView(viewManagerModel);
+        views.add(myEventsView, myEventsView.viewName);
+
         // Instantiate DashboardView.
-        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName);
+        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName, myEventsView.viewName);
         views.add(dashboardView, dashboardView.viewName);
 
         // Instantiate LoginView with reference to DashboardView's name.
@@ -64,12 +66,16 @@ public class Main {
         InMemoryEmployeeDataAccessObject employeeDAO = dataAccess.getEmployeeDAO();
         InMemoryCourseDataAccessObject courseDAO = dataAccess.getCourseDAO();
         InMemorySessionDataAccessObject sessionDAO = dataAccess.getSessionDAO();
+        InMemoryEventDataAccessObject eventDAO = dataAccess.getEventDAO();
 
         // Instantiate EnrollView
         instantiateEnrollUseCase(employeeDAO, courseDAO, views, viewManagerModel, mySessionsView);
 
         // Instantiate RemoveFromSessionView
         instantiateRemoveFromSessionUseCase(employeeDAO, sessionDAO, views, viewManagerModel, mySessionsView);
+
+        // Instantiate EventAddition
+        instantiateEventAdditionUseCase(employeeDAO, eventDAO, views, viewManagerModel, myEventsView);
 
         // Set the initial view.
         viewManagerModel.setActiveView(loginView.viewName);
@@ -107,6 +113,17 @@ public class Main {
         RemoveFromSessionView removeFromSessionView = new RemoveFromSessionView(removeFromSessionController,
                 removeFromSessionViewModel, viewManagerModel, mySessionsView.viewName);
         views.add(removeFromSessionView.viewName, removeFromSessionView);
+    }
+
+    private static void instantiateEventAdditionUseCase(InMemoryEmployeeDataAccessObject employeeDAO, InMemoryEventDataAccessObject eventDAO, JPanel views, ViewManagerModel viewManagerModel, MyEventsView myEventsView) {
+
+        EventAdditionViewModel eventAdditionViewModel = new EventAdditionViewModel();
+        EventAdditionPresenter eventAdditionPresenter = new EventAdditionPresenter(eventAdditionViewModel);
+        EventAdditionInteractor eventAdditionInteractor = new EventAdditionInteractor(eventAdditionPresenter, employeeDAO, eventDAO);
+        EventAdditionController eventAdditionController = new EventAdditionController(eventAdditionInteractor);
+        EventAdditionView eventAdditionView = new EventAdditionView(eventAdditionController, eventAdditionViewModel, viewManagerModel, myEventsView.viewName);
+        views.add(eventAdditionView.viewName, eventAdditionView);
+
     }
 
 }
