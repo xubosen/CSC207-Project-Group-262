@@ -3,10 +3,10 @@ package app;
 import data_access.HardCodedDAO;
 import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
-import data_access.InMemoryEventDataAccessObject;
+import data_access.InMemorySessionDataAccessObject;
 import interface_adapter.*;
 import use_case.EnrollInteractor;
-import use_case.EventAdditionInteractor;
+import use_case.RemoveFromSessionInteractor;
 import view.*;
 
 import javax.swing.*;
@@ -47,41 +47,29 @@ public class Main {
         MyCoursesView myCoursesView = new MyCoursesView(viewManagerModel);
         views.add(myCoursesView, myCoursesView.viewName);
 
-        // Instantiate LeaveReqeustView
+        // Instantiate LeaveRequestView
         LeaveRequestView leaveRequestView = new LeaveRequestView();
         views.add(leaveRequestView, leaveRequestView.viewName);
 
-        // Initialize MyEvents view
-        MyEventsView myEventsView = new MyEventsView(viewManagerModel);
-        views.add(myEventsView, myEventsView.viewName);
-
         // Instantiate DashboardView.
-        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName, myEventsView.viewName);
+        DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName);
         views.add(dashboardView, dashboardView.viewName);
 
         // Instantiate LoginView with reference to DashboardView's name.
         LoginView loginView = new LoginView(loginViewModel, viewManagerModel, dashboardView.viewName);
         views.add(loginView, loginView.viewName);
 
-        // Instantiate Enroll Use Case
+        // Load Data
         HardCodedDAO dataAccess = new HardCodedDAO();
         InMemoryEmployeeDataAccessObject employeeDAO = dataAccess.getEmployeeDAO();
         InMemoryCourseDataAccessObject courseDAO = dataAccess.getCourseDAO();
-        EnrollViewModel enrollViewModel = new EnrollViewModel();
-        EnrollPresenter enrollPresenter = new EnrollPresenter(enrollViewModel);
-        EnrollInteractor enrollInteractor = new EnrollInteractor(enrollPresenter, employeeDAO, courseDAO);
-        EnrollController enrollController = new EnrollController(enrollInteractor);
-        EnrollView enrollView = new EnrollView(enrollController, enrollViewModel, viewManagerModel, mySessionsView.viewName);
-        views.add(enrollView.viewName, enrollView);
+        InMemorySessionDataAccessObject sessionDAO = dataAccess.getSessionDAO();
 
-        // Initialize EventAdditionView
-        InMemoryEventDataAccessObject eventDAO = dataAccess.getEventDAO();
-        EventAdditionViewModel eventAdditionViewModel = new EventAdditionViewModel();
-        EventAdditionPresenter eventAdditionPresenter = new EventAdditionPresenter(eventAdditionViewModel);
-        EventAdditionInteractor eventAdditionInteractor = new EventAdditionInteractor(eventAdditionPresenter, employeeDAO, eventDAO);
-        EventAdditionController eventAdditionController = new EventAdditionController(eventAdditionInteractor);
-        EventAdditionView eventAdditionView = new EventAdditionView(eventAdditionController, eventAdditionViewModel, viewManagerModel, myEventsView.viewName);
-        views.add(eventAdditionView.viewName, eventAdditionView);
+        // Instantiate EnrollView
+        instantiateEnrollUseCase(employeeDAO, courseDAO, views, viewManagerModel, mySessionsView);
+
+        // Instantiate RemoveFromSessionView
+        instantiateRemoveFromSessionUseCase(employeeDAO, sessionDAO, views, viewManagerModel, mySessionsView);
 
         // Set the initial view.
         viewManagerModel.setActiveView(loginView.viewName);
@@ -89,6 +77,36 @@ public class Main {
 
         application.pack();
         application.setVisible(true);
+    }
+
+    private static void instantiateEnrollUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
+                                          InMemoryCourseDataAccessObject courseDAO,
+                                          JPanel views, ViewManagerModel viewManagerModel,
+                                          MySessionsView mySessionsView) {
+        EnrollViewModel enrollViewModel = new EnrollViewModel();
+        EnrollPresenter enrollPresenter = new EnrollPresenter(enrollViewModel);
+        EnrollInteractor enrollInteractor = new EnrollInteractor(enrollPresenter, employeeDAO, courseDAO);
+        EnrollController enrollController = new EnrollController(enrollInteractor);
+        EnrollView enrollView = new EnrollView(enrollController, enrollViewModel, viewManagerModel,
+                mySessionsView.viewName);
+        views.add(enrollView.viewName, enrollView);
+    }
+
+    private static void instantiateRemoveFromSessionUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
+                                          InMemorySessionDataAccessObject sessionsDAO,
+                                          JPanel views, ViewManagerModel viewManagerModel,
+                                          MySessionsView mySessionsView) {
+        // To test this, set active view to "Remove From Sessions"
+        RemoveFromSessionViewModel removeFromSessionViewModel = new RemoveFromSessionViewModel();
+        RemoveFromSessionPresenter removeFromSessionPresenter = new RemoveFromSessionPresenter(
+                removeFromSessionViewModel);
+        RemoveFromSessionInteractor removeFromSessionInteractor = new RemoveFromSessionInteractor(
+                removeFromSessionPresenter, employeeDAO, sessionsDAO);
+        RemoveFromSessionController removeFromSessionController = new RemoveFromSessionController(
+                removeFromSessionInteractor);
+        RemoveFromSessionView removeFromSessionView = new RemoveFromSessionView(removeFromSessionController,
+                removeFromSessionViewModel, viewManagerModel, mySessionsView.viewName);
+        views.add(removeFromSessionView.viewName, removeFromSessionView);
     }
 
 }

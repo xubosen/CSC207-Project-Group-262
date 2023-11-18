@@ -24,4 +24,16 @@ public class InMemorySessionDataAccessObject {
     public Set<String> getAllEventIDS() {
         return session.keySet();
     }
+
+    public void addSession(ClassSession session1) {
+        session.put(session1.getSessionID(), session1);
+    }
+
+    public boolean removeSession(ClassSession session1) {
+        if (existsByID(session1.getSessionID())) {
+            session.remove(session1.getSessionID());
+            return true;
+        }
+        return false;
+    }
 }
