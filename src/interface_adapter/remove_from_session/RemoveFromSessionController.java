@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.remove_from_session;
 
-import use_case.RemoveFromSessionInputBoundary;
-import use_case.RemoveFromSessionInputData;
+import use_case.remove_from_session.RemoveFromSessionInputBoundary;
+import use_case.remove_from_session.RemoveFromSessionInputData;
 
 public class RemoveFromSessionController {
     private RemoveFromSessionInputBoundary removeFromSessionInteractor;

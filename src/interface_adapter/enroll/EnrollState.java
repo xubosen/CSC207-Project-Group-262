@@ -1,4 +1,4 @@
-package interface_adapter;
+package interface_adapter.enroll;
 
 public class EnrollState {
     private String userInvited = "";

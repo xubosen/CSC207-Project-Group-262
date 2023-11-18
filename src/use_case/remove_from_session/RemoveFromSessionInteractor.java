@@ -1,4 +1,4 @@
-package use_case;
+package use_case.remove_from_session;
 
 import data_access.InMemoryEmployeeDataAccessObject;
 import data_access.InMemorySessionDataAccessObject;

@@ -1,9 +1,11 @@
-package interface_adapter;
+package interface_adapter.remove_from_session;
+
+import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class RemoveFromSessionViewModel extends ViewModel{
+public class RemoveFromSessionViewModel extends ViewModel {
     public final String REMOVE_BUTTON_LABEL = "Remove";
     public final String CLOSE_BUTTON_LABEL = "Close";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

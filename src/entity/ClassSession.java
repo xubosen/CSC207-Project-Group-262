@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClassSession {
-    String SessionID;
-    String name;
-    CalendarEvent calEvent;
-    HashMap<String, Employee> staff;
-    String location;
-    Event event;
+    private String SessionID;
+    private String name;
+    private CalendarEvent calEvent;
+    private HashMap<String, Employee> staff;
+    private String location;
+    private Event event;
 
     public ClassSession(String SessionID, String name, CalendarEvent calEvent, String location, Event event) {
         this.SessionID = SessionID;
@@ -127,6 +127,20 @@ public class ClassSession {
      */
     public boolean conflictsWith(ClassSession otherSession) {
         return calEvent.clashesWith(otherSession.toCalendarEvent());
+    }
+
+    /**
+     * Delete the class session by removing it from the event and from all of its staff, then setting its event
+     * attribute to null.
+     */
+    public void delete() {
+        Event myEvent = event;
+        event = null;
+        myEvent.removeSession(this);
+
+        for (Employee employee : staff.values()) {
+            employee.removeSession(this);
+        }
     }
 }
 

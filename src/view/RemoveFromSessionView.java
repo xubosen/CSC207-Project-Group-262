@@ -2,9 +2,9 @@ package view;
 
 
 
-import interface_adapter.RemoveFromSessionController;
-import interface_adapter.RemoveFromSessionState;
-import interface_adapter.RemoveFromSessionViewModel;
+import interface_adapter.remove_from_session.RemoveFromSessionController;
+import interface_adapter.remove_from_session.RemoveFromSessionState;
+import interface_adapter.remove_from_session.RemoveFromSessionViewModel;
 import interface_adapter.ViewManagerModel;
 
 import java.awt.*;

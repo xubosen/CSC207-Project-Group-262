@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.enroll;
 
-import use_case.EnrollInputBoundary;
-import use_case.EnrollInputData;
+import use_case.enroll.EnrollInputBoundary;
+import use_case.enroll.EnrollInputData;
 
 public class EnrollController {
     private EnrollInputBoundary enrollInteractor;
