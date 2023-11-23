@@ -1,14 +1,15 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClassSession {
-    String SessionID;
-    String name;
-    CalendarEvent calEvent;
-    HashMap<String, Employee> staff;
-    String location;
-    Event event;
+    private String SessionID;
+    private String name;
+    private CalendarEvent calEvent;
+    private HashMap<String, Employee> staff;
+    private String location;
+    private Event event;
 
     public ClassSession(String SessionID, String name, CalendarEvent calEvent, String location, Event event) {
         this.SessionID = SessionID;
@@ -55,7 +56,7 @@ public class ClassSession {
      */
     public boolean addStaff(Employee staff) {
         // If staff is already in the staff hashmap, return false
-        if (!this.staff.containsKey(staff.getUID())) {
+        if (containsStaff(staff)) {
             return false;
         }
 
@@ -65,19 +66,33 @@ public class ClassSession {
     }
 
     /**
-     * Remove staff from the class session
-     * @param staff The staff to remove
+     * Remove staff from the class session and remove the class session from the staff's list of class sessions
+     * @param employee The staff to remove
      * @return true if staff is removed, false if staff is not in the class session
      */
-    public boolean removeStaff(Employee staff) {
+    public boolean removeStaff(Employee employee) {
         // If staff is not in the staff hashmap, return false
-        if (!this.staff.containsKey(staff.getUID())) {
+        if (!this.staff.containsKey(employee.getUID())) {
             return false;
         }
 
-        // Otherwise, remove staff from the hashmap and return true
-        this.staff.remove(staff.getUID());
+        // Otherwise, remove staff from the hashmap and remove the class session from the staff's list of class sessions
+        this.staff.remove(employee.getUID());
+
+        // If the staff is still in the class session, remove the staff from the class session
+        if (employee.containsSession(this)) {
+            employee.removeSession(this);
+        }
         return true;
+    }
+
+    /**
+     * Check if staff is in the class session
+     * @param staff The staff to check for
+     * @return true if staff is in the class session, false otherwise
+     */
+    public boolean containsStaff(Employee staff) {
+        return this.staff.containsKey(staff.getUID());
     }
 
     /**
@@ -98,12 +113,34 @@ public class ClassSession {
     }
 
     /**
+     * Get a list of staff in the class session
+     * @return The list of staff in the class session
+     */
+    public ArrayList<Employee> listStaff() {
+        return new ArrayList<Employee>(this.staff.values());
+    }
+
+    /**
      * Check if the class session clashes with another class session
      * @param otherSession The class session to check against
      * @return true if the class session clashes with another class session, false otherwise
      */
     public boolean conflictsWith(ClassSession otherSession) {
         return calEvent.clashesWith(otherSession.toCalendarEvent());
+    }
+
+    /**
+     * Delete the class session by removing it from the event and from all of its staff, then setting its event
+     * attribute to null.
+     */
+    public void delete() {
+        Event myEvent = event;
+        event = null;
+        myEvent.removeSession(this);
+
+        for (Employee employee : staff.values()) {
+            employee.removeSession(this);
+        }
     }
 }
 

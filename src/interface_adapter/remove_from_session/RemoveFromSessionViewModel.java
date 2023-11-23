@@ -1,33 +1,34 @@
-package interface_adapter;
+package interface_adapter.remove_from_session;
+
+import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class EnrollViewModel extends ViewModel{
-    public final String ENROLL_BUTTON_LABEL = "Invite";
+public class RemoveFromSessionViewModel extends ViewModel {
+    public final String REMOVE_BUTTON_LABEL = "Remove";
     public final String CLOSE_BUTTON_LABEL = "Close";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private EnrollState state = new EnrollState();
+    private RemoveFromSessionState state = new RemoveFromSessionState();
 
-    public EnrollViewModel() {
-        super("Course Enrollment");
+    public RemoveFromSessionViewModel() {
+        super("Remove User");
     }
 
-    public EnrollState getState() {
+    public RemoveFromSessionState getState() {
         return state;
     }
 
-    public void setState(EnrollState state) {
+    public void setState(RemoveFromSessionState state) {
         this.state = state;
     }
 
+    @Override
     public void firePropertyChanged() {
-        System.out.println(state.getUserInvited());
-        System.out.println(state.isInviteSuccessful());
-        System.out.println(state.getInviteResponseMessage());
         support.firePropertyChange("state", null, state);
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }

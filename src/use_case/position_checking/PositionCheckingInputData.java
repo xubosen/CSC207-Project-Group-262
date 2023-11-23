@@ -1,4 +1,4 @@
-package use_case;
+package use_case.position_checking;
 
 public class PositionCheckingInputData {
     private String userID;
