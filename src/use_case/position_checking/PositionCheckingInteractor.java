@@ -1,4 +1,4 @@
-package use_case;
+package use_case.position_checking;
 
 import entity.Course;
 import entity.Employee;

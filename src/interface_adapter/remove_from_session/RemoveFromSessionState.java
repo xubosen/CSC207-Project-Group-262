@@ -1,4 +1,4 @@
-package interface_adapter;
+package interface_adapter.remove_from_session;
 
 public class RemoveFromSessionState {
     private String userRemoved = "";

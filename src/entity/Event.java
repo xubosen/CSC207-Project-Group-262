@@ -1,4 +1,5 @@
 package entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -125,12 +126,11 @@ public abstract class Event {
         if (containsSession(session)) {
             mySessions.remove(session.getSessionID());
 
-            // Remove the session from every employee in the session's list of staff
-            for (Employee employee : session.listStaff()) {
-                employee.removeSession(session);
+            // If the session is associated with the event, remove the session from the event
+            if (session.getEvent() == this) {
+                session.delete();
             }
 
-            session.event = null;
             return true;
         }
         return false;
@@ -154,6 +154,16 @@ public abstract class Event {
         return new HashMap<>(staff);
     }
 
+
+    /**
+     * Get a list of sessions associated with the event.
+     *
+     * @return A list of sessions.
+     */
+    public ArrayList<ClassSession> listSessions() {
+        return new ArrayList<>(mySessions.values());
+    }
+
     /**
      * Checks if the given session clashes with any of the sessions in the event.
      * @param session
@@ -166,5 +176,20 @@ public abstract class Event {
             }
         }
         return false;
+    }
+
+    /**
+     * Delete the event. Remove the event from the course and delete all sessions associated with the event.
+     */
+    public void delete() {
+        // Remove the event from the course
+        course.removeEvent(this);
+
+        course = null;
+
+        // Delete all sessions associated with the event
+        for (ClassSession session : mySessions.values()) {
+            session.delete();
+        }
     }
 }

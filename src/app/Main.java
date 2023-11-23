@@ -2,9 +2,15 @@ package app;
 
 import data_access.*;
 import interface_adapter.*;
-import use_case.EnrollInteractor;
+import interface_adapter.enroll.EnrollController;
+import interface_adapter.enroll.EnrollPresenter;
+import interface_adapter.enroll.EnrollViewModel;
+import interface_adapter.remove_from_session.RemoveFromSessionController;
+import interface_adapter.remove_from_session.RemoveFromSessionPresenter;
+import interface_adapter.remove_from_session.RemoveFromSessionViewModel;
+import use_case.enroll.EnrollInteractor;
 import use_case.EventAdditionInteractor;
-import use_case.RemoveFromSessionInteractor;
+import use_case.remove_from_session.RemoveFromSessionInteractor;
 import view.*;
 
 import javax.swing.*;
