@@ -13,6 +13,12 @@ import java.io.IOException;
 
 
 public class Main {
+    // TODO: Make sure that course admin type is Instructor.
+    // TODO: Should TA's be able to remove themselves from the course in gui
+    // TOdo: What happens when the course admin removes themselves. Maybe they just can't remove themselves.
+    // TODO: Should cal event be stored as a separate database
+    // TODO: Should the course admin be the only one allowed to remove people. They are the only one that can add so maybe only person that can remove.
+    // TODO: Ask the TA how they save the information to the database when the program runs. Does it periodically update the database off of in memory or does it only update the database when program is close.
     public static void main(String[] args) throws IOException {
         // We use JFrame ato Build the main program window.
         // The main panel contains cards and layout.
@@ -61,21 +67,39 @@ public class Main {
         LoginView loginView = new LoginView(loginViewModel, viewManagerModel, dashboardView.viewName);
         views.add(loginView, loginView.viewName);
 
-        // Load Data (TODO: Replace this with our actual database access once it is implemented.)
-        HardCodedDAO dataAccess = new HardCodedDAO();
-        InMemoryEmployeeDataAccessObject employeeDAO = dataAccess.getEmployeeDAO();
-        InMemoryCourseDataAccessObject courseDAO = dataAccess.getCourseDAO();
-        InMemorySessionDataAccessObject sessionDAO = dataAccess.getSessionDAO();
-        InMemoryEventDataAccessObject eventDAO = dataAccess.getEventDAO();
 
-        // Instantiate EnrollView
-        instantiateEnrollUseCase(employeeDAO, courseDAO, views, viewManagerModel, mySessionsView);
+        // Pull from the employees collection to make in memory employees.
+        FileEmployeeDataAccessObject employeeDataAccessObject;
+        try {
+        employeeDataAccessObject = new FileEmployeeDataAccessObject("./database.csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        InMemoryEmployeeDataAccessObject employeeDAO1 = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
+
+        // Pull from the courses collection to make in memory courses.
+        FileCourseDataAccessObject courseDataAccessObject = new FileCourseDataAccessObject(employeeDAO1);
+        InMemoryCourseDataAccessObject courseDAO1;
+        courseDAO1 = new InMemoryCourseDataAccessObject(courseDataAccessObject.getCourses());
+
+        // Pull from events collection to make in memory events.
+        FileEventDataAccessObject eventDataAccessObject = new FileEventDataAccessObject(employeeDAO1, courseDAO1);
+        InMemoryEventDataAccessObject eventDAO1;
+        eventDAO1 = new InMemoryEventDataAccessObject(eventDataAccessObject.getEvents());
+
+        // Lastly pull from sessions collection to make the sessions for all employees.
+        FileSessionDataAccessObject sessionDataAccessObject = new FileSessionDataAccessObject(employeeDAO1, eventDAO1);
+        InMemorySessionDataAccessObject sessionDAO1;
+        sessionDAO1 = new InMemorySessionDataAccessObject(sessionDataAccessObject.getSessions());
+
+
+        instantiateEnrollUseCase(employeeDAO1, courseDAO1, views, viewManagerModel, mySessionsView);
 
         // Instantiate RemoveFromSessionView
-        instantiateRemoveFromSessionUseCase(employeeDAO, sessionDAO, views, viewManagerModel, mySessionsView);
+        instantiateRemoveFromSessionUseCase(employeeDAO1, sessionDAO1, views, viewManagerModel, mySessionsView);
 
         // Instantiate EventAddition
-        instantiateEventAdditionUseCase(employeeDAO, eventDAO, views, viewManagerModel, myEventsView);
+        instantiateEventAdditionUseCase(employeeDAO1, eventDAO1, views, viewManagerModel, myEventsView);
 
         // Set the initial view.
         viewManagerModel.setActiveView(loginView.viewName);
