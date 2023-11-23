@@ -1,7 +1,7 @@
 package entity;
 
 /**
- * A class that represents a calendar evet, with a name, description, and time span.
+ * A class that represents a calendar event, with a name, description, and time span.
  */
 public class CalendarEvent {
     private String name;

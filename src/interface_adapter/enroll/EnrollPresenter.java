@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.enroll;
 
-import use_case.EnrollOutputBoundary;
-import use_case.EnrollOutputData;
+import use_case.enroll.EnrollOutputBoundary;
+import use_case.enroll.EnrollOutputData;
 
 public class EnrollPresenter implements EnrollOutputBoundary{
     private EnrollViewModel enrollViewModel;

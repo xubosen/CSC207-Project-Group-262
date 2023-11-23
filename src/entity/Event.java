@@ -1,4 +1,5 @@
 package entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -10,11 +11,12 @@ public abstract class Event {
     private String name;
     private String eventID;
     private Course course;
-    private HashMap<String, ClassSession> mySessions;
-    private HashMap<String, Employee> staff;
+    private HashMap<String, ClassSession> mySessions  = new HashMap<String, ClassSession>();
+    private HashMap<String, Employee> staff = new HashMap<String, Employee>();
 
     /**
-     * Constructs a new Event object with the given name, event ID, and course.
+     * Constructs a new Event object with the given name, event ID, and course. Adds the event to the course when
+     * initializing
      *
      * @param name     The name of the event.
      * @param eventID  The unique identifier for the event.
@@ -24,8 +26,7 @@ public abstract class Event {
         this.name = name;
         this.eventID = eventID;
         this.course = course;
-        this.mySessions = new HashMap<String, ClassSession>();
-        this.staff = new HashMap<String, Employee>();
+        this.course.addEvent(this);
     }
 
     /**
@@ -58,6 +59,9 @@ public abstract class Event {
     /**
      * Add an employee to the event's staff.
      *
+     * Representational Invariant:
+     * The employee must be in the course this event is in.
+     *
      * @param employee The employee to be added to the staff.
      * @return true if the employee was added successfully, false if the employee is already in the staff.
      */
@@ -70,27 +74,41 @@ public abstract class Event {
     }
 
     /**
-     * Remove an employee from the event's staff using their userID.
+     * Remove an employee from the event's staff using their userID. When doing this, remove the employee from all
+     * sessions associated with the event.
      *
-     * @param userID The userID of the employee to be removed.
+     * @param employee The employee to be removed.
      * @return true if the employee was successfully removed, false if the employee is not in the staff.
      */
-    public boolean removeStaff(String userID) {
+    public boolean removeStaff(Employee employee) {
+        String userID = employee.getUID();
+
+        // If the employee is in the staff, remove them from the staff
         if (staff.containsKey(userID)) {
             staff.remove(userID);
+
+            // Remove the employee from all sessions associated with the event
+            for (ClassSession session : mySessions.values()) {
+                if (session.containsStaff(employee)) {
+                    session.removeStaff(employee);
+                }
+            }
             return true;
         }
+
+        // If the employee is not in the staff, return false
         return false;
     }
 
     /**
-     * Add a class session to the event.
+     * Add a class session to the event. Return false if the session is already in the event or if the session is in
+     * another event.
      *
      * @param session The class session to be added.
-     * @return true if the session was added successfully, false if the session already exists in the event.
+     * @return true if the session was added successfully
      */
     public boolean addSession(ClassSession session) {
-        if (!mySessions.containsKey(session.getSessionID()) && !this.conflictsWith(session)) {
+        if (session.getEvent() == this && !mySessions.containsKey(session.getSessionID())) {
             mySessions.put(session.getSessionID(), session);
             return true;
         }
@@ -98,17 +116,33 @@ public abstract class Event {
     }
 
     /**
-     * Remove a class session from the event using its session ID.
+     * Remove a class session from the event. Remove the session from every employee in the session's list of staff and
+     * set its event attribute to null.
      *
-     * @param sessionID The session ID of the class session to be removed.
+     * @param session The session to be removed.
      * @return true if the session was successfully removed, false if the session is not in the event.
      */
-    public boolean removeSession(String sessionID) {
-        if (mySessions.containsKey(sessionID)) {
-            mySessions.remove(sessionID);
+    public boolean removeSession(ClassSession session) {
+        if (containsSession(session)) {
+            mySessions.remove(session.getSessionID());
+
+            // If the session is associated with the event, remove the session from the event
+            if (session.getEvent() == this) {
+                session.delete();
+            }
+
             return true;
         }
         return false;
+    }
+
+    /**
+     * Return whether the event contains the session
+     * @param session
+     * @return true if the event contains the session, false otherwise
+     */
+    public boolean containsSession(ClassSession session) {
+        return mySessions.containsKey(session.getSessionID());
     }
 
     /**
@@ -118,6 +152,16 @@ public abstract class Event {
      */
     public HashMap<String, Employee> listStaff() {
         return new HashMap<>(staff);
+    }
+
+
+    /**
+     * Get a list of sessions associated with the event.
+     *
+     * @return A list of sessions.
+     */
+    public ArrayList<ClassSession> listSessions() {
+        return new ArrayList<>(mySessions.values());
     }
 
     /**
@@ -132,5 +176,20 @@ public abstract class Event {
             }
         }
         return false;
+    }
+
+    /**
+     * Delete the event. Remove the event from the course and delete all sessions associated with the event.
+     */
+    public void delete() {
+        // Remove the event from the course
+        course.removeEvent(this);
+
+        course = null;
+
+        // Delete all sessions associated with the event
+        for (ClassSession session : mySessions.values()) {
+            session.delete();
+        }
     }
 }

@@ -1,17 +1,17 @@
 package interface_adapter;
 
-public class EnrollState {
+public class EventAdditionState {
     private String userInvited = "";
     private boolean inviteSuccessful = false;
     private String inviteResponseMessage = "";
 
-    public EnrollState(EnrollState copy) {
+    public EventAdditionState(EventAdditionState copy) {
         userInvited = copy.userInvited;
         inviteSuccessful = copy.inviteSuccessful;
         inviteResponseMessage = copy.inviteResponseMessage;
     }
 
-    public EnrollState () {}
+    public EventAdditionState () {}
 
     public String getUserInvited() {
         return userInvited;

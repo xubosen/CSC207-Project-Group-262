@@ -1,7 +1,4 @@
-package use_case;
-
-import entity.Course;
-import entity.Employee;
+package use_case.position_checking;
 
 public interface PositionCheckingInputBoundary {
     public void checkIsAdmin(PositionCheckingInputData inputData);

@@ -25,4 +25,16 @@ public class InMemoryEventDataAccessObject {
     public Set<String> getAllEventIDS() {
         return event.keySet();
     }
+
+    public void addEvent(Event event) {
+        this.event.put(event.getEventID(), event);
+    }
+
+    public boolean removeEvent(Event event) {
+        if (existsByID(event.getEventID())) {
+            this.event.remove(event.getEventID());
+            return true;
+        }
+        return false;
+    }
 }
