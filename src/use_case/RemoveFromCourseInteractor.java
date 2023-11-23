@@ -37,7 +37,6 @@ public class RemoveFromCourseInteractor implements RemoveFromCourseInputBoundary
         } else {
             // Remove the employee from the course
             curCourse.removeStaff(curEmployee);
-            curEmployee.removeCourse(curCourse);
 
             RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(true, "Employee removed from the course");
             myPresenter.prepareView(outputData);
