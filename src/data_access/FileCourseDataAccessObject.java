@@ -1,133 +1,108 @@
 package data_access;
 
+import com.mongodb.client.*;
 import entity.*;
+import org.bson.Document;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * This Class allows us to pull from the courses collection inside our mongodb Database.
+ * It then creates all instances of courses stored inside so it can be saved into memory for the program to retrieve.
+ */
 public class FileCourseDataAccessObject {
-    private final File csvFile;
 
-    private final Map<String, Integer> headers = new LinkedHashMap<>();
+    public static final HashMap<String, Course> courses = new HashMap<>();
 
-    public static final Map<String, Course> courses = new HashMap<>();
+    /**
+     * Constructs a new file course DAO using information inside the inMemoryEmployeeDataAccessObject and the course
+     * collection on mongodb.
+     * @param inMemoryEmployeeDataAccessObject the DAO that we will pull from to generate the courses with their staff
+     */
+    public FileCourseDataAccessObject(InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
 
-    private CourseFactory courseFactory;
+        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            // database and collection code goes here
+            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
+            MongoCollection<Document> collection = db.getCollection("courses");
 
-    public FileCourseDataAccessObject(String csvPath, CourseFactory courseFactory) throws IOException {
-        this.courseFactory = courseFactory;
+            // find code goes here
+            MongoCursor<Document> cursor = collection.find().iterator();
 
-        csvFile = new File(csvPath);
-        headers.put("courseName", 0);
-        headers.put("courseCode", 1);
-        headers.put("courseAdmin", 2);
-
-//        headers.put("staff", 3);
-//
-//        headers.put("events", 4);
-
-        // Must recast the serializable information back into original object type
-
-        // Uses ObjectInputStream and ObjectOutputStream
-
-        if (csvFile.length() == 0) {
-            save();
-        } else {
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-                String header = reader.readLine();
-
-                // For later: clean this up by creating a new Exception subclass and handling it in the UI.
-                assert header.equals("courseName,courseCode,courseAdmin");
-
-                String row;
-
-                while ((row = reader.readLine()) != null) {
-                    String[] col = row.split(",");
-                    String courseName = String.valueOf(col[headers.get("courseName")]);
-                    String courseCode = String.valueOf(col[headers.get("courseCode")]);
-                    String courseAdmin = String.valueOf(col[headers.get("courseAdmin")]);
-
-//                    String staff = String.valueOf(col[headers.get("staff")]);
-//                    String events = String.valueOf(col[headers.get("events")]);
-
-//                    HashMap<String, Employee> deserializedStaff = new HashMap<String, Employee>();
-//                    HashMap<String, Event> deserializedEvents = new HashMap<String, Event>();
-
-                    // Deserialize Course Hashmap File
-//                    try (FileInputStream fileInputStream = new FileInputStream(staff);
-//                         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-//
-//                        // Read the object from the stream and cast it to a HashMap
-//                        HashMap<String, Employee> staffHashMap = (HashMap<String, Employee>) objectInputStream.readObject();
-//
-//                        // Now you have your HashMap back
-//                        deserializedStaff = staffHashMap;
-//
-//                    } catch (IOException | ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    try (FileInputStream fileInputStream = new FileInputStream(events);
-//                         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-//
-//                        // Read the object from the stream and cast it to a HashMap
-//                        HashMap<String, Event> eventsHashMap = (HashMap<String, Event>) objectInputStream.readObject();
-//
-//                        // This may get accessed if
-//                        deserializedEvents = eventsHashMap;
-//
-//                    } catch (IOException | ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-
-                    // I need to create an exact copy of the teaching assistant with all their courses, sessions, calendar
-                    InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject();
-                    Employee theAdmin = inMemoryEmployeeDataAccessObject.getByID(courseAdmin);
-
-                    // Would want to implement this using the hashmap ser files and course factory.
-
-                    Course course = new Course(courseName, courseCode, theAdmin);
-
-
-                    courses.put(courseCode, course);
+            // iterate code goes here
+            try {
+                while (cursor.hasNext()) {
+                    String courseInJsonForm = cursor.next().toJson();
+                    JsonToCourse jsonToCourse = new JsonToCourse(courseInJsonForm, inMemoryEmployeeDataAccessObject);
+                    Course course = jsonToCourse.convert();
+                    courses.put(course.getCourseCode(), course);
                 }
+            } finally {
+                cursor.close();
             }
         }
     }
 
+    /**
+     * Saves this course into the courses HashMap and then proceeds to save it into the database.
+     * @param course The course that you want to save.
+     */
     public void save(Course course) {
         courses.put(course.getCourseCode(), course);
         this.save();
     }
 
+    /**
+     * Retrieves the course with the respective course code.
+     * @param courseCode The course code use to search through the course HashMap.
+     * @return The respective course
+     */
     public Course get(String courseCode) {
         return courses.get(courseCode);
     }
 
+    /**
+     * Saves all the courses inside the HashMap into the courses collection on mongodb.
+     */
     private void save() {
-        // This should save the information as the headers as wanted
+        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
 
-        BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new FileWriter(csvFile));
-            writer.write(String.join(",", headers.keySet()));
-            writer.newLine();
+            // database and collection code goes here
+            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
+            MongoCollection<Document> collection = db.getCollection("courses");
+
+            // insert code goes here
+            List<Document> documents = new ArrayList<>();
 
             for (Course course : courses.values()) {
 
-                String line = String.format("%s,%s,%s", course.getCourseCode(), course.getName(),
-                        course.getAdmin().getUID());
-                writer.write(line);
-                writer.newLine();
+                ArrayList<String> staffList = new ArrayList<>();
+
+                for (Employee employee : course.listStaff().values()) {
+                    staffList.add(employee.getUID());
+                }
+
+                ArrayList<String> eventList = new ArrayList<>();
+
+                for (Event event : course.listEvents().values()) {
+                    eventList.add(event.getEventID());
+                }
+
+                Document courseDoc = new Document("course_name", course.getName()).
+                        append("course_code", course.getCourseCode()).append("Staff", staffList).
+                        append("events", course.listEvents()).append("course_admin", course.getAdmin().getUID());
+
+                // This adds the employee information to the mongodb
+                documents.add(courseDoc);
+
             }
 
-            writer.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            // Need to not use insertMany because it can create duplicate entries within mongodb.
+            // Could search using userID and delete past data before inserting the new data.
+            collection.insertMany(documents);
         }
     }
 
@@ -137,15 +112,27 @@ public class FileCourseDataAccessObject {
      * @param courseCode the co
      * @return whether the course code is inside
      */
-    public boolean existsByName(String courseCode) {
+    public boolean existsByCode(String courseCode) {
         return courses.containsKey(courseCode);
     }
 
-    public String getCourses() {
+    /**
+     * Converts the Hashmap of courses into a String where each of their course code is displayed on a new line.
+     * @return Every single course code line by line.
+     */
+    public String getCoursesString() {
         StringBuilder courses = new StringBuilder();
         for (Map.Entry<String, Course> entry : this.courses.entrySet()) {
             courses.append(entry.getKey()).append("\n");
         }
         return courses.toString();
+    }
+
+    /**
+     * Returns the HashMap of course code and courses
+     * @return this.courses
+     */
+    public HashMap<String, Course> getCourses() {
+        return courses;
     }
 }
