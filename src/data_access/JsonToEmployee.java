@@ -10,28 +10,27 @@ import java.util.HashMap;
 
 
 public class JsonToEmployee {
-    private EmployeeFactory employeeFactory;
     private String jsonString;
-    public JsonToEmployee(EmployeeFactory employeeFactory, String jsonString) {
-        this.employeeFactory = employeeFactory;
+
+    public JsonToEmployee(String jsonString) {
         this.jsonString = jsonString;
     }
 
     /**
-     *
      * @return
      */
     public Employee convert() {
-        HashMap<String, Course> courseHashMap = new HashMap<String, Course>();
-        HashMap<String, ClassSession> classSessionHashMap = new HashMap<String, ClassSession>();
-
+//        Employee employee;
+//        HashMap<String, Course> courseHashMap = new HashMap<String, Course>();
+//        HashMap<String, ClassSession> classSessionHashMap = new HashMap<String, ClassSession>();
+//
 
         JSONObject obj = new JSONObject(jsonString);
         // "{\"_id\": {\"$oid\": \"6557dd0d9a2a09870f0db0e8\"}, " +
         //                "\"userID\": \"phanale4\", \"password\": \"123\", \"name\": \"Alexander Phan\", " +
         //                "\"email\": \"alexanderphan@mail.utoronto.ca\", " +
         //                "\"courses\": [{\"CSC207\":csc207,\"CSC236\":csc236}], \"sessions\": []}" +
-        //                "\"role\": \"entity TeachingAssistant\""
+        //                "\"role\": \"class entity TeachingAssistant\""
         // test code
 
         String userID = obj.getString("userID");
@@ -40,11 +39,16 @@ public class JsonToEmployee {
         String email = obj.getString("email");
         String employeeType = obj.getString("role");
 
-        Employee employee = employeeFactory.create(userID, name, email, password, classSessionHashMap,
-                courseHashMap, employeeType);
-        return employee;
-    }
+        if (employeeType.equals("class entity.TeachingAssistant")) {
+            TeachingAssistant teachingAssistant = new TeachingAssistant(userID, password, name, email);
+            return teachingAssistant;
+        } else {
+            Instructor instructor = new Instructor(userID, password, name, email);
+            return instructor;
+        }
 
+    }
+}
 //    public static void main(String[] args) {
 //        HashMap<String, Course> courseHashMap = new HashMap<String, Course>();
 //        HashMap<String, ClassSession> classSessionHashMap = new HashMap<String, ClassSession>();
@@ -81,4 +85,3 @@ public class JsonToEmployee {
 //        }
 
 //        System.out.println(coursesCut);
-}
