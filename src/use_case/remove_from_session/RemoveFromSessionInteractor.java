@@ -41,7 +41,6 @@ public class RemoveFromSessionInteractor implements RemoveFromSessionInputBounda
         } else {
             // Remove the employee from the session and the session from the employee
             curSession.removeStaff(curEmployee);
-            curEmployee.removeSession(curSession);
 
             RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(true,
                     "Successfully removed employee from session");
