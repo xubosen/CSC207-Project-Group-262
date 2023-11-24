@@ -15,7 +15,8 @@ public class DashboardView extends JPanel implements ActionListener {
     private final ViewManagerModel viewManagerModel;
     private final String leaveRequestViewName;
     private final String myCoursesViewName;
-    private final String myEventsViewName;
+
+    private JLabel welcomeLabel; // Label for the welcome message
 
     private final JButton coursesButton = new JButton("Courses");
     private final JButton eventsButton = new JButton("Events");
@@ -24,35 +25,50 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName, String myEventsViewName) {
+
+    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
         this.viewManagerModel = viewManagerModel;
         this.leaveRequestViewName = leaveRequestViewName;
         this.myCoursesViewName = myCoursesViewName;
-        this.myEventsViewName = myEventsViewName;
 
-        // Set layout to GridLayout
-        setLayout(new GridLayout(2, 3, 10, 10)); // 2 rows, 3 columns, and gaps
+        // Set layout to BoxLayout for horizontal alignment
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        // Style and add buttons
-        addStyledButton(coursesButton);
-        addStyledButton(eventsButton);
-        addStyledButton(sessionsButton);
-        addStyledButton(calendarButton);
-        addStyledButton(leavesOfAbsencesButton);
-        addStyledButton(employeeInformationButton);
+        // Create welcome label panel and set preferred size
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
+        welcomeLabel = new JLabel("Welcome, Yooham Jung", JLabel.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcomePanel.add(welcomeLabel);
+        welcomePanel.setPreferredSize(new Dimension(400, 600)); // 400px width
+
+        // Panel for buttons with GridLayout
+        JPanel buttonsPanel = new JPanel(new GridLayout(2, 3, 10, 10)); // 2 rows, 3 columns, and gaps
+        buttonsPanel.setPreferredSize(new Dimension(600, 600)); // 600px width
+        addStyledButton(coursesButton, buttonsPanel);
+        addStyledButton(eventsButton, buttonsPanel);
+        addStyledButton(sessionsButton, buttonsPanel);
+        addStyledButton(calendarButton, buttonsPanel);
+        addStyledButton(leavesOfAbsencesButton, buttonsPanel);
+        addStyledButton(employeeInformationButton, buttonsPanel);
+
+        // Add panels to DashboardView
+        add(welcomePanel);
+        add(buttonsPanel);
     }
 
-    private void addStyledButton(JButton button) {
+    private void addStyledButton(JButton button, JPanel panel) {
         styleButton(button);
-        add(button);
+        panel.add(button); // Add the button to the panel
         button.addActionListener(this);
     }
 
     private void styleButton(JButton button) {
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Arial", Font.BOLD, 22));
         button.setOpaque(true);
         button.setBorderPainted(false);
-        button.setBackground(new Color(100, 149, 237)); // Example color - Cornflower Blue
+        button.setBackground(new Color(10, 186, 181)); // Example color - Cornflower Blue
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
     }
@@ -64,10 +80,6 @@ public class DashboardView extends JPanel implements ActionListener {
             viewManagerModel.firePropertyChanged();
         } else if  (e.getSource() == coursesButton) {
             viewManagerModel.setActiveView(myCoursesViewName);
-            viewManagerModel.firePropertyChanged();
-        }
-        else if (e.getSource() == eventsButton) {  // Handle Events button click
-            viewManagerModel.setActiveView("my events view");  // Assuming the view name for MyEventsView is "my events view"
             viewManagerModel.firePropertyChanged();
         }
         // Other links to be fixed.

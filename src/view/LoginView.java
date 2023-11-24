@@ -155,9 +155,20 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         } else if (evt.getSource() == signUp) {
             // Handle sign up action
         } else if (evt.getSource() == cancel) {
-            // Handle cancel action
+            // Handle cancel action: Close the window
+            closeWindow();
         }
-    };
+    }
+
+    /**
+     * Closes the window that contains this panel.
+     */
+    private void closeWindow() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

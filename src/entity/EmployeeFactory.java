@@ -1,2 +1,2 @@
-package entity;public class EmployeeFactory {
+package entity;public interface EmployeeFactory {
 }
