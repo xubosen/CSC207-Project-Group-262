@@ -66,8 +66,8 @@ public abstract class Event {
      * @return true if the employee was added successfully, false if the employee is already in the staff.
      */
     public boolean addStaff(Employee employee) {
-        if (!staff.containsKey(employee.getUID())) {
-            staff.put(employee.getUID(), employee);
+        if (!staff.containsKey(employee.getUserID())) {
+            staff.put(employee.getUserID(), employee);
             return true;
         }
         return false;
@@ -81,7 +81,7 @@ public abstract class Event {
      * @return true if the employee was successfully removed, false if the employee is not in the staff.
      */
     public boolean removeStaff(Employee employee) {
-        String userID = employee.getUID();
+        String userID = employee.getUserID();
 
         // If the employee is in the staff, remove them from the staff
         if (staff.containsKey(userID)) {

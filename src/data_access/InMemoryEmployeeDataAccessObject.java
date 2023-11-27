@@ -16,7 +16,7 @@ public class InMemoryEmployeeDataAccessObject {
     }
 
     public void save(Employee employee) {
-        this.employee.put(employee.getUID(), employee);
+        this.employee.put(employee.getUserID(), employee);
     }
 
     public boolean existsByID(String userId) {
@@ -32,12 +32,12 @@ public class InMemoryEmployeeDataAccessObject {
     }
 
     public void addEmployee(Employee employee) {
-        this.employee.put(employee.getUID(), employee);
+        this.employee.put(employee.getUserID(), employee);
     }
 
     public boolean removeEmployee(Employee employee) {
-        if (this.employee.containsKey(employee.getUID())){
-            this.employee.remove(employee.getUID());
+        if (this.employee.containsKey(employee.getUserID())){
+            this.employee.remove(employee.getUserID());
             return true;
         }
         return false;

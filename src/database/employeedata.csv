@@ -1,0 +1,4 @@
+userID,name,email,password
+001,John Doe,john.doe@example.com,pass123
+002,Jane Smith,jane.smith@example.com,pass456
+003,Alex Johnson,alex.johnson@example.com,pass789

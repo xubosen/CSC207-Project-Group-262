@@ -112,7 +112,7 @@ public class FileTADataAccessObject implements Serializable {
     }
 
     public void save(TeachingAssistant teachingAssistant) {
-        accounts.put(teachingAssistant.getUID(), teachingAssistant);
+        accounts.put(teachingAssistant.getUserID(), teachingAssistant);
         this.save();
     }
 
@@ -132,7 +132,7 @@ public class FileTADataAccessObject implements Serializable {
 
             for (TeachingAssistant teachingAssistants : accounts.values()) {
 
-                String courseSerFile = teachingAssistants.getUID() + "Courses.ser";
+                String courseSerFile = teachingAssistants.getUserID() + "Courses.ser";
                 try
                 {
                     FileOutputStream fos =
@@ -147,7 +147,7 @@ public class FileTADataAccessObject implements Serializable {
                 }
 
                 // This writes the .ser file
-                String sessionSerFile = teachingAssistants.getUID() + "Sessions.ser";
+                String sessionSerFile = teachingAssistants.getUserID() + "Sessions.ser";
                 try
                 {
                     FileOutputStream fos =
@@ -162,7 +162,7 @@ public class FileTADataAccessObject implements Serializable {
                 }
 
                 String line = String.format("%s,%s,%s,%s,%s,%s",
-                        teachingAssistants.getUID(), teachingAssistants.getName(), teachingAssistants.getEmail(),
+                        teachingAssistants.getUserID(), teachingAssistants.getName(), teachingAssistants.getEmail(),
                         teachingAssistants.getPassword(), courseSerFile, sessionSerFile);
                 writer.write(line);
                 writer.newLine();

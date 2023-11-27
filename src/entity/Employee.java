@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  *
  */
-public abstract class Employee {
+public class Employee {
     private String userID;
     private String name;
     private String email;
@@ -22,7 +22,7 @@ public abstract class Employee {
         this.password = password;
     }
 
-    public String getUID() {
+    public String getUserID() {
         return this.userID;
     }
 

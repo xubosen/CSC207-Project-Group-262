@@ -61,7 +61,7 @@ public class ClassSession {
         }
 
         // Otherwise, add staff to the hashmap and return true
-        this.staff.put(staff.getUID(), staff);
+        this.staff.put(staff.getUserID(), staff);
         return true;
     }
 
@@ -72,12 +72,12 @@ public class ClassSession {
      */
     public boolean removeStaff(Employee employee) {
         // If staff is not in the staff hashmap, return false
-        if (!this.staff.containsKey(employee.getUID())) {
+        if (!this.staff.containsKey(employee.getUserID())) {
             return false;
         }
 
         // Otherwise, remove staff from the hashmap and remove the class session from the staff's list of class sessions
-        this.staff.remove(employee.getUID());
+        this.staff.remove(employee.getUserID());
 
         // If the staff is still in the class session, remove the staff from the class session
         if (employee.containsSession(this)) {
@@ -92,7 +92,7 @@ public class ClassSession {
      * @return true if staff is in the class session, false otherwise
      */
     public boolean containsStaff(Employee staff) {
-        return this.staff.containsKey(staff.getUID());
+        return this.staff.containsKey(staff.getUserID());
     }
 
     /**

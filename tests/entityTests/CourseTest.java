@@ -94,7 +94,7 @@ public class CourseTest {
     @Test
     public void testListStaff() {
         course.addStaff(staffMember);
-        assertTrue("Listed staff should include added staff member", course.getStaff().containsKey(staffMember.getUID()));
+        assertTrue("Listed staff should include added staff member", course.getStaff().containsKey(staffMember.getUserID()));
     }
 
     @Test

@@ -181,8 +181,12 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      */
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == logIn) {
-            viewManagerModel.setActiveView(dashboardViewName);
-            viewManagerModel.firePropertyChanged();
+            // Execute login process
+            loginController.execute(
+                    loginViewModel.getState().getUsername(),
+                    loginViewModel.getState().getPassword()
+            );
+            System.out.println("Click");
         } else if (evt.getSource() == signUp) {
             // Handle sign up action
         } else if (evt.getSource() == cancel) {
@@ -205,11 +209,19 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
-    }
+        // Check if login was successful
+        if (state.isLoginSuccessful()) {
+            // Switch to the dashboard view on successful login
+            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.firePropertyChanged();
+        } else {
+            // Display error message
+                JOptionPane.showMessageDialog(this, state.getLoginError());
+            }
+        }
 
     private void setFields(LoginState state) {
         usernameInputField.setText(state.getUsername());
         passwordInputField.setText(state.getPassword());
     }
-
 }
