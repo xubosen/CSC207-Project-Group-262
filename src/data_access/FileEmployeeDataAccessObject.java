@@ -74,8 +74,6 @@ public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface
 
     @Override
     public Employee findByName(String identifier) {
-        return null;
+        return accounts.get(identifier);
     }
-
-    // Additional methods as required for EmployeeDataAccessInterface
 }
