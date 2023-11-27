@@ -1,6 +1,5 @@
 package use_case;
 
-import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
 import data_access.InMemoryEventDataAccessObject;
 import entity.Employee;

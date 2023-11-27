@@ -5,46 +5,28 @@ public class LoginState {
     private String usernameError = null;
     private String password = "";
     private String passwordError = null;
+    private boolean loginSuccessful = false;
+    private String loginError = null;
 
     public LoginState(LoginState copy) {
         username = copy.username;
         usernameError = copy.usernameError;
         password = copy.password;
         passwordError = copy.passwordError;
+        loginSuccessful = copy.loginSuccessful;
+        loginError = copy.loginError;
     }
 
-    // Because of the previous copy constructor, the default constructor must be explicit.
     public LoginState() {}
 
-    public String getUsername() {
-        return username;
-    }
+    // Getters and setters for all fields
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public boolean isLoginSuccessful() { return loginSuccessful; }
+    public String getLoginError() { return loginError; }
 
-    public String getUsernameError() {
-        return usernameError;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPasswordError() {
-        return passwordError;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setUsernameError(String usernameError) {
-        this.usernameError = usernameError;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPasswordError(String passwordError) {
-        this.passwordError = passwordError;
-    }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
+    public void setLoginSuccessful(boolean loginSuccessful) { this.loginSuccessful = loginSuccessful; }
+    public void setLoginError(String loginError) { this.loginError = loginError; }
 }
