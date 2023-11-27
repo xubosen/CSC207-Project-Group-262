@@ -4,6 +4,7 @@ import interface_adapter.LoginState;
 import interface_adapter.LoginViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.LoginViewModel;
+import interface_adapter.LoginController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private final String dashboardViewName;
 
+    private final LoginController loginController;
+
     /**
      * The username chosen by the user
      */
@@ -49,10 +52,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     /**
      * A window with a title and a JButton.
      */
-    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, String dashboardViewName) throws IOException {
+    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, LoginController loginController, String dashboardViewName) throws IOException {
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
         this.viewManagerModel = viewManagerModel;
+        this.loginController = loginController;
         this.dashboardViewName = dashboardViewName;
 
         JLabel title = new JLabel("University of Toronto HR System");
@@ -90,7 +94,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             @Override
             public void keyTyped(KeyEvent e) {
                 LoginState currentState = loginViewModel.getState();
-                currentState.setUsername(usernameInputField.getText());
+                currentState.setUsername(usernameInputField.getText() + e.getKeyChar());
                 loginViewModel.setState(currentState);
             }
 
@@ -100,6 +104,33 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             @Override
             public void keyReleased(KeyEvent e) {}
         });
+
+        passwordInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                LoginState currentState = loginViewModel.getState();
+                currentState.setPassword(passwordInputField.getText() + e.getKeyChar());
+                loginViewModel.setState(currentState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+
+        logIn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(logIn)) {
+                    loginController.execute(
+                            loginViewModel.getState().getUsername(),
+                            loginViewModel.getState().getPassword()
+                    );
+                }
+            }
+        });
+
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
