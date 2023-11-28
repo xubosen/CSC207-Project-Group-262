@@ -17,7 +17,7 @@ public class ClassSession {
         this.calEvent = calEvent;
         this.location = location;
         this.event = event;
-
+        event.addSession(this);
         this.staff = new HashMap<String, Employee>();
     }
 
@@ -61,7 +61,9 @@ public class ClassSession {
         }
 
         // Otherwise, add staff to the hashmap and return true
-        this.staff.put(staff.getUserID(), staff);
+        this.staff.put(staff.getUID(), staff);
+        staff.addSession(this);
+
         return true;
     }
 

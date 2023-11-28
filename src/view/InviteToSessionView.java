@@ -1,9 +1,9 @@
 package view;
 
-import interface_adapter.enroll.EnrollViewModel;
+import interface_adapter.InviteToSessionViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.enroll.EnrollController;
-import interface_adapter.enroll.EnrollState;
+import interface_adapter.InviteToSessionController;
+import interface_adapter.InviteToSessionState;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,31 +17,30 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-// What is mySessionsViewName for?
-public class EnrollView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "enroll";
-    private EnrollViewModel enrollViewModel;
+public class InviteToSessionView extends JPanel implements ActionListener, PropertyChangeListener {
+    public final String viewName = "invite to session";
+    private InviteToSessionViewModel inviteToSessionViewModel;
     private ViewManagerModel viewManagerModel;
     private String mySessionsViewName;
-    private EnrollController enrollController;
+    private InviteToSessionController inviteToSessionController;
     private String userToEnroll = "";
 
     // Variables for setting up UI
     private JButton invite;
     private JButton close;
-    private final String HEADING_TEXT = "Invite To Course";
+    private final String HEADING_TEXT = "Invite To Session";
     private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
     private JTextField userToEnrollInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
-    public EnrollView(EnrollController enrollController, EnrollViewModel enrollViewModel,
-                      ViewManagerModel viewManagerModel, String mySessionsViewName){
-        this.enrollController = enrollController;
-        this.enrollViewModel = enrollViewModel;
+    public InviteToSessionView(InviteToSessionController inviteToSessionController, InviteToSessionViewModel inviteToSessionViewModel,
+                             ViewManagerModel viewManagerModel, String mySessionsViewName){
+        this.inviteToSessionController = inviteToSessionController;
+        this.inviteToSessionViewModel = inviteToSessionViewModel;
         this.viewManagerModel = viewManagerModel;
         this.mySessionsViewName = mySessionsViewName;
-        enrollViewModel.addPropertyChangeListener(this);
+        inviteToSessionViewModel.addPropertyChangeListener(this);
         setupUI();
     }
 
@@ -82,11 +81,11 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     private JPanel setUpButtons() {
         JPanel buttonPanel = new JPanel();
 
-        invite = new JButton(enrollViewModel.ENROLL_BUTTON_LABEL);
+        invite = new JButton(inviteToSessionViewModel.Invite_BUTTON_LABEL);
         invite.addActionListener(this);
         buttonPanel.add(invite);
 
-        close = new JButton(enrollViewModel.CLOSE_BUTTON_LABEL);
+        close = new JButton(inviteToSessionViewModel.CLOSE_BUTTON_LABEL);
         close.addActionListener(this);
         buttonPanel.add(close);
 
@@ -113,9 +112,9 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
 
             @Override
             public void keyReleased(KeyEvent e) {
-                EnrollState currentState = enrollViewModel.getState();
+                InviteToSessionState currentState = inviteToSessionViewModel.getState();
                 currentState.setUserInvited(userToEnrollInputField.getText());
-                enrollViewModel.setState(currentState);
+                inviteToSessionViewModel.setState(currentState);
             }
         });
     }
@@ -130,16 +129,16 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     public void actionPerformed(ActionEvent event) {
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
-            String inviteeID = enrollViewModel.getState().getUserInvited();
-            String courseCode = "CSC207"; // TODO: Get the course code of the course the user is currently viewing
-            enrollController.enroll(inviteeID, courseCode);
+            String inviteeID = inviteToSessionViewModel.getState().getUserInvited();
+            String sessionID = "002";
+            inviteToSessionController.invite(inviteeID, sessionID);
 
-        // Close the window and return to the dashboard
+            // Close the window and return to the previous screen
         } else if (event.getSource() == close) {
             viewManagerModel.setActiveView(mySessionsViewName);
             viewManagerModel.firePropertyChanged();
 
-        // Something went wrong. Throw an error.
+            // Something went wrong. Throw an error.
         } else {
             throw new RuntimeException("Something went wrong with the buttons");
         }
@@ -147,8 +146,9 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
+
         // Display the response message
-        EnrollState curState = enrollViewModel.getState();
+        InviteToSessionState curState = inviteToSessionViewModel.getState();
         errorDisplayField.setText(curState.getInviteResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
     }

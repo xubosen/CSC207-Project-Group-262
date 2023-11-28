@@ -7,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+// TODO: Need to change this to not have a hard coded csc207 button and instead pull from the employees courses.
+// Also MyCoursesView should have a checker for whether the person who is logged in is a Instructor or not.
+// When you click on the courses to see events, that view should differ depending on if you are the course admin.
 public class MyCoursesView extends JPanel implements ActionListener {
     public final String viewName = "my courses view";
     private final JButton csc207Button = new JButton("CSC207");
