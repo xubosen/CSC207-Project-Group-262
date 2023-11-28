@@ -13,58 +13,35 @@ import java.util.HashMap;
 public class JsonToEvent {
     private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
     private InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject;
+    private String nameKey = "name";
+    private String eventIDKey = "eventID";
+    private String courseKey = "course";
+    private String eventTypeKey = "event_type";
+    private String staffKey = "staff";
     private String jsonString;
+    private JSONObject jsonObject;
 
-//    public static void main(String[] args) {
-//        String test = "{\"_id\": {\"$oid\": \"655bd81c3974c0a90e01ec08\"}, \"name\": \"CSC207TUT\", \"eventID\": \"TUT5201\", \"course\": \"CSC207\", " +
-//                "\"sessions\": [\"TUT5201_11/20\"], \"staff\": [\"phanale4\", \"xubosen\"], \"event_type\": \"class entity.Tutorial\"}";
-//
-//        JSONObject obj = new JSONObject(test);
-//
-//        JSONArray staffArray = (JSONArray) obj.get("staff");
-//
-//        String name = obj.getString("name");
-//        String eventID = obj.getString("eventID");
-//        String courseCode = obj.getString("course");
-//        String eventType = obj.getString("event_type");
-//
-//        System.out.println(name);
-//        System.out.println(eventID);
-//        System.out.println(courseCode);
-//        System.out.println(staffArray);
-//        System.out.println(eventType);
-//
-//
-//    }
     public JsonToEvent(String jsonString, InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject,
                           InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
         this.jsonString = jsonString;
         this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
         this.inMemoryCourseDataAccessObject = inMemoryCourseDataAccessObject;
-
+        this.jsonObject = new JSONObject(jsonString);
     }
 
     /**
      * @return
      */
     public Event convert() {
-        JSONObject obj = new JSONObject(jsonString);
-        // "{\"_id\": {\"$oid\": \"6557dd0d9a2a09870f0db0e8\"}, " +
-        //                "\"userID\": \"phanale4\", \"password\": \"123\", \"name\": \"Alexander Phan\", " +
-        //                "\"email\": \"alexanderphan@mail.utoronto.ca\", " +
-        //                "\"courses\": [{\"CSC207\":csc207,\"CSC236\":csc236}], \"sessions\": []}" +
-        //                "\"role\": \"class entity TeachingAssistant\""
-        // test code
-
-        String name = obj.getString("name");
-        String eventID = obj.getString("eventID");
-        String courseCode = obj.getString("course");
-        String eventType = obj.getString("event_type");
+        String name = jsonObject.getString(nameKey);
+        String eventID = jsonObject.getString(eventIDKey);
+        String courseCode = jsonObject.getString(courseKey);
+        String eventType = jsonObject.getString(eventTypeKey);
 
 
 
         ArrayList<String> listStaff = new ArrayList<String>();
-        JSONArray staffArray = (JSONArray) obj.get("staff");
+        JSONArray staffArray = (JSONArray) jsonObject.get(staffKey);
         if (staffArray != null) {
             for (int i = 0; i < staffArray.length(); i++){
                 listStaff.add(staffArray.getString(i));

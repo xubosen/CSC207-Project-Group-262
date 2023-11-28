@@ -1,5 +1,5 @@
-package use_case.create_event;
+package use_case.create_session;
 
-public interface CreateEventInputBoundary {
-    void createEvent(CreateEventInputData inputData);
+public interface CreateSessionInputBoundary {
+    void createEvent(CreateSessionInputData inputData);
 }

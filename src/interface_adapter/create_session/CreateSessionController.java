@@ -1,30 +1,30 @@
-package interface_adapter.create_event;
-
-import use_case.create_event.CreateEventInputBoundary;
-import use_case.create_event.CreateEventInputData;
-
-public class CreateEventController {
-    private CreateEventInputBoundary createEventInteractor;
-
-    /**
-     * Initializer for the createEventController to take in user input and transfer data.
-     * @param createEventInteractor
-     */
-    public CreateEventController(CreateEventInputBoundary createEventInteractor) {
-        this.createEventInteractor = createEventInteractor;
-    }
-
-    /**
-     * Creates input data after taking inputs eventName and eventID.
-     * @param eventName The created course's code
-     * @param eventID The created course's name
-     * @param typeOfEvent Whether it is a Lecture or a Tutorial
-//     * @param courseCode The Course's code that this is creating an event on
-     */
-    public void createEvent(String eventName, String eventID, String typeOfEvent) {
-        // May or may not need employee parameter, it should be logged in state thing.
-        // The adminID might not be required because it would just check logged in state potentially.
-        CreateEventInputData inputData = new CreateEventInputData(eventName, eventID, typeOfEvent);
-        createEventInteractor.createEvent(inputData);
-    }
-}
+//package interface_adapter.create_session;
+//
+//import use_case.create_session.CreateSessionInputBoundary;
+//import use_case.create_session.CreateSessionInputData;
+//
+//public class CreateSessionController {
+//    private CreateSessionInputBoundary createSessionInteractor;
+//
+//    /**
+//     * Initializer for the createSessionController to take in user input and transfer data.
+//     * @param createSessionInteractor
+//     */
+//    public CreateSessionController(CreateSessionInputBoundary createSessionInteractor) {
+//        this.createSessionInteractor = createSessionInteractor;
+//    }
+//
+//    /**
+//     * Creates input data after taking inputs eventName and eventID.
+//     * @param sessionName The created course's code
+//     * @param sessionID The created course's name
+////     * @param eventID The Events's code that this is creating a session on
+//     */
+//    public void createSession(String sessionName, String sessionID) {
+//        // To create session we need sessionID, sessionName, calEvent (start and end time as well as description and name), event, location
+//        // May or may not need employee parameter, it should be logged in state thing.
+//        // The adminID might not be required because it would just check logged in state potentially.
+//        CreateSessionInputData inputData = new CreateSessionInputData(eventName, eventID); // previous event clicked on
+//        createSessionInteractor.createSession(inputData);
+//    }
+//}
