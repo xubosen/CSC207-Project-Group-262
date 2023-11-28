@@ -34,10 +34,10 @@ public class JsonToEmployee {
         String employeeType = obj.getString(roleKey);
 
         if (employeeType.equals("class entity.TeachingAssistant")) {
-            TeachingAssistant teachingAssistant = new TeachingAssistant(userID, password, name, email);
+            TeachingAssistant teachingAssistant = new TeachingAssistant(userID, name, email, password);
             return teachingAssistant;
         } else {
-            Instructor instructor = new Instructor(userID, password, name, email);
+            Instructor instructor = new Instructor(userID, name, email, password);
             return instructor;
         }
 
