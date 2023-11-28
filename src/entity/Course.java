@@ -44,7 +44,7 @@ public class Course {
             return false;
         } else {
             // Otherwise, add the employee to the staff
-            staff.put(employee.getUID(), employee);
+            staff.put(employee.getUserID(), employee);
 
             // If the course is not already in the employee's list of courses, add the course to the list
             if (!employee.containsCourse(this)) {
@@ -65,7 +65,7 @@ public class Course {
      * @return true if the employee was successfully removed, false if the employee is not in the staff of the course.
      */
     public boolean removeStaff(Employee employee) {
-        String userID = employee.getUID();
+        String userID = employee.getUserID();
 
         // If the employee is in the staff, remove the employee from the staff.
         if (staff.containsKey(userID)) {
@@ -88,7 +88,7 @@ public class Course {
     }
 
     public boolean containsStaff(Employee employee) {
-        return staff.containsKey(employee.getUID());
+        return staff.containsKey(employee.getUserID());
     }
 
     public boolean addEvent(Event event) {

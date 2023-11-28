@@ -19,7 +19,7 @@ public class PositionCheckingInteractor implements PositionCheckingInputBoundary
     public void checkIsAdmin(PositionCheckingInputData inputData) {
         Course curCourse = courseDAO.getByID(inputData.getCourseCode());
         Employee curEmployee = employeeDAO.getByID(inputData.getUserID());
-        boolean isAdmin = curCourse.getAdmin().getUID().equals(curEmployee.getUID());
+        boolean isAdmin = curCourse.getAdmin().getUserID().equals(curEmployee.getUserID());
         presenter.presentIsAdmin(isAdmin);
     }
 }
