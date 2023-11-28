@@ -20,7 +20,7 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
      */
     public CreateSessionInteractor(CreateSessionOutputBoundary createSessionPresenter, InMemoryEmployeeDataAccessObject employeesDAO,
                                    InMemoryEventDataAccessObject eventsDAO) {
-        this.createEventPresenter = createEventPresenter;
+        this.createSessionPresenter = createSessionPresenter;
         this.employeesDAO = employeesDAO;
         this.eventsDAO = eventsDAO;
     }
@@ -48,7 +48,7 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
         }
 
         // Call the presenter to present the output data
-        createEventPresenter.prepareView(output);
+        createSessionPresenter.prepareView(output);
     }
 
 
@@ -63,7 +63,7 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
 //        return employeesDAO.getByID(inputData.getAdminID());
 //    }
 
-    private boolean doesEventExist(CreateSessionInputData inputData) {
-        return eventDAO.existsByID(inputData.getEventID());
+    private boolean doesSessionExist(CreateSessionInputData inputData) {
+        return sessionsDAO.existsByID(inputData.getEventID());
     }
 }
