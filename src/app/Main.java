@@ -12,6 +12,7 @@ import interface_adapter.remove_from_session.RemoveFromSessionController;
 import interface_adapter.remove_from_session.RemoveFromSessionPresenter;
 import interface_adapter.remove_from_session.RemoveFromSessionViewModel;
 import use_case.create_event.CreateEventInteractor;
+import use_case.LoginInteractor;
 import use_case.enroll.EnrollInteractor;
 import interface_adapter.create_course.CreateCourseController;
 import interface_adapter.create_course.CreateCoursePresenter;
@@ -75,12 +76,15 @@ public class Main {
         MyEventsView myEventsView = new MyEventsView(viewManagerModel);
         views.add(myEventsView, myEventsView.viewName);
 
+        //Instantiate View Models
+        DashboardViewModel dashboardViewModel = new DashboardViewModel(); // Instantiate DashboardViewModel
+
         // Instantiate DashboardView.
         DashboardView dashboardView = new DashboardView(viewManagerModel, leaveRequestView.viewName, myCoursesView.viewName);
         views.add(dashboardView, dashboardView.viewName);
 
         // Instantiate LoginView with reference to DashboardView's name.
-        LoginView loginView = new LoginView(loginViewModel, viewManagerModel, dashboardView.viewName);
+        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, dashboardViewModel);
         views.add(loginView, loginView.viewName);
 
         // Pull from the employees collection to make in memory employees.

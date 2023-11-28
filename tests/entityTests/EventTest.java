@@ -69,7 +69,7 @@ public class EventTest {
     public void testListStaff() {
         event.addStaff(employee);
         assertEquals("List should contain one staff member", 1, event.listStaff().size());
-        assertTrue("List should contain the added staff member", event.listStaff().containsKey(employee.getUID()));
+        assertTrue("List should contain the added staff member", event.listStaff().containsKey(employee.getUserID()));
     }
 
     @Test

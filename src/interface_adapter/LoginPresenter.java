@@ -31,15 +31,12 @@ public class LoginPresenter implements LoginOutputBoundary {
         // Handle login failure
         // Update loginViewModel to reflect the error
         LoginState loginState = loginViewModel.getState();
-        loginState.setUsernameError(error); // Assuming you want to show the error in username field
+        loginState.setLoginError(error);
         loginViewModel.setState(loginState);
         loginViewModel.firePropertyChanged();
     }
 
     @Override
     public void execute(LoginInputData loginInputData) {
-
     }
-
-    // Additional methods related to login process can be added here
 }

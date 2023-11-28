@@ -105,7 +105,7 @@ public class FileInstructorDataAccessObject {
     }
 
     public void save(Instructor instructor) {
-        accounts.put(instructor.getUID(), instructor);
+        accounts.put(instructor.getUserID(), instructor);
         this.save();
     }
 
@@ -125,12 +125,12 @@ public class FileInstructorDataAccessObject {
 
             for (Instructor instructor : accounts.values()) {
 
-                String courseSerFile = instructor.getUID() + "Courses.ser";
+                String courseSerFile = instructor.getUserID() + "Courses.ser";
 
-                String sessionSerFile = instructor.getUID() + "Sessions.ser";
+                String sessionSerFile = instructor.getUserID() + "Sessions.ser";
 
                 String line = String.format("%s,%s,%s,%s,%s,%s,%s,%s",
-                        instructor.getUID(), instructor.getName(), instructor.getEmail(),
+                        instructor.getUserID(), instructor.getName(), instructor.getEmail(),
                         instructor.getPassword(), courseSerFile, sessionSerFile);
                 writer.write(line);
                 writer.newLine();
