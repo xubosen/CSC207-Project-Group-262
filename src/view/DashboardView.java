@@ -27,7 +27,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName, String viewName) {
+    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
         this.viewManagerModel = viewManagerModel;
         this.leaveRequestViewName = leaveRequestViewName;
         this.myCoursesViewName = myCoursesViewName;
