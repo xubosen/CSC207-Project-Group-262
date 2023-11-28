@@ -1,6 +1,6 @@
-package use_case.create_event;
+package use_case.create_session;
 
-public class CreateEventInputData {
+public class CreateSessionInputData {
     private String eventName;
     private String eventID;
     private String typeOfEvent;
@@ -9,11 +9,18 @@ public class CreateEventInputData {
     // TODO: When you create a Event do you become a staff member or is it empty. Same for Sessions
 
     /**
-     * Initializer of the input data that the user will create when attempting to create event.
-     * @param eventName The event name
-     * @param eventID The event ID
+     * Initializer of the input data that the user will create when attempting to create session.
+     * @param sessionName
+     * @param sessionID
+     * @param startTime
+     * @param endTime
+     * @param calEventDescriptor
+     * @param calEventName
+     * @param location
+     * @param eventID
      */
-    public CreateEventInputData(String eventName, String eventID, String typeOfEvent) {
+    public CreateSessionInputData(String sessionName, String sessionID, String startTime, String endTime,
+                                  String calEventDescriptor, String calEventName, String location, String eventID) {
         // adminID might just pull logged in state
         this.eventName = eventName;
         this.eventID = eventID;

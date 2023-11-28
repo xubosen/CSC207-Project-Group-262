@@ -1,43 +1,44 @@
 package data_access;
 
 import entity.Employee;
+
 import java.util.HashMap;
 import java.util.Set;
 
 public class InMemoryEmployeeDataAccessObject {
-    private HashMap<String, Employee> employee;
+    private HashMap<String, Employee> employees;
 
     public InMemoryEmployeeDataAccessObject() {
-        employee = new HashMap<String, Employee>();
+        employees = new HashMap<String, Employee>();
     }
 
     public InMemoryEmployeeDataAccessObject(HashMap<String, Employee> employees) {
-        employee = employees;
+        this.employees = employees;
     }
 
     public void save(Employee employee) {
-        this.employee.put(employee.getUserID(), employee);
+        this.employees.put(employee.getUID(), employee);
     }
 
     public boolean existsByID(String userId) {
-        return employee.containsKey(userId);
+        return employees.containsKey(userId);
     }
 
     public Employee getByID(String userId) {
-        return employee.get(userId);
+        return employees.get(userId);
     }
 
     public Set<String> getAllIDs() {
-        return employee.keySet();
+        return employees.keySet();
     }
 
     public void addEmployee(Employee employee) {
-        this.employee.put(employee.getUserID(), employee);
+        this.employees.put(employee.getUID(), employee);
     }
 
     public boolean removeEmployee(Employee employee) {
-        if (this.employee.containsKey(employee.getUserID())){
-            this.employee.remove(employee.getUserID());
+        if (this.employees.containsKey(employee.getUID())){
+            this.employees.remove(employee.getUID());
             return true;
         }
         return false;

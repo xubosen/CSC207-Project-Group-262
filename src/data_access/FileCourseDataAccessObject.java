@@ -4,15 +4,23 @@ import com.mongodb.client.*;
 import entity.*;
 import org.bson.Document;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Class allows us to pull from the courses collection inside our mongodb Database.
  * It then creates all instances of courses stored inside so it can be saved into memory for the program to retrieve.
  */
 public class FileCourseDataAccessObject {
-
+    private final File databaseFiles;
+    private final Map<String, Integer> headers = new LinkedHashMap<>();
     private static final HashMap<String, Course> courses = new HashMap<>();
 
     /**
@@ -20,13 +28,23 @@ public class FileCourseDataAccessObject {
      * collection on mongodb.
      * @param inMemoryEmployeeDataAccessObject the DAO that we will pull from to generate the courses with their staff
      */
-    public FileCourseDataAccessObject(InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
+    public FileCourseDataAccessObject(String databasePath,
+                                      InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) throws IOException {
+        this.databaseFiles = new File(databasePath);
 
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+        headers.put("databaseLink", 0);
+        headers.put("databaseName", 1);
+        headers.put("collectionName", 2);
+
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("courses");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // find code goes here
             MongoCursor<Document> cursor = collection.find().iterator();
@@ -49,7 +67,7 @@ public class FileCourseDataAccessObject {
      * Saves this course into the courses HashMap and then proceeds to save it into the database.
      * @param course The course that you want to save.
      */
-    public void save(Course course) {
+    public void save(Course course) throws IOException {
         courses.put(course.getCourseCode(), course);
         this.save();
     }
@@ -66,13 +84,17 @@ public class FileCourseDataAccessObject {
     /**
      * Saves all the courses inside the HashMap into the courses collection on mongodb.
      */
-    private void save() {
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+    private void save() throws IOException {
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("courses");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // insert code goes here
             List<Document> documents = new ArrayList<>();
@@ -81,19 +103,19 @@ public class FileCourseDataAccessObject {
 
                 ArrayList<String> staffList = new ArrayList<>();
 
-                for (Employee employee : course.listStaff().values()) {
+                for (Employee employee : course.getStaff().values()) {
                     staffList.add(employee.getUID());
                 }
 
                 ArrayList<String> eventList = new ArrayList<>();
 
-                for (Event event : course.listEvents().values()) {
+                for (Event event : course.getEvents().values()) {
                     eventList.add(event.getEventID());
                 }
 
                 Document courseDoc = new Document("course_name", course.getName()).
                         append("course_code", course.getCourseCode()).append("Staff", staffList).
-                        append("events", course.listEvents()).append("course_admin", course.getAdmin().getUID());
+                        append("events", course.getEvents()).append("course_admin", course.getAdmin().getUID());
 
                 // This adds the employee information to the mongodb
                 documents.add(courseDoc);
@@ -134,5 +156,24 @@ public class FileCourseDataAccessObject {
      */
     public HashMap<String, Course> getCourses() {
         return courses;
+    }
+
+    private ArrayList<String> getURIAndDBNames() throws IOException {
+
+        ArrayList<String> uriAndNames = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(databaseFiles))) {
+            String header = reader.readLine();
+
+            assert header.equals("databaseLink,databaseName,collectionName");
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] col = row.split(",");
+                uriAndNames.add(String.valueOf(col[headers.get("databaseLink")]));
+                uriAndNames.add(String.valueOf(col[headers.get("databaseName")]));
+                uriAndNames.add(String.valueOf(col[headers.get("collectionName")]));
+            }
+        }
+        return uriAndNames;
     }
 }

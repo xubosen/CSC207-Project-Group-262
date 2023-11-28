@@ -1,18 +1,18 @@
-package interface_adapter.create_event;
+package interface_adapter.create_session;
 
 import use_case.create_event.CreateEventOutputBoundary;
 import use_case.create_event.CreateEventOutputData;
 
-public class CreateEventPresenter implements CreateEventOutputBoundary {
+public class CreateSessionPresenter implements CreateEventOutputBoundary {
     // TODO: Double check if this works
-    private CreateEventViewModel createEventViewModel;
+    private CreateSessionViewModel createSessionViewModel;
 
     /**
      * Initializer for the presenter of the create event use case.
-     * @param createEventViewModel The view model of this use case.
+     * @param createSessionViewModel The view model of this use case.
      */
-    public CreateEventPresenter(CreateEventViewModel createEventViewModel) {
-        this.createEventViewModel = createEventViewModel;
+    public CreateSessionPresenter(CreateSessionViewModel createSessionViewModel) {
+        this.createSessionViewModel = createSessionViewModel;
     }
 
     /**
@@ -21,11 +21,11 @@ public class CreateEventPresenter implements CreateEventOutputBoundary {
      */
     public void prepareView(CreateEventOutputData outputData) {
         System.out.println(outputData.getMessage());
-        CreateEventState curState = createEventViewModel.getState();
+        CreateSessionState curState = createSessionViewModel.getState();
         curState.setEventCreationSuccessful(outputData.isSuccessful());
         curState.setEventCreationResponseMessage(outputData.getMessage());
-        createEventViewModel.setState(curState);
+        createSessionViewModel.setState(curState);
 
-        createEventViewModel.firePropertyChanged();
+        createSessionViewModel.firePropertyChanged();
     }
 }

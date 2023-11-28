@@ -13,8 +13,10 @@ import java.awt.event.ActionListener;
 // When you click on the courses to see events, that view should differ depending on if you are the course admin.
 public class MyCoursesView extends JPanel implements ActionListener {
     public final String viewName = "my courses view";
+    private final JButton createCoursesButton = new JButton("Create Course");
     private final JButton csc207Button = new JButton("CSC207");
     private final String mySessionsViewName = "my sessions view";
+    private final String createCoursesViewName = "create course view";
     private final ViewManagerModel viewManagerModel;
 
     private final JButton backButton = new JButton("Back");
@@ -23,6 +25,7 @@ public class MyCoursesView extends JPanel implements ActionListener {
         this.viewManagerModel = viewManagerModel;
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);
+        makeCreateCourseButton(gbc);
         makeCourseButton(gbc);
         makeBackButton(gbc);
     }
@@ -43,11 +46,10 @@ public class MyCoursesView extends JPanel implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
         add(headingLabel, gbc);
     }
-
     private void makeCourseButton(GridBagConstraints gbc) {
         csc207Button.setFont(new Font("Arial", Font.PLAIN, 20)); // Set the font for the button
         gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 1; // Align to the second row
+        gbc.gridy = 2; // Align to the third row
         gbc.weightx = 1; // Take up all horizontal space
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
         gbc.insets = new Insets(10, 0, 0, 0); // Top padding
@@ -57,10 +59,23 @@ public class MyCoursesView extends JPanel implements ActionListener {
         csc207Button.addActionListener(this);
     }
 
+    private void makeCreateCourseButton(GridBagConstraints gbc) {
+        createCoursesButton.setFont(new Font("Arial", Font.PLAIN, 20)); // Set the font for the button
+        gbc.gridx = 0; // Align to the first column
+        gbc.gridy = 1; // Align to the second row
+        gbc.weightx = 1; // Take up all horizontal space
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
+        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
+        // Increase the button height
+        createCoursesButton.setPreferredSize(new Dimension(createCoursesButton.getPreferredSize().width, 150));
+        add(createCoursesButton, gbc);
+        createCoursesButton.addActionListener(this);
+    }
+
     private void makeBackButton(GridBagConstraints gbc) {
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 2; // Align to the second row
+        gbc.gridy = 3; // Align to the fourth row
         gbc.weightx = 1; // Take up all horizontal space
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
         gbc.insets = new Insets(10, 0, 0, 0); // Top padding
@@ -78,6 +93,10 @@ public class MyCoursesView extends JPanel implements ActionListener {
             viewManagerModel.firePropertyChanged();
         } else if (e.getSource() == backButton) {
             viewManagerModel.setActiveView("dashboard");
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == createCoursesButton) {
+            System.out.println("Create Courses button pressed.");
+            viewManagerModel.setActiveView(createCoursesViewName);
             viewManagerModel.firePropertyChanged();
         }
     }

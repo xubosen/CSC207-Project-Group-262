@@ -24,7 +24,7 @@ public class Employee {
         this.password = password;
     }
 
-    public String getUserID() {
+    public String getUID() {
         return this.userID;
     }
 

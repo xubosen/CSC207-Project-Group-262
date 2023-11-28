@@ -1,5 +1,5 @@
-package use_case.create_course;
+package use_case.create_event;
 
-public interface CreateCourseOutputBoundary {
-    void prepareView(CreateCourseOutputData outputData);
+public interface CreateEventOutputBoundary {
+    void prepareView(CreateEventOutputData outputData);
 }

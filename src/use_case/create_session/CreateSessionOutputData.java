@@ -1,6 +1,6 @@
-package use_case.create_event;
+package use_case.create_session;
 
-public class CreateEventOutputData {
+public class CreateSessionOutputData {
     private boolean isSuccessful;
     private String message;
 
@@ -9,7 +9,7 @@ public class CreateEventOutputData {
      * @param isSuccessful Boolean on whether event creation worked
      * @param message Message for success or failure.
      */
-    public CreateEventOutputData(boolean isSuccessful, String message) {
+    public CreateSessionOutputData(boolean isSuccessful, String message) {
         this.isSuccessful = isSuccessful;
         this.message = message;
     }
