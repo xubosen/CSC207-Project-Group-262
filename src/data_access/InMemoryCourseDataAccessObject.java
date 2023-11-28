@@ -12,7 +12,7 @@ public class InMemoryCourseDataAccessObject {
     }
 
     public InMemoryCourseDataAccessObject(HashMap<String, Course> courses) {
-        courses = courses;
+        this.courses = courses;
     }
 
     public void save(Course course) {

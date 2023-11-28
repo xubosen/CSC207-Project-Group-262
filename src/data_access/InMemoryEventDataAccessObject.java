@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.ClassSession;
 import entity.Employee;
 import entity.Event;
 
@@ -8,7 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class InMemoryEventDataAccessObject {
-    private final Map<String, Event> event = new HashMap<String, Event>();
+    private Map<String, Event> event = new HashMap<String, Event>();
+    public InMemoryEventDataAccessObject(HashMap<String, Event> events) {
+        event = events;
+    }
 
     public void save(Event event) {
         this.event.put(event.getEventID(), event);
