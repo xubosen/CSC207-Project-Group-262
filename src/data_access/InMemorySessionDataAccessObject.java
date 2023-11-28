@@ -7,7 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class InMemorySessionDataAccessObject {
-    private final Map<String, ClassSession> session = new HashMap<String, ClassSession>();
+    private HashMap<String, ClassSession> session = new HashMap<String, ClassSession>();
+
+    public InMemorySessionDataAccessObject(HashMap<String, ClassSession> sessions) {
+        session = sessions;
+    }
 
     public void save(ClassSession classSession) {
         this.session.put(classSession.getSessionID(), classSession);

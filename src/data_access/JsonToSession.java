@@ -14,11 +14,26 @@ public class JsonToSession {
     private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
     private InMemoryEventDataAccessObject inMemoryEventDataAccessObject;
     private String jsonString;
+    private JSONObject jsonObject;
     public JsonToSession(String jsonStringSession, InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
                          InMemoryEventDataAccessObject inMemoryEventDataAccessObject) {
         this.jsonString = jsonStringSession;
         this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
         this.inMemoryEventDataAccessObject = inMemoryEventDataAccessObject;
+        this.jsonObject = new JSONObject(jsonString);
+    }
+
+    private ArrayList<String> arrayListFromKey(String key) {
+        // We need to change the location of this due to CleanArchitecture.
+        ArrayList<String> outputList = new ArrayList<>();
+
+        JSONArray jsonArray = (JSONArray) jsonObject.get(key);
+        if (jsonArray != null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                outputList.add(jsonArray.getString(i));
+            }
+        }
+        return outputList;
     }
 
     /**
@@ -29,6 +44,10 @@ public class JsonToSession {
         // TODO: Convert all of the info to the session collection info.
         JSONObject obj = new JSONObject(jsonString);
 
+        // Json to middle data type
+
+        // Pass that into a session factory
+
         // The plan is to store the name description and the date time span into a arrayList
 
         String sessionName = obj.getString("session_name");
@@ -36,25 +55,33 @@ public class JsonToSession {
         String location = obj.getString("location");
         String eventID = obj.getString("event");
 
-        ArrayList<String> listStaff = new ArrayList<String>();
-        JSONArray staffArray = (JSONArray) obj.get("staff");
-        if (staffArray != null) {
-            for (int i = 0; i < staffArray.length(); i++){
-                listStaff.add(staffArray.getString(i));
-            }
-        }
 
-        ArrayList<Object> listTimeSpan = new ArrayList<>();
-        JSONArray timeSpanArray = (JSONArray) obj.get("cal_event");
-        if (timeSpanArray != null) {
-            for (int i = 0; i < timeSpanArray.length(); i++) {
-                listTimeSpan.add(timeSpanArray.getString(i));
-                // TODO Make sure that this can pull the data about start time and end time as a string form
-            }
-        }
+        // These two could be changed to a general arraylist generator and the input parameter is just the
+        // key for that category.
+        ArrayList<String> listStaff = arrayListFromKey("staff");
+//                new ArrayList<String>();
+//        JSONArray staffArray = (JSONArray) obj.get("staff");
+//        if (staffArray != null) {
+//            for (int i = 0; i < staffArray.length(); i++){
+//                listStaff.add(staffArray.getString(i));
+//            }
+//        }
+        // Make this not hardcoded
+        ArrayList<String> listTimeSpan = arrayListFromKey("cal_event");
+//                new ArrayList<>();
+//        JSONArray timeSpanArray = (JSONArray) obj.get("cal_event");
+//        if (timeSpanArray != null) {
+//            for (int i = 0; i < timeSpanArray.length(); i++) {
+//                listTimeSpan.add(timeSpanArray.getString(i));
+//                // TODO Make sure that this can pull the data about start time and end time as a string form
+//            }
+//        }
+
+
         Event event = inMemoryEventDataAccessObject.getEvent(eventID);
 
         // How to convert from string to LocalDateTime
+        // This chunk could be converted to a helper method
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime start = LocalDateTime.parse((CharSequence) listTimeSpan.get(2), formatter);
         LocalDateTime end = LocalDateTime.parse((CharSequence) listTimeSpan.get(3), formatter);
@@ -70,6 +97,8 @@ public class JsonToSession {
 
         ClassSession classSession = new ClassSession(sessionID, sessionName, calendarEvent, location, event);
 
+        // Make empty session as in no staff members
+        // Factory takes in all the pieces of info above and listStaff to create the employee
         for (String staffMember : listStaff) {
             Employee tempEmployee = inMemoryEmployeeDataAccessObject.getByID(staffMember);
             classSession.addStaff(tempEmployee);

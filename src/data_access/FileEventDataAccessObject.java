@@ -10,7 +10,7 @@ import java.util.*;
 
 public class FileEventDataAccessObject {
 
-    public static final HashMap<String, Event> events = new HashMap<>();
+    private static final HashMap<String, Event> events = new HashMap<>();
     public FileEventDataAccessObject(InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
                                       InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject) {
 

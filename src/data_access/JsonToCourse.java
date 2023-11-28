@@ -1,28 +1,30 @@
     package data_access;
 
     import entity.*;
-    import entity.Event;
-    import org.bson.json.JsonObject;
 
     import org.json.JSONObject;
     import org.json.JSONArray;
 
-    import java.awt.*;
     import java.util.ArrayList;
-    import java.util.HashMap;
 
 
     public class JsonToCourse {
         private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
         private String jsonString;
+
+        /**
+         * Initializer for the JsonToCourse file.
+         * @param jsonString The string form of the json file from mongodb
+         * @param inMemoryEmployeeDataAccessObject The in memory DAO required to create staff members
+         */
         public JsonToCourse(String jsonString, InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
             this.jsonString = jsonString;
             this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
         }
 
         /**
-         *
-         * @return
+         * Converts the Json String to an instance of a course.
+         * @return The course from the course collection.
          */
         public Course convert() {
             JSONObject obj = new JSONObject(jsonString);
@@ -59,41 +61,4 @@
             // Could potentially use course factory if we can recreate the arraylist into Hashmap but this is probably
             // better because it will have each instance of employee have their corresponding Courses listed underneath.
         }
-
-    //    public static void main(String[] args) {
-    //        HashMap<String, Course> courseHashMap = new HashMap<String, Course>();
-    //        HashMap<String, ClassSession> classSessionHashMap = new HashMap<String, ClassSession>();
-    //
-    //        JSONObject obj = new JSONObject("{\"_id\": {\"$oid\": \"6557dd0d9a2a09870f0db0e8\"}, " +
-    //                "\"userID\": \"phanale4\", \"password\": \"123\", \"name\": \"Alexander Phan\", " +
-    //                "\"email\": \"alexanderphan@mail.utoronto.ca\", " +
-    //                "\"courses\": [{\"CSC207\":csc207,\"CSC236\":csc236}], \"sessions\": []}" +
-    //                "\"role\": \"entity TeachingAssistant\"");
-    //
-    //        String userID = obj.getString("userID");
-    //        String password = obj.getString("password");
-    //        String name = obj.getString("name");
-    //        String email = obj.getString("email");
-    //        String employeeType = obj.getString("role");
-    //
-    //        EmployeeFactory employeeFactory = new EmployeeFactory();
-    //        Employee employee = employeeFactory.create(userID, name, email, password, classSessionHashMap,
-    //                courseHashMap, employeeType);
-
-    //        String courses = obj.getJSONArray("courses").toString().replace("\"", "");
-    //        String sessions = obj.getJSONArray("sessions").toString().replace("\"", "");
-    //
-    //        String coursesCut = courses.substring(2, courses.length() - 2);
-    //        String sessionCut = courses.substring(2, courses.length() - 2);
-    //
-    //        // When you add employee to course, it will add course to employee
-    //
-    //        String[] pairs = coursesCut.split(",");
-    //        for (int i = 0; i < pairs.length; i++) {
-    //            String pair = pairs[i];
-    //            String[] keyValue = pair.split(":");
-    //            courseHashMap.put(keyValue[0], null);
-    //        }
-
-    //        System.out.println(coursesCut);
     }

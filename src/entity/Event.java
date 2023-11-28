@@ -11,16 +11,16 @@ public abstract class Event {
     private String name;
     private String eventID;
     private Course course;
-    private HashMap<String, ClassSession> mySessions  = new HashMap<String, ClassSession>();
+    private HashMap<String, ClassSession> mySessions = new HashMap<String, ClassSession>();
     private HashMap<String, Employee> staff = new HashMap<String, Employee>();
 
     /**
      * Constructs a new Event object with the given name, event ID, and course. Adds the event to the course when
      * initializing
      *
-     * @param name     The name of the event.
-     * @param eventID  The unique identifier for the event.
-     * @param course   The course associated with the event.
+     * @param name    The name of the event.
+     * @param eventID The unique identifier for the event.
+     * @param course  The course associated with the event.
      */
     public Event(String name, String eventID, Course course) {
         this.name = name;
@@ -58,7 +58,7 @@ public abstract class Event {
 
     /**
      * Add an employee to the event's staff.
-     *
+     * <p>
      * Representational Invariant:
      * The employee must be in the course this event is in.
      *
@@ -138,6 +138,7 @@ public abstract class Event {
 
     /**
      * Return whether the event contains the session
+     *
      * @param session
      * @return true if the event contains the session, false otherwise
      */
@@ -166,6 +167,7 @@ public abstract class Event {
 
     /**
      * Checks if the given session clashes with any of the sessions in the event.
+     *
      * @param session
      * @return true if the session clashes with any of the sessions in the event, false otherwise
      */
@@ -191,5 +193,9 @@ public abstract class Event {
         for (ClassSession session : mySessions.values()) {
             session.delete();
         }
+    }
+
+    public HashMap<String, ClassSession> getSessions () {
+        return mySessions;
     }
 }

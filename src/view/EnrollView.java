@@ -17,6 +17,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+// What is mySessionsViewName for?
 public class EnrollView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "enroll";
     private EnrollViewModel enrollViewModel;

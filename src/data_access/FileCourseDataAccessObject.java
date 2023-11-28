@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class FileCourseDataAccessObject {
 
-    public static final HashMap<String, Course> courses = new HashMap<>();
+    private static final HashMap<String, Course> courses = new HashMap<>();
 
     /**
      * Constructs a new file course DAO using information inside the inMemoryEmployeeDataAccessObject and the course

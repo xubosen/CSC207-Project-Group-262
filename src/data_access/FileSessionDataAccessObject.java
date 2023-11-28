@@ -14,7 +14,7 @@ import java.util.Map;
 
 // TODO: implement an interface in between so I can follow Clean Architecture
 public class FileSessionDataAccessObject {
-    public static final HashMap<String, ClassSession> sessions = new HashMap<>();
+    private static final HashMap<String, ClassSession> sessions = new HashMap<>();
     public FileSessionDataAccessObject(InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
                                        InMemoryEventDataAccessObject inMemoryEventDataAccessObject) {
 

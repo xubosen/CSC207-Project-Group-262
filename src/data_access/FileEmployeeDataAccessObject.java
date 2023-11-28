@@ -17,35 +17,37 @@ import java.util.*;
 public class FileEmployeeDataAccessObject {
     private final File databaseFiles;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
-    public final HashMap<String, Employee> accounts = new HashMap<>();
+    private final HashMap<String, Employee> accounts = new HashMap<>();
 
+    /**
+     * Initializer for the EmployeeDAO
+     * @param databasePath
+     * @throws IOException
+     */
     public FileEmployeeDataAccessObject(String databasePath) throws IOException {
+        // TODO: Need to figure out how to convert this to clean Architecture.
         this.databaseFiles = new File(databasePath);
 
-//        databaseFiles = new File(databasePath);
-//        headers.put("databaseLink", 0);
-//
-//        try (BufferedReader reader = new BufferedReader(new FileReader(databaseFiles))) {
-//            String header = reader.readLine();
-//
-//            assert header.equals("databaseLink");
-//            String row;
-//            while ((row = reader.readLine()) != null) {
-//                String[] col = row.split(",");
-//                String uri = String.valueOf(col[headers.get("databaseLink")]);
-//            }
-//        }
+        headers.put("databaseLink", 0);
+        headers.put("databaseName", 1);
+        headers.put("collectionName", 2);
 
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("employees");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // find code goes here
             MongoCursor<Document> cursor = collection.find().iterator();
 
             // iterate code goes here
+            // So this would be the part that we would convert to an interactor that creates the employee entities
+            // and put it into accounts.
             try {
                 while (cursor.hasNext()) {
                     String employeeInJsonForm = cursor.next().toJson();
@@ -57,6 +59,25 @@ public class FileEmployeeDataAccessObject {
                 cursor.close();
             }
         }
+    }
+
+    private ArrayList<String> getURIAndDBNames() throws IOException {
+
+        ArrayList<String> uriAndNames = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(databaseFiles))) {
+            String header = reader.readLine();
+
+            assert header.equals("databaseLink,databaseName,collectionName");
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] col = row.split(",");
+                uriAndNames.add(String.valueOf(col[headers.get("databaseLink")]));
+                uriAndNames.add(String.valueOf(col[headers.get("databaseName")]));
+                uriAndNames.add(String.valueOf(col[headers.get("collectionName")]));
+            }
+        }
+        return uriAndNames;
     }
 
 
