@@ -96,8 +96,8 @@ public class FileSessionDataAccessObject {
                 dateList.add(session.toCalendarEvent().getDateTimeSpan().getEnd().toString());
 
                 Document eventDoc = new Document("sessionID", session.getSessionID()).
-                        append("name", session.getName()).append("cal_event", dateList).
-                        append("staff", staffList).append("Location", session.getLocation()).
+                        append("session_name", session.getName()).append("cal_event", dateList).
+                        append("staff", staffList).append("location", session.getLocation()).
                         append("eventID", session.getEvent().getEventID());
 
                 // This adds the employee information to the mongodb
@@ -107,6 +107,7 @@ public class FileSessionDataAccessObject {
 
             // Need to not use insertMany because it can create duplicate entries within mongodb.
             // Could search using userID and delete past data before inserting the new data.
+            collection.deleteMany(new Document()); // Replaces all of the collection with nothing
             collection.insertMany(documents);
         }
     }

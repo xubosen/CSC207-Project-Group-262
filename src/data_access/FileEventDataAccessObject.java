@@ -105,6 +105,7 @@ public class FileEventDataAccessObject {
 
             // Need to not use insertMany because it can create duplicate entries within mongodb.
             // Could search using userID and delete past data before inserting the new data.
+            collection.deleteMany(new Document()); // Replaces all of the collection with nothing
             collection.insertMany(documents);
         }
     }

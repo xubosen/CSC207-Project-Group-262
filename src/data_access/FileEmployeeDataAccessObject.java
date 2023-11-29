@@ -93,7 +93,7 @@ public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface
         }
     }
 
-    public Employee get(String userID) {
+    public Employee findByID(String userID) {
         return accounts.get(userID);
     }
 
