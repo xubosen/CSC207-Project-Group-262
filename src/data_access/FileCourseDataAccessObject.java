@@ -27,6 +27,7 @@ public class FileCourseDataAccessObject {
      * Constructs a new file course DAO using information inside the inMemoryEmployeeDataAccessObject and the course
      * collection on mongodb.
      * @param inMemoryEmployeeDataAccessObject the DAO that we will pull from to generate the courses with their staff
+     * @param databasePath The file path containing the database link, name and collection name.
      */
     public FileCourseDataAccessObject(String databasePath,
                                       InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) throws IOException {
@@ -114,8 +115,8 @@ public class FileCourseDataAccessObject {
                 }
 
                 Document courseDoc = new Document("course_name", course.getName()).
-                        append("course_code", course.getCourseCode()).append("Staff", staffList).
-                        append("events", course.getEvents()).append("course_admin", course.getAdmin().getUID());
+                        append("course_code", course.getCourseCode()).append("staff", staffList).
+                        append("events", course.getEvents()).append("admin", course.getAdmin().getUID());
 
                 // This adds the employee information to the mongodb
                 documents.add(courseDoc);

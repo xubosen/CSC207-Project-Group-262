@@ -4,6 +4,7 @@
 
     import org.json.JSONObject;
     import org.json.JSONArray;
+    import org.json.JSONString;
 
     import java.util.ArrayList;
 
@@ -14,6 +15,7 @@
         private String adminSearch = "admin";
         private String staffSearch = "staff";
         private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
+        private String jsonString;
         private JSONObject jsonObject;
 
         /**
@@ -23,7 +25,7 @@
          */
         public JsonToCourse(String jsonString, InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
             this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
-            this.jsonObject = new JSONObject(jsonString);
+            this.jsonString = jsonString;
         }
 
         /**
@@ -31,6 +33,8 @@
          * @return The course from the course collection.
          */
         public Course convert() {
+            jsonObject = new JSONObject(jsonString);
+
             String courseName = jsonObject.getString(courseNameSearch);
             String courseCode = jsonObject.getString(courseCodeSearch);
             String admin = jsonObject.getString(adminSearch);
