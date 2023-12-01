@@ -1,12 +1,15 @@
 package interface_adapter;
 
-public class UserState {
+import java.beans.PropertyChangeSupport;
+public class UserState{
     private String userID;
     private String userType;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public UserState(String userID, String userType) {
         this.userID = userID;
         this.userType = userType;
+
     }
 
     public String getUserID() {

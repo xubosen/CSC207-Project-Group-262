@@ -6,6 +6,9 @@ public class LoginState {
     private String password = "";
     private String passwordError = null;
     private boolean loginSuccessful = false;
+
+    private String type = "";
+
     private String loginError = null;
 
     public LoginState(LoginState copy) {
@@ -15,6 +18,7 @@ public class LoginState {
         passwordError = copy.passwordError;
         loginSuccessful = copy.loginSuccessful;
         loginError = copy.loginError;
+        type = copy.getType();
     }
 
     public LoginState() {}
@@ -29,4 +33,6 @@ public class LoginState {
     public void setPassword(String password) { this.password = password; }
     public void setLoginSuccessful(boolean loginSuccessful) { this.loginSuccessful = loginSuccessful; }
     public void setLoginError(String loginError) { this.loginError = loginError; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 }

@@ -12,7 +12,6 @@ public class InviteToSessionPresenter implements InviteToSessionOutputBoundary {
     }
 
     public void prepareView(InviteToSessionOutputData outputData) {
-        System.out.println(outputData.getMessage());
         InviteToSessionState curState = inviteToSessionViewModel.getState();
         curState.setInviteSuccessful(outputData.isSuccessful());
         curState.setInviteResponseMessage(outputData.getMessage());

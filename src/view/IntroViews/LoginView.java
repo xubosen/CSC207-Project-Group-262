@@ -201,15 +201,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
 
-    /**
-     * Closes the window that contains this panel.
-     */
-    private void closeWindow() {
-        Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.dispose();
-        }
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -218,6 +209,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         // Check if login was successful
         if (state.isLoginSuccessful()) {
             // Switch to the dashboard view on successful login
+            curUserState.setUserID(state.getUsername());
+            curUserState.setUserType(state.getType());
             viewManagerModel.setActiveView(dashboardViewName);
             viewManagerModel.firePropertyChanged();
             state.setLoginSuccessful(false);

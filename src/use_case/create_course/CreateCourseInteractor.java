@@ -7,7 +7,6 @@ import entity.Employee;
 import entity.Instructor;
 
 public class CreateCourseInteractor implements CreateCourseInputBoundary {
-    // TODO: Might be completed, need to test
     private CreateCourseOutputBoundary createCoursePresenter;
     private InMemoryCourseDataAccessObject coursesDAO;
     private InMemoryEmployeeDataAccessObject employeesDAO;
@@ -42,7 +41,6 @@ public class CreateCourseInteractor implements CreateCourseInputBoundary {
             output = new CreateCourseOutputData(false, "User is not an Instructor");
         } else {
             // Try to create the new course from the input
-            // TODO: Make sure the Employee is Instructor.
             Instructor admin = (Instructor) getEmployeeFromInputData(inputData);
             coursesDAO.addCourse(new Course(inputData.getCourseName(), inputData.getCourseCode(), admin));
 

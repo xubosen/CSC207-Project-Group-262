@@ -5,11 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
 
-public class DashboardView extends JPanel implements ActionListener {
+public class DashboardView extends JPanel implements ActionListener{
 
     public final String viewName = "dashboard";
 
@@ -50,7 +52,7 @@ public class DashboardView extends JPanel implements ActionListener {
         // Create welcome label panel and set preferred size
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
-        welcomeLabel = new JLabel("Welcome, Simon Xu", JLabel.CENTER);
+        welcomeLabel = new JLabel("Welcome", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcomePanel.add(welcomeLabel);

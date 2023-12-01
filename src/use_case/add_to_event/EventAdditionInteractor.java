@@ -33,10 +33,7 @@ public class EventAdditionInteractor implements EventAdditionInputBoundary {
             output = new EventAdditionOutputData(false, "Event does not exist");
         }
 
-        // TODO If the employee is not currently added to the course, return false and a corresponding message in output data
-
-        // If the employee exists, the event exists and the employee is in the course, try to add the employee to the event
-
+        // If the employee exists, the event exists and the employee is in the course, try to add the employee
         else {
             Employee curEmployee = getEmployeeFromInputData(inputData);
             Event curEvent = getEventFromInputData(inputData);

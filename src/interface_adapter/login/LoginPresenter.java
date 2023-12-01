@@ -14,6 +14,7 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     public void prepareSuccessView(LoginOutputData response) {
         LoginState loginState = loginViewModel.getState();
+        loginState.setType(response.getType());
         loginState.setLoginSuccessful(response.isLoginSuccessful());
         loginViewModel.firePropertyChanged();
     }

@@ -12,6 +12,9 @@ import interface_adapter.create_course.*;
 import interface_adapter.create_event.*;
 import interface_adapter.create_session.*;
 import interface_adapter.enroll.*;
+import interface_adapter.get_courses.GetCoursesController;
+import interface_adapter.get_courses.GetCoursesPresenter;
+import interface_adapter.get_courses.GetCoursesViewModel;
 import interface_adapter.invite_to_session.*;
 import interface_adapter.login.*;
 import interface_adapter.remove_from_course.*;
@@ -25,6 +28,7 @@ import use_case.create_course.CreateCourseInteractor;
 import use_case.create_event.CreateEventInteractor;
 import use_case.create_session.CreateSessionInteractor;
 import use_case.enroll.EnrollInteractor;
+import use_case.get_courses.GetCoursesInteractor;
 import use_case.invite_to_session.InviteToSessionInteractor;
 import use_case.log_in.LoginInteractor;
 import use_case.remove_from_course.RemoveFromCourseInteractor;
@@ -75,7 +79,7 @@ public class Main {
         initializeApplication();
 
         // Log In
-        curUserState = new UserState("simon", "instructor");
+        curUserState = new UserState("","");
 
         // Instantiate Views
         String initialViewName = initializeViews(sessionDAO, employeeDAO, courseDAO, eventDAO);
@@ -133,6 +137,7 @@ public class Main {
     }
 
     private static void readFromDataAccess() {
+        // TODO: Change this to read from mongodb
         dataAccess = new HardCodedDAO();
     }
 
@@ -157,7 +162,7 @@ public class Main {
 
 
         // Instantiate MyCoursesView
-        MyCoursesViewInstructor myCoursesViewAdmin = new MyCoursesViewInstructor(viewManagerModel);
+        MyCoursesViewInstructor myCoursesViewAdmin = InstantiateMyCoursesInsView(employeeDAO);
         addView(myCoursesViewAdmin, myCoursesViewAdmin.viewName);
 
         MyCoursesViewTA myCoursesViewTA = new MyCoursesViewTA(viewManagerModel);
@@ -270,6 +275,16 @@ public class Main {
         SignUpController signUpController = new SignUpController(signUpInteractor);
         SignUpView signUpView = new SignUpView(signUpController, signUpViewModel, viewManagerModel);
         return signUpView;
+    }
+
+    private static MyCoursesViewInstructor InstantiateMyCoursesInsView(InMemoryEmployeeDataAccessObject employeeDAO) {
+        GetCoursesViewModel getCoursesViewModel = new GetCoursesViewModel();
+        GetCoursesPresenter getCoursesPresenter = new GetCoursesPresenter(getCoursesViewModel);
+        GetCoursesInteractor getCoursesInteractor = new GetCoursesInteractor(getCoursesPresenter, employeeDAO);
+        GetCoursesController getCoursesController = new GetCoursesController(getCoursesInteractor);
+        MyCoursesViewInstructor myCoursesViewInstructor = new MyCoursesViewInstructor(viewManagerModel,
+                getCoursesController, getCoursesViewModel, curUserState);
+        return myCoursesViewInstructor;
     }
 
     private static EnrollView instantiateEnrollUseCase(InMemoryEmployeeDataAccessObject employeeDAO,

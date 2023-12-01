@@ -23,7 +23,7 @@ public class LoginInteractor implements LoginInputBoundary {
         } else if (!passwordCorrect(username, password)) {
             loginPresenter.prepareFailView("Incorrect password.");
         } else {
-            LoginOutputData loginOutputData = new LoginOutputData(username, true);
+            LoginOutputData loginOutputData = new LoginOutputData(username, getType(username), true);
             loginPresenter.prepareSuccessView(loginOutputData);
         }
     }
@@ -31,5 +31,9 @@ public class LoginInteractor implements LoginInputBoundary {
     private boolean passwordCorrect(String username, String password) {
         Employee employee = employeeDAO.getByID(username);
         return employee.getPassword().equals(password);
+    }
+
+    private String getType(String username) {
+        return employeeDAO.getByID(username).getType();
     }
 }

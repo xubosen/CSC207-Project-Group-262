@@ -1,25 +1,39 @@
 package view.CourseViews;
 
+import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.get_courses.GetCoursesController;
+import interface_adapter.get_courses.GetCoursesState;
+import interface_adapter.get_courses.GetCoursesViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
-
-// TODO: Need to change this to not have a hard coded csc207 button and instead pull from the employees courses.
-public class MyCoursesViewInstructor extends JPanel implements ActionListener {
+public class MyCoursesViewInstructor extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "my courses instructor view";
+
+    // Variables for Functionality
     private final ViewManagerModel viewManagerModel;
+    private GetCoursesController getCoursesController;
+    private GetCoursesViewModel getCoursesViewModel;
+    private UserState userState;
+    private ArrayList<String> courses = new ArrayList<>();
+
+
 
     // Variables for UI elements
     private final JButton createCoursesButton = new JButton("Create Course");
 
     private final JButton inviteToCourseButton = new JButton("Invite to Course");
     private final JButton removeFromCourseButton = new JButton("Remove from Course");
+    private final JButton refreshButton = new JButton("Refresh");
     private final JButton backButton = new JButton("Back");
-    private final JButton csc207Button = new JButton("CSC207");
+
 
     // Variables for linking to other views
     private String dashboardViewName;
@@ -29,15 +43,20 @@ public class MyCoursesViewInstructor extends JPanel implements ActionListener {
 
 
 
-    public MyCoursesViewInstructor(ViewManagerModel viewManagerModel) {
+    public MyCoursesViewInstructor(ViewManagerModel viewManagerModel, GetCoursesController getCoursesController,
+                                   GetCoursesViewModel getCoursesViewModel, UserState userState) {
         this.viewManagerModel = viewManagerModel;
+        this.getCoursesController = getCoursesController;
+        this.getCoursesViewModel = getCoursesViewModel;
+        this.getCoursesViewModel.addPropertyChangeListener(this);
+
+        this.userState = userState;
+
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);
-        makeCreateCourseButton(gbc);
-        makeInviteToCourseButton(gbc);
-        makeRemoveFromCourseButton(gbc);
-        makeBackButton(gbc);
-        makeCourseButtons(gbc);
+        makeHeaderButtons(gbc);
+
+        makeCourseList(gbc);
     }
 
     private GridBagConstraints formatScreenLayout() {
@@ -50,76 +69,67 @@ public class MyCoursesViewInstructor extends JPanel implements ActionListener {
     private void makeHeading(GridBagConstraints gbc) {
         JLabel headingLabel = new JLabel("My Courses", SwingConstants.CENTER);
         headingLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Set the font for the heading
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 0; // Align to the first row
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         gbc.gridwidth = GridBagConstraints.REMAINDER; // Span across all columns
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
         add(headingLabel, gbc);
     }
 
-    private void makeCreateCourseButton(GridBagConstraints gbc) {
-        createCoursesButton.setFont(new Font("Arial", Font.PLAIN, 20)); // Set the font for the button
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 1; // Align to the second row
-        gbc.weightx = 1; // Take up all horizontal space
+    private void makeHeaderButtons(GridBagConstraints gbc) {
+        JPanel buttonPanel = new JPanel();
+
+        formatButton(createCoursesButton);
+        formatButton(inviteToCourseButton);
+        formatButton(removeFromCourseButton);
+        formatButton(refreshButton);
+        formatButton(backButton);
+
+        buttonPanel.add(createCoursesButton);
+        buttonPanel.add(inviteToCourseButton);
+        buttonPanel.add(removeFromCourseButton);
+        buttonPanel.add(refreshButton);
+        buttonPanel.add(backButton);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = GridBagConstraints.REMAINDER; // Span across all columns
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
-        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
-        // Increase the button height
-        createCoursesButton.setPreferredSize(new Dimension(createCoursesButton.getPreferredSize().width, 100));
-        add(createCoursesButton, gbc);
-        createCoursesButton.addActionListener(this);
+        add(buttonPanel, gbc);
     }
 
-    private void makeInviteToCourseButton(GridBagConstraints gbc) {
-        inviteToCourseButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 2; // Align to the third row
-        gbc.weightx = 1; // Take up all horizontal space
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
-        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
-        // Increase the button height
-        inviteToCourseButton.setPreferredSize(new Dimension(inviteToCourseButton.getPreferredSize().width, 100));
-        add(inviteToCourseButton, gbc);
-        inviteToCourseButton.addActionListener(this);
+    private void formatButton(JButton button) {
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50));
+        button.addActionListener(this);
     }
 
-    private void makeRemoveFromCourseButton(GridBagConstraints gbc) {
-        removeFromCourseButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 3; // Align to the third row
-        gbc.weightx = 1; // Take up all horizontal space
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
-        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
-        // Increase the button height
-        removeFromCourseButton.setPreferredSize(new Dimension(removeFromCourseButton.getPreferredSize().width, 100));
-        add(removeFromCourseButton, gbc);
-        removeFromCourseButton.addActionListener(this);
-    }
+    private void makeCourseList(GridBagConstraints gbc) {
+        // Set position on page
+        gbc.gridx = 0;
+        gbc.gridy = 2;
 
-    private void makeBackButton(GridBagConstraints gbc) {
-        backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 4; // Align to the fourth row
-        gbc.weightx = 1; // Take up all horizontal space
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
-        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
-        // Increase the button height
-        backButton.setPreferredSize(new Dimension(backButton.getPreferredSize().width, 100));
-        add(backButton, gbc);
-        backButton.addActionListener(this);
-    }
+        // Fill remaining page space
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
 
-    private void makeCourseButtons(GridBagConstraints gbc) {
-        csc207Button.setFont(new Font("Arial", Font.PLAIN, 20)); // Set the font for the button
-        gbc.gridx = 0; // Align to the first column
-        gbc.gridy = 5; // Align to the fifth row
-        gbc.weightx = 1; // Take up all horizontal space
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill the horizontal space
-        gbc.insets = new Insets(10, 0, 0, 0); // Top padding
-        // Increase the button height
-        csc207Button.setPreferredSize(new Dimension(csc207Button.getPreferredSize().width, 100));
-        add(csc207Button, gbc);
-        csc207Button.addActionListener(this);
+        JPanel scrollPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcScroll = new GridBagConstraints();
+        gbcScroll.weightx = 1;
+        gbcScroll.fill = GridBagConstraints.HORIZONTAL;
+        gbcScroll.gridwidth = GridBagConstraints.REMAINDER;
+
+        JScrollPane labelsScroll = new JScrollPane(scrollPanel);
+
+        JButton courseButton;
+        for (String courseID : courses) {
+            courseButton = new JButton(courseID);
+            formatButton(courseButton);
+            scrollPanel.add(courseButton, gbcScroll);
+        }
+
+        add(labelsScroll, gbc);
     }
 
     @Override
@@ -136,6 +146,8 @@ public class MyCoursesViewInstructor extends JPanel implements ActionListener {
         } else if (e.getSource() == removeFromCourseButton) {
             viewManagerModel.setActiveView(removeFromCourseViewName);
             viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == refreshButton) {
+            getCoursesController.getCourses(userState.getUserID());
         }
     }
 
@@ -145,5 +157,19 @@ public class MyCoursesViewInstructor extends JPanel implements ActionListener {
         this.createCourseViewName = createCourseViewName;
         this.removeFromCourseViewName = removeFromCourseViewName;
         this.inviteToCourseViewName = inviteToCourseViewName;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+        GetCoursesState curState = getCoursesViewModel.getState();
+        courses = curState.getCourses();
+
+        removeAll();
+        GridBagConstraints gbc = formatScreenLayout();
+        makeHeading(gbc);
+        makeHeaderButtons(gbc);
+        makeCourseList(gbc);
+        revalidate();
+        repaint();
     }
 }
