@@ -3,6 +3,8 @@ package interface_adapter.create_session;
 import use_case.create_session.CreateSessionInputBoundary;
 import use_case.create_session.CreateSessionInputData;
 
+import java.time.LocalDateTime;
+
 public class CreateSessionController {
     private CreateSessionInputBoundary createSessionInteractor;
 
@@ -16,15 +18,18 @@ public class CreateSessionController {
 
     /**
      * Creates input data after taking inputs eventName and eventID.
-     * @param sessionName The created course's code
      * @param sessionID The created course's name
-//     * @param eventID The Events's code that this is creating a session on
+     * @param sessionName The created course's code
+     * @param description The created course's description
+     * @param location The created course's location
+     * @param startTime The created course's start time
+     * @param endTime The created course's end time
+     * @param eventID The event code that the session is being created in
      */
-    public void createSession(String sessionName, String sessionID) {
-        // To create session we need sessionID, sessionName, calEvent (start and end time as well as description and name), event, location
-        // May or may not need employee parameter, it should be logged in state thing.
-        // The adminID might not be required because it would just check logged in state potentially.
-        CreateSessionInputData inputData = new CreateSessionInputData(eventName, eventID); // previous event clicked on
+    public void createSession(String sessionID, String sessionName, String description, String location,
+                              LocalDateTime startTime, LocalDateTime endTime, String eventID) {
+        CreateSessionInputData inputData = new CreateSessionInputData(sessionID, sessionName, description, location,
+                startTime, endTime, eventID);
         createSessionInteractor.createSession(inputData);
     }
 }

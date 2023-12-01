@@ -1,54 +1,54 @@
 package use_case.create_session;
 
+import entity.DateTimeSpan;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class CreateSessionInputData {
-    private String eventName;
-    private String eventID;
-    private String typeOfEvent;
+    private String sessionID;
+    private String sessionName;
+    private String description;
+    private String location;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String parentEventID;
 
-    // Needs to know what course it belongs to by getting previous course button page.
-    // TODO: When you create a Event do you become a staff member or is it empty. Same for Sessions
 
-    /**
-     * Initializer of the input data that the user will create when attempting to create session.
-     * @param sessionName
-     * @param sessionID
-     * @param startTime
-     * @param endTime
-     * @param calEventDescriptor
-     * @param calEventName
-     * @param location
-     * @param eventID
-     */
-    public CreateSessionInputData(String sessionName, String sessionID, String startTime, String endTime,
-                                  String calEventDescriptor, String calEventName, String location, String eventID) {
-        // adminID might just pull logged in state
-        this.eventName = eventName;
-        this.eventID = eventID;
-        this.typeOfEvent = typeOfEvent;
+    public CreateSessionInputData(String sessionID, String sessionName, String description, String location,
+                                  LocalDateTime startTime, LocalDateTime endTime, String parentEventID) {
+        this.sessionID = sessionID;
+        this.sessionName = sessionName;
+        this.description = description;
+        this.location = location;
+
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        this.parentEventID = parentEventID;
     }
 
-    /**
-     * Getter for event name
-     * @return event name
-     */
-    public String getEventName() {
-        return eventName;
+    public String getSessionName() {
+        return sessionName;
     }
 
-    /**
-     * Getter for event ID
-     * @return eventID
-     */
-    public String getEventID() {
-        return eventID;
+    public String getSessionID() {
+        return sessionID;
     }
 
-    /**
-     * Getter for event type
-     * @return whether it is a tutorial or event
-     */
-    public String getTypeOfEvent() {
-        return typeOfEvent;
+    public String getDescription() {
+        return description;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public DateTimeSpan getDateTimeSpan() {
+        return new DateTimeSpan(startTime, endTime);
+    }
+
+    public String getParentEventID() {
+        return parentEventID;
+    }
 }

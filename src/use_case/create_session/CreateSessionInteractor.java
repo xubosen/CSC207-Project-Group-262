@@ -1,69 +1,68 @@
 package use_case.create_session;
 
-import data_access.InMemoryEmployeeDataAccessObject;
-import data_access.InMemoryEventDataAccessObject;
-import data_access.InMemorySessionDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import data_access.in_memory_dao.InMemorySessionDataAccessObject;
+import entity.CalendarEvent;
+import entity.ClassSession;
+import entity.DateTimeSpan;
+import entity.Event;
 
 public class CreateSessionInteractor implements CreateSessionInputBoundary {
-    // TODO: Might be completed, need to test
     private CreateSessionOutputBoundary createSessionPresenter;
     private InMemoryEventDataAccessObject eventsDAO;
-    private InMemoryEmployeeDataAccessObject employeesDAO;
     private InMemorySessionDataAccessObject sessionsDAO;
 
     /**
      * Initializes the event creator interactor.
      * @param createSessionPresenter Create Session output boundary.
-     * @param employeesDAO The in memory DAO for Employees We might not need this because it might create an empty event.
      * @param eventsDAO The In memory DAO for events
-//     * @param coursesDAO The in memory DAO for courses Maybe need this because we need to check which Course it belongs to
+     * @param sessionsDAO The In memory DAO for sessions
      */
-    public CreateSessionInteractor(CreateSessionOutputBoundary createSessionPresenter, InMemoryEmployeeDataAccessObject employeesDAO,
-                                   InMemoryEventDataAccessObject eventsDAO) {
+    public CreateSessionInteractor(CreateSessionOutputBoundary createSessionPresenter,
+                                   InMemoryEventDataAccessObject eventsDAO,
+                                   InMemorySessionDataAccessObject sessionsDAO) {
         this.createSessionPresenter = createSessionPresenter;
-        this.employeesDAO = employeesDAO;
         this.eventsDAO = eventsDAO;
+        this.sessionsDAO = sessionsDAO;
     }
 
     /**
      * Tries to create the course, creates output data to input into our presenter
      * @param inputData
      */
-    public void createEvent(CreateSessionInputData inputData) {
+    public void createSession(CreateSessionInputData inputData) {
         CreateSessionOutputData output;
 
-        // If the event already exists return false and the corresponding message in output data
-        if (!doesEventExist(inputData)) {
-            output = new CreateSessionOutputData(false, "Event already exists.");
-        } else if (!isInstructor(inputData)) {
-            // Might not need this error message because this view shouldn't be available to those who are not instructors.
-            output = new CreateSessionOutputData(false, "User is not an Instructor");
+        // If the session already exists return false and the corresponding message in output data
+        if (!doesSessionExist(inputData)) {
+            output = new CreateSessionOutputData(false, "Session already exists.");
         } else {
-            // Try to create the new course from the input
-            // TODO: Figure out how to pull most recent button clicked.
-//            Course course = courseDAO.getCourse("CourseID of most recent button press.");
-//            eventsDAO.addEvent(new Event(inputData.getEventName(), inputData.getEventID(), course));
-
-            output = new CreateSessionOutputData(true, "event created successfully");
+            // Create the session
+            ClassSession newSession = makeSession(inputData);
+            sessionsDAO.save(newSession);
+            output = new CreateSessionOutputData(true, "Session created successfully");
         }
 
         // Call the presenter to present the output data
         createSessionPresenter.prepareView(output);
     }
 
-
-    private boolean isInstructor(CreateSessionInputData inputData) {
-        // TODO: Is this available to instructors as well.
-//        return employeesDAO.getByID(inputData.getCurrentUserUsingProgram.getClass().equals(Instructor.class));
-        return false;
-//        return employeesDAO.getByID(inputData.getAdminID()).getClass().equals(Instructor.class);
+    private boolean doesSessionExist(CreateSessionInputData inputData) {
+        return sessionsDAO.existsByID(inputData.getSessionID());
     }
 
-//    private Employee getEmployeeFromInputData(CreateCourseInputData inputData) {
-//        return employeesDAO.getByID(inputData.getAdminID());
-//    }
+    private ClassSession makeSession(CreateSessionInputData inputData) {
+        String sessionID = inputData.getSessionID();
+        String sessionName = inputData.getSessionName();
+        String description = inputData.getDescription();
+        String location = inputData.getLocation();
+        String parentEventID = inputData.getParentEventID();
+        DateTimeSpan dateTimeSpan = inputData.getDateTimeSpan();
 
-    private boolean doesSessionExist(CreateSessionInputData inputData) {
-        return sessionsDAO.existsByID(inputData.getEventID());
+        CalendarEvent calEvent = new CalendarEvent(sessionName, description, dateTimeSpan);
+        Event parentEvent = eventsDAO.getByID(parentEventID);
+        ClassSession session = new ClassSession(sessionID, sessionName, calEvent, location, parentEvent);
+        return session;
     }
 }
