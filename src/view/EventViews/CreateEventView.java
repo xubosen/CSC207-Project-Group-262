@@ -1,9 +1,10 @@
-package view;
+package view.EventViews;
 
 import interface_adapter.create_event.CreateEventController;
 import interface_adapter.create_event.CreateEventState;
 import interface_adapter.create_event.CreateEventViewModel;
 import interface_adapter.ViewManagerModel;
+import view.IntroView.LabelTextPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,26 +18,26 @@ import java.beans.PropertyChangeListener;
 
 public class CreateEventView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "create event view";
+
+    // Variables for Functionality
     private CreateEventViewModel createEventViewModel;
     private ViewManagerModel viewManagerModel;
-    private String myEventsViewName = "my events view";
     private CreateEventController createEventController;
-//    private String eventToCreate = ""; Unecessary until we save it to database
+
 
     // Variables for setting up UI
     private JButton createNewEvent;
     private JButton close;
     private final String HEADING_TEXT = "Create Event";
-//    private final String INPUT_FIELD_LABEL = ""; This might useful to indicate what to put inside the object.
     private String error_message = "";
     private JTextField eventNameTextField = new JTextField(10);
     private JTextField eventIDTextField = new JTextField(10);
     private JTextField typeOfEventTextField = new JTextField(10);
     private JTextField courseCodeTextField = new JTextField(10);
-    // TODO: Need to include location still and also is there any way to have the left
-    //  side of the text box tell you what to put in
-
     private JLabel errorDisplayField = new JLabel(error_message);
+
+    // Variables for linking to other views
+    private String myEventsViewName;
 
     /**
      * Initializer for the little panel that pops up when you click create event in the myCoursesView.
@@ -67,10 +68,10 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(eventNameTextField);
-        mainPanel.add(eventIDTextField);
-        mainPanel.add(typeOfEventTextField);
-        mainPanel.add(courseCodeTextField);
+
+        JPanel inputFields = setUpInputFields();
+        mainPanel.add(inputFields);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -88,6 +89,33 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel setUpInputFields() {
+        JPanel inputFieldPanel = new JPanel();
+        inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel, BoxLayout.Y_AXIS));
+
+        JPanel eventNamePanel = new JPanel();
+        eventNamePanel.add(new JLabel("Event Name:"));
+        eventNamePanel.add(eventNameTextField);
+        inputFieldPanel.add(eventNamePanel);
+
+        JPanel eventIDPanel = new JPanel();
+        eventIDPanel.add(new JLabel("Event ID:"));
+        eventIDPanel.add(eventIDTextField);
+        inputFieldPanel.add(eventIDPanel);
+
+        JPanel typeOfEventPanel = new JPanel();
+        typeOfEventPanel.add(new JLabel("Event Type:"));
+        typeOfEventPanel.add(typeOfEventTextField);
+        inputFieldPanel.add(typeOfEventPanel);
+
+        JPanel courseCodePanel = new JPanel();
+        courseCodePanel.add(new JLabel("Course Code:"));
+        courseCodePanel.add(courseCodeTextField);
+        inputFieldPanel.add(courseCodePanel);
+
+        return inputFieldPanel;
     }
 
     private JPanel setUpButtons() {
@@ -114,22 +142,9 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     }
 
     private void setUpInputFieldFunctionality() {
-        eventNameTextField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+        CreateEventState currentState = createEventViewModel.getState();
 
-            @Override
-            public void keyPressed(KeyEvent e) {}
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                CreateEventState currentState = createEventViewModel.getState();
-                // This might be a little bit different because it isn't just one input field
-                currentState.setCourseName(eventNameTextField.getText());
-                createEventViewModel.setState(currentState);
-            }
-        });
+        // Set up the functionality of event ID text field
         eventIDTextField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -140,12 +155,30 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
             @Override
             public void keyReleased(KeyEvent e) {
-                CreateEventState currentState = createEventViewModel.getState();
-                // This might be a little bit different because it isn't just one input field
                 currentState.setEventID(eventIDTextField.getText());
+
                 createEventViewModel.setState(currentState);
             }
         });
+
+        // Set up the functionality of event name text field
+        eventNameTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                currentState.setEventName(eventNameTextField.getText());
+
+                createEventViewModel.setState(currentState);
+            }
+        });
+
+        // Set up the functionality of event type text field
         typeOfEventTextField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -156,12 +189,13 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
             @Override
             public void keyReleased(KeyEvent e) {
-                CreateEventState currentState = createEventViewModel.getState();
-                // This might be a little bit different because it isn't just one input field
                 currentState.setEventType(typeOfEventTextField.getText());
+                System.out.println("Event type: " + typeOfEventTextField.getText());
                 createEventViewModel.setState(currentState);
             }
         });
+
+        // Set up the functionality of course code text field
         courseCodeTextField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -172,39 +206,51 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
             @Override
             public void keyReleased(KeyEvent e) {
-                CreateEventState currentState = createEventViewModel.getState();
-                // This might be a little bit different because it isn't just one input field
                 currentState.setCourseCode(courseCodeTextField.getText());
+
                 createEventViewModel.setState(currentState);
             }
         });
     }
 
-    // TODO Same thing here about not being sure if separate
     private void setUpInputFieldStyle() {
         Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+
         eventNameTextField.setBorder(BorderFactory.createCompoundBorder(
                 eventNameTextField.getBorder(), paddingBorder));
 
         eventIDTextField.setBorder(BorderFactory.createCompoundBorder(
                 eventIDTextField.getBorder(), paddingBorder));
+
+        typeOfEventTextField.setBorder(BorderFactory.createCompoundBorder(
+                typeOfEventTextField.getBorder(), paddingBorder));
+
+        courseCodeTextField.setBorder(BorderFactory.createCompoundBorder(
+                courseCodeTextField.getBorder(), paddingBorder));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         // When the user clicks the create new event button, call the controller and pass in the courses to create
         if (event.getSource() == createNewEvent) {
-            String eventID = createEventViewModel.getState().getEventID();
-            // TODO: Fix this by changing up the state part
-            String eventName = createEventViewModel.getState().getEventName();
-            String eventType = createEventViewModel.getState().getEventType();
-            String creatorID = createEventViewModel.getState().getCreatorID();
-            String courseCode = createEventViewModel.getState().getCourseCode();
-            // Need to find a way to get current user that is signed in and then their user id.
+            CreateEventState curState = createEventViewModel.getState();
+
+            String eventID = curState.getEventID();
+            String eventName = curState.getEventName();
+            String eventType = curState.getEventType();
+            String courseCode = curState.getCourseCode();
+
+            String creatorID = "sim";
+
+            System.out.println("Event ID: " + eventID);
+            System.out.println("Event Name: " + eventName);
+            System.out.println("Event Type: " + eventType);
+            System.out.println("Course Code: " + courseCode);
+            System.out.println("Creator ID: " + creatorID);
 
             createEventController.createEvent(eventName, eventID, eventType, creatorID, courseCode);
 
-            // Close the window and return to the dashboard
+        // Close the window and return to the dashboard
         } else if (event.getSource() == close) {
             viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();
@@ -220,5 +266,9 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         CreateEventState curState = createEventViewModel.getState();
         errorDisplayField.setText(curState.getEventCreationResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
+    }
+
+    public void linkViews(String myEventsViewName) {
+        this.myEventsViewName = myEventsViewName;
     }
 }

@@ -23,10 +23,18 @@ public class CreateEventController {
      */
     public void createEvent(String eventName, String eventID, String typeOfEvent,
                             String creatorID, String courseCode) {
-        // May or may not need employee parameter, it should be logged in state thing.
-        // The adminID might not be required because it would just check logged in state potentially.
         CreateEventInputData inputData = new CreateEventInputData(eventName, eventID, typeOfEvent,
                 creatorID, courseCode);
+//        viewInputData(inputData);
         createEventInteractor.createEvent(inputData);
+    }
+
+    // TODO: Delete this method after testing is done
+    private void viewInputData(CreateEventInputData inputData) {
+        System.out.println("Event Name: " + inputData.getEventName());
+        System.out.println("Event ID: " + inputData.getEventID());
+        System.out.println("Type of Event: " + inputData.getTypeOfEvent());
+        System.out.println("Creator ID: " + inputData.getCreatorID());
+        System.out.println("Course Code: " + inputData.getCourseCode());
     }
 }

@@ -42,7 +42,7 @@ public class CreateEventState {
      * @param eventCreated
      */
     public void setEventID(String eventCreated) {
-        this.eventID = eventID;
+        this.eventID = eventCreated;
     }
 
     /**
@@ -57,13 +57,13 @@ public class CreateEventState {
      * Setter method to set event name.
      * @param eventName What you want the created event's name to be
      */
-    public void setCourseName(String eventName) {
+    public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
     /**
      * Getter for whether event creation was successful.
-     * @return Whether course was created or not
+     * @return Whether the event was created or not
      */
     public boolean isEventCreationSuccessful() {
         return eventCreationSuccessful;
@@ -87,7 +87,7 @@ public class CreateEventState {
 
     /**
      * Setter for changing the event creation message.
-     * @param eventCreationResponseMessage The messaage you want to output for whether course creation worked.
+     * @param eventCreationResponseMessage The messaage you want to output for whether event creation worked.
      */
     public void setEventCreationResponseMessage(String eventCreationResponseMessage) {
         this.eventCreationResponseMessage = eventCreationResponseMessage;
@@ -106,28 +106,7 @@ public class CreateEventState {
      * @param eventType
      */
     public void setEventType(String eventType) {
-
-        if (eventType != "Tutorial" || eventType != "Lecture") {
-            this.setEventCreationResponseMessage("Not valid event type submitted");
-        } else {
-            this.eventType = eventType;
-        }
-    }
-
-    /**
-     * Getter for creatorID variable.
-     * @return creatorID
-     */
-    public String getCreatorID() {
-        return creatorID;
-    }
-
-    /**
-     * Setter method to change the creatorID attribute.
-     * @param creatorID
-     */
-    public void setCreatorID(String creatorID) {
-        this.creatorID = creatorID;
+        this.eventType = eventType;
     }
 
     /**
