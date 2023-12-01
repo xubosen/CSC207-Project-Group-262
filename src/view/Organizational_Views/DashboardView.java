@@ -1,4 +1,4 @@
-package view;
+package view.Organizational_Views;
 
 import javax.swing.*;
 
@@ -13,9 +13,6 @@ public class DashboardView extends JPanel implements ActionListener {
     public final String viewName = "dashboard";
 
     private final ViewManagerModel viewManagerModel;
-    private final String leaveRequestViewName;
-    private final String myCoursesViewName;
-    private final String myEventsViewName = "my events view";
 
     private JLabel welcomeLabel; // Label for the welcome message
 
@@ -26,11 +23,16 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
+    // Variables for linking to other views
+    private String myCoursesViewName;
+    private String myEventsViewName;
+    private String mySessionsViewName;
+    private String leaveRequestViewName;
+    private String calendarViewName;
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
+
+    public DashboardView(ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
-        this.leaveRequestViewName = leaveRequestViewName;
-        this.myCoursesViewName = myCoursesViewName;
 
         // Set layout to BoxLayout for horizontal alignment
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -38,7 +40,7 @@ public class DashboardView extends JPanel implements ActionListener {
         // Create welcome label panel and set preferred size
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
-        welcomeLabel = new JLabel("Welcome, Yooham Jung", JLabel.CENTER);
+        welcomeLabel = new JLabel("Welcome, Simon Xu", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcomePanel.add(welcomeLabel);
@@ -76,16 +78,27 @@ public class DashboardView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == leavesOfAbsencesButton) {
-            viewManagerModel.setActiveView(leaveRequestViewName);
-            viewManagerModel.firePropertyChanged();
-        } else if  (e.getSource() == coursesButton) {
+        if (e.getSource() == coursesButton) {
             viewManagerModel.setActiveView(myCoursesViewName);
             viewManagerModel.firePropertyChanged();
         } else if (e.getSource() == eventsButton) {
             viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == sessionsButton) {
+            viewManagerModel.setActiveView(mySessionsViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == calendarButton) {
+            viewManagerModel.setActiveView(calendarViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == leavesOfAbsencesButton) {
+            viewManagerModel.setActiveView(leaveRequestViewName);
+            viewManagerModel.firePropertyChanged();
         }
-        // Other links to be fixed.
+    }
+
+    public void linkViews(String myCoursesViewName, String myEventsViewName, String mySessionsViewName) {
+        this.myCoursesViewName = myCoursesViewName;
+        this.myEventsViewName = myEventsViewName;
+        this.mySessionsViewName = mySessionsViewName;
     }
 }

@@ -1,4 +1,4 @@
-package view;
+package view.CourseViews;
 
 import interface_adapter.enroll.EnrollViewModel;
 import interface_adapter.ViewManagerModel;
@@ -19,12 +19,14 @@ import javax.swing.border.Border;
 
 // What is mySessionsViewName for?
 public class EnrollView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "enroll";
+    public final String viewName = "Invite to Course";
+    
+    // Functionality variables
     private EnrollViewModel enrollViewModel;
     private ViewManagerModel viewManagerModel;
-    private String mySessionsViewName;
     private EnrollController enrollController;
-    private String userToEnroll = "";
+    private String curUserID;
+    
 
     // Variables for setting up UI
     private JButton invite;
@@ -33,14 +35,20 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
     private JTextField userToEnrollInputField = new JTextField(10);
+    private JTextField courseCodeInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
+    
+    // Variables for Linking to other views
+    private String myCoursesViewName;
+    
+    
 
     public EnrollView(EnrollController enrollController, EnrollViewModel enrollViewModel,
-                      ViewManagerModel viewManagerModel, String mySessionsViewName){
+                      ViewManagerModel viewManagerModel, String curUserID){
         this.enrollController = enrollController;
         this.enrollViewModel = enrollViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.mySessionsViewName = mySessionsViewName;
+        this.curUserID = curUserID;
         enrollViewModel.addPropertyChangeListener(this);
         setupUI();
     }
@@ -52,14 +60,17 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputField();
         setUpErrorDisplayField();
 
         // Add components to UI
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(userToEnrollInputField);
+
+        JPanel inputFieldPanel = setUpInputFields();
+        mainPanel.add(inputFieldPanel);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -77,6 +88,23 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel setUpInputFields() {
+        JPanel inputFieldPanel = new JPanel();
+        inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel, BoxLayout.Y_AXIS));
+
+        JPanel courseCodePanel = new JPanel();
+        courseCodePanel.add(new JLabel("Course Code:"));
+        courseCodePanel.add(courseCodeInputField);
+        inputFieldPanel.add(courseCodePanel);
+
+        JPanel userToEnrollPanel = new JPanel();
+        userToEnrollPanel.add(new JLabel("User to Enroll:"));
+        userToEnrollPanel.add(userToEnrollInputField);
+        inputFieldPanel.add(userToEnrollPanel);
+
+        return inputFieldPanel;
     }
 
     private JPanel setUpButtons() {
@@ -97,7 +125,7 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputField() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
@@ -118,6 +146,22 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
                 enrollViewModel.setState(currentState);
             }
         });
+
+        courseCodeInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                EnrollState currentState = enrollViewModel.getState();
+                currentState.setCourseCode(courseCodeInputField.getText());
+                enrollViewModel.setState(currentState);
+            }
+        });
     }
 
     private void setUpInputFieldStyle() {
@@ -130,13 +174,16 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     public void actionPerformed(ActionEvent event) {
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
-            String inviteeID = enrollViewModel.getState().getUserInvited();
-            String courseCode = "CSC207"; // TODO: Get the course code of the course the user is currently viewing
-            enrollController.enroll(inviteeID, courseCode);
+            EnrollState curState = enrollViewModel.getState();
+
+            String inviteeID = curState.getUserInvited();
+            String courseCode = curState.getCourseCode();
+
+            enrollController.enroll(curUserID, inviteeID, courseCode);
 
         // Close the window and return to the dashboard
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(mySessionsViewName);
+            viewManagerModel.setActiveView(myCoursesViewName);
             viewManagerModel.firePropertyChanged();
 
         // Something went wrong. Throw an error.
@@ -151,5 +198,9 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
         EnrollState curState = enrollViewModel.getState();
         errorDisplayField.setText(curState.getInviteResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
+    }
+    
+    public void linkViews(String myCoursesViewName) {
+        this.myCoursesViewName = myCoursesViewName;
     }
 }

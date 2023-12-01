@@ -11,9 +11,8 @@ public class EnrollController {
         this.enrollInteractor = enrollInteractor;
     }
 
-    public void enroll(String userID, String courseCode) {
-        // TODO: Discuss using email instead of userID at next meeting
-        EnrollInputData inputData = new EnrollInputData(userID, "", courseCode);
+    public void enroll(String invitorID, String inviteeID, String courseCode) {
+        EnrollInputData inputData = new EnrollInputData(invitorID, inviteeID, courseCode);
         enrollInteractor.enroll(inputData);
     }
 }

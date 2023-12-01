@@ -1,4 +1,4 @@
-package interface_adapter;
+package interface_adapter.dashboard;
 
 public class DashboardState {
     // Example fields, adjust according to your actual needs

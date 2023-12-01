@@ -1,8 +1,8 @@
-package interface_adapter;
+package interface_adapter.add_to_event;
 
 // Import necessary classes
-import use_case.EventAdditionInputBoundary;
-import use_case.EventAdditionInputData;
+import use_case.add_to_event.EventAdditionInputBoundary;
+import use_case.add_to_event.EventAdditionInputData;
 
 
 
