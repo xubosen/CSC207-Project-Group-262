@@ -1,20 +1,24 @@
 package data_access;
 
 import com.mongodb.client.*;
+// Should not be able to rely on entities so it needs data access interactor to create the needed entities
+// and then InMemory pulls from it
 import entity.ClassSession;
 import entity.Course;
 import entity.Employee;
-import entity.EmployeeFactory;
-import entity.TeachingAssistant;
-import entity.TeachingAssistantFactory;
 import org.bson.Document;
 
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-
-import java.io.*;
-import java.util.*;
-
-public class FileEmployeeDataAccessObject {
+public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface {
     private final File databaseFiles;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final HashMap<String, Employee> accounts = new HashMap<>();
@@ -80,23 +84,30 @@ public class FileEmployeeDataAccessObject {
         return uriAndNames;
     }
 
-
-    public void save(Employee employee) {
+    public void save(Employee employee){
         accounts.put(employee.getUID(), employee);
-        this.save();
+        try {
+            this.save();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public Employee get(String userID) {
+    public Employee findByID(String userID) {
         return accounts.get(userID);
     }
 
-    private void save() {
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+    private void save() throws IOException {
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("employees");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // insert code goes here
             List<Document> documents = new ArrayList<>();
@@ -130,13 +141,12 @@ public class FileEmployeeDataAccessObject {
         }
     }
 
-
     /**
      * Return whether a Teaching Assistant sts with user identifier.
      * @param userID the username to check.
      * @return whether a Teaching Assistant exists with username identifier
      */
-    public boolean existsByName(String userID) {
+    public boolean existsByID(String userID) {
         return accounts.containsKey(userID);
     }
 
@@ -148,6 +158,7 @@ public class FileEmployeeDataAccessObject {
         return accounts.toString();
     }
 
+    @Override
     public HashMap<String, Employee> getAccount() {
         return accounts;
     }

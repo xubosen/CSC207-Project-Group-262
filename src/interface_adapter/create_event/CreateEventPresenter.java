@@ -1,30 +1,31 @@
-package interface_adapter.create_course;
+package interface_adapter.create_event;
 
-import use_case.CreateCourse.CreateCourseOutputBoundary;
-import use_case.CreateCourse.CreateCourseOutputData;
+import use_case.create_event.CreateEventOutputBoundary;
+import use_case.create_event.CreateEventOutputData;
 
-public class CreateCoursePresenter implements CreateCourseOutputBoundary {
-    private CreateCourseViewModel createCourseViewModel;
+public class CreateEventPresenter implements CreateEventOutputBoundary {
+    // TODO: Double check if this works
+    private CreateEventViewModel createEventViewModel;
 
     /**
-     * Initializer for the presenter of the create course use case.
-     * @param createCourseViewModel The view model of this use case.
+     * Initializer for the presenter of the create event use case.
+     * @param createEventViewModel The view model of this use case.
      */
-    public CreateCoursePresenter(CreateCourseViewModel createCourseViewModel) {
-        this.createCourseViewModel = createCourseViewModel;
+    public CreateEventPresenter(CreateEventViewModel createEventViewModel) {
+        this.createEventViewModel = createEventViewModel;
     }
 
     /**
      * Prepare view with the current outputdata.
      * @param outputData The data that will be output when createCourse has been tried.
      */
-    public void prepareView(CreateCourseOutputData outputData) {
+    public void prepareView(CreateEventOutputData outputData) {
         System.out.println(outputData.getMessage());
-        CreateCourseState curState = createCourseViewModel.getState();
-        curState.setCourseCreationSuccessful(outputData.isSuccessful());
-        curState.setCourseCreationResponseMessage(outputData.getMessage());
-        createCourseViewModel.setState(curState);
+        CreateEventState curState = createEventViewModel.getState();
+        curState.setEventCreationSuccessful(outputData.isSuccessful());
+        curState.setEventCreationResponseMessage(outputData.getMessage());
+        createEventViewModel.setState(curState);
 
-        createCourseViewModel.firePropertyChanged();
+        createEventViewModel.firePropertyChanged();
     }
 }

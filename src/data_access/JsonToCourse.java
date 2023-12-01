@@ -4,13 +4,19 @@
 
     import org.json.JSONObject;
     import org.json.JSONArray;
+    import org.json.JSONString;
 
     import java.util.ArrayList;
 
 
     public class JsonToCourse {
+        private String courseNameSearch = "course_name";
+        private String courseCodeSearch = "course_code";
+        private String adminSearch = "admin";
+        private String staffSearch = "staff";
         private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
         private String jsonString;
+        private JSONObject jsonObject;
 
         /**
          * Initializer for the JsonToCourse file.
@@ -18,8 +24,8 @@
          * @param inMemoryEmployeeDataAccessObject The in memory DAO required to create staff members
          */
         public JsonToCourse(String jsonString, InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
-            this.jsonString = jsonString;
             this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
+            this.jsonString = jsonString;
         }
 
         /**
@@ -27,21 +33,21 @@
          * @return The course from the course collection.
          */
         public Course convert() {
-            JSONObject obj = new JSONObject(jsonString);
+            jsonObject = new JSONObject(jsonString);
 
-            String courseName = obj.getString("course_name");
-            String courseCode = obj.getString("course_code");
-            String admin = obj.getString("admin"); // This is just the UID of the staff member
+            String courseName = jsonObject.getString(courseNameSearch);
+            String courseCode = jsonObject.getString(courseCodeSearch);
+            String admin = jsonObject.getString(adminSearch);
 
             ArrayList<String> listStaff = new ArrayList<String>();
-            JSONArray staffArray = (JSONArray) obj.get("staff");
+            JSONArray staffArray = (JSONArray) jsonObject.get(staffSearch);
             if (staffArray != null) {
                 for (int i = 0; i < staffArray.length(); i++){
                     listStaff.add(staffArray.getString(i));
                 }
             }
 
-            Employee courseAdmin = inMemoryEmployeeDataAccessObject.getByID(admin);
+            Instructor courseAdmin = (Instructor) inMemoryEmployeeDataAccessObject.getByID(admin);
 
             Course course = new Course(courseName, courseCode, courseAdmin);
 

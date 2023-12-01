@@ -15,6 +15,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private final ViewManagerModel viewManagerModel;
     private final String leaveRequestViewName;
     private final String myCoursesViewName;
+    private final String myEventsViewName = "my events view";
 
     private JLabel welcomeLabel; // Label for the welcome message
 
@@ -26,7 +27,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
 
-    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName, String viewName) {
+    public DashboardView(ViewManagerModel viewManagerModel, String leaveRequestViewName, String myCoursesViewName) {
         this.viewManagerModel = viewManagerModel;
         this.leaveRequestViewName = leaveRequestViewName;
         this.myCoursesViewName = myCoursesViewName;
@@ -80,6 +81,9 @@ public class DashboardView extends JPanel implements ActionListener {
             viewManagerModel.firePropertyChanged();
         } else if  (e.getSource() == coursesButton) {
             viewManagerModel.setActiveView(myCoursesViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == eventsButton) {
+            viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();
         }
         // Other links to be fixed.

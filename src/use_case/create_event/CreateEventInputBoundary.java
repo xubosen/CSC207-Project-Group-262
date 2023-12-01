@@ -1,5 +1,5 @@
-package use_case.create_course;
+package use_case.create_event;
 
-public interface CreateCourseInputBoundary {
-    void createCourse(CreateCourseInputData inputData);
+public interface CreateEventInputBoundary {
+    void createEvent(CreateEventInputData inputData);
 }

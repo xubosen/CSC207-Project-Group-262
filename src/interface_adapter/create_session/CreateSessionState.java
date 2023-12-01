@@ -1,30 +1,30 @@
-package interface_adapter.create_event;
+package interface_adapter.create_session;
 
-public class CreateEventState {
+public class CreateSessionState {
 
     private String eventName = "";
     private String eventID = "";
     private boolean eventCreationSuccessful = false;
     private String eventCreationResponseMessage = "";
-    // TODO: Want to check whether they want to create tutorial or Lecture.
+//     TODO: Want to check whether they want to create tutorial or Lecture.
     private String eventType = "";
 
     /**
      * Initializer for CreateEventState when you have a pre-existing CreateEventState.
      * @param copy The Pre-existing CreateEventState.
      */
-    public CreateEventState(CreateEventState copy) {
+    public CreateSessionState(CreateSessionState copy) {
         eventName = copy.eventName;
         eventID = copy.eventID;
         eventCreationSuccessful = copy.eventCreationSuccessful;
         eventCreationResponseMessage = copy.eventCreationResponseMessage;
-        eventType = copy.eventType
+        eventType = copy.eventType;
     }
 
     /**
      * Initializer if there is no input.
      */
-    public CreateEventState() {}
+    public CreateSessionState() {}
 
     /**
      * Getter for eventID variable.

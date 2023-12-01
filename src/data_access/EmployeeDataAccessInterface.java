@@ -2,10 +2,8 @@ package data_access;
 
 import entity.Employee;
 
+import java.util.HashMap;
+
 public interface EmployeeDataAccessInterface {
-    boolean existsByName(String identifier);
-
-    Employee findByName(String identifier);
-
-    void save(Employee employee);
+    HashMap<String, Employee> getAccount();
 }

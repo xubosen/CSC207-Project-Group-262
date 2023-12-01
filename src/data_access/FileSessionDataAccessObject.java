@@ -3,28 +3,42 @@ package data_access;
 import com.mongodb.client.*;
 import entity.ClassSession;
 import entity.Employee;
-import entity.Event;
 import org.bson.Document;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 // TODO: implement an interface in between so I can follow Clean Architecture
 public class FileSessionDataAccessObject {
+    private final File databaseFiles;
+    private final Map<String, Integer> headers = new LinkedHashMap<>();
     private static final HashMap<String, ClassSession> sessions = new HashMap<>();
-    public FileSessionDataAccessObject(InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
-                                       InMemoryEventDataAccessObject inMemoryEventDataAccessObject) {
+    public FileSessionDataAccessObject(String databasePath,
+                                       InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
+                                       InMemoryEventDataAccessObject inMemoryEventDataAccessObject) throws IOException {
+        this.databaseFiles = new File(databasePath);
 
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
-        // TODO: The uri shouldn't be hardcoded, it should be stored in a file so you can access multiple different databases.
-        // Even in this case where we only have one database it is still recommended.
+        headers.put("databaseLink", 0);
+        headers.put("databaseName", 1);
+        headers.put("collectionName", 2);
+
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("sessions");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // find code goes here
             MongoCursor<Document> cursor = collection.find().iterator();
@@ -43,7 +57,7 @@ public class FileSessionDataAccessObject {
         }
     }
 
-    public void save(ClassSession session) {
+    public void save(ClassSession session) throws IOException {
         sessions.put(session.getSessionID(), session);
         this.save();
     }
@@ -52,13 +66,17 @@ public class FileSessionDataAccessObject {
         return sessions.get(sessionID);
     }
 
-    private void save() {
-        String uri = "mongodb+srv://shinyarkeus:KWhU7JJK5BiBcQ0c@projecthr.u9tq0zb.mongodb.net/?retryWrites=true&w=majority";
+    private void save() throws IOException {
+        ArrayList<String> holder = getURIAndDBNames();
+        String uri = holder.get(0);
+        String databaseName = holder.get(1);
+        String collectionName = holder.get(2);
+
         try (MongoClient mongoClient = MongoClients.create(uri)) {
 
             // database and collection code goes here
-            MongoDatabase db = mongoClient.getDatabase("hrsystem_database");
-            MongoCollection<Document> collection = db.getCollection("sessions");
+            MongoDatabase db = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
 
             // insert code goes here
             List<Document> documents = new ArrayList<>();
@@ -78,8 +96,8 @@ public class FileSessionDataAccessObject {
                 dateList.add(session.toCalendarEvent().getDateTimeSpan().getEnd().toString());
 
                 Document eventDoc = new Document("sessionID", session.getSessionID()).
-                        append("name", session.getName()).append("cal_event", dateList).
-                        append("staff", staffList).append("Location", session.getLocation()).
+                        append("session_name", session.getName()).append("cal_event", dateList).
+                        append("staff", staffList).append("location", session.getLocation()).
                         append("eventID", session.getEvent().getEventID());
 
                 // This adds the employee information to the mongodb
@@ -89,15 +107,16 @@ public class FileSessionDataAccessObject {
 
             // Need to not use insertMany because it can create duplicate entries within mongodb.
             // Could search using userID and delete past data before inserting the new data.
+            collection.deleteMany(new Document()); // Replaces all of the collection with nothing
             collection.insertMany(documents);
         }
     }
 
 
     /**
-     * Return whether a course exists with their identifier.
-     * @param eventID
-     * @return whether the course code is inside
+     * Return whether a session exists with their identifier.
+     * @param sessionID
+     * @return whether the session ID is stored inside the sessions Hashmap
      */
     public boolean existsByID(String sessionID) {
         return sessions.containsKey(sessionID);
@@ -113,5 +132,24 @@ public class FileSessionDataAccessObject {
 
     public HashMap<String, ClassSession> getSessions() {
         return sessions;
+    }
+
+    private ArrayList<String> getURIAndDBNames() throws IOException {
+
+        ArrayList<String> uriAndNames = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(databaseFiles))) {
+            String header = reader.readLine();
+
+            assert header.equals("databaseLink,databaseName,collectionName");
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] col = row.split(",");
+                uriAndNames.add(String.valueOf(col[headers.get("databaseLink")]));
+                uriAndNames.add(String.valueOf(col[headers.get("databaseName")]));
+                uriAndNames.add(String.valueOf(col[headers.get("collectionName")]));
+            }
+        }
+        return uriAndNames;
     }
 }

@@ -12,9 +12,11 @@ public class MyEventsView extends JPanel implements ActionListener {
     private final JButton lecturesButton = new JButton("Lectures");
     private final JButton tutorialsButton = new JButton("Tutorials");
     private final String mySessionsViewName = "my sessions view";
+    private final String createEventViewName = "create event view";
     private final ViewManagerModel viewManagerModel;
 
     private final JButton backButton = new JButton("Back");
+    private final JButton createEventButton = new JButton("Create Event");
 
     public MyEventsView(ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
@@ -42,9 +44,19 @@ public class MyEventsView extends JPanel implements ActionListener {
     }
 
     private void makeEventButtons(GridBagConstraints gbc) {
-        lecturesButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        createEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        createEventButton.setPreferredSize(new Dimension(createEventButton.getPreferredSize().width, 150));
+        add(createEventButton, gbc);
+        createEventButton.addActionListener(this);
+
+        lecturesButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -54,7 +66,7 @@ public class MyEventsView extends JPanel implements ActionListener {
 
         tutorialsButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -66,7 +78,7 @@ public class MyEventsView extends JPanel implements ActionListener {
     private void makeBackButton(GridBagConstraints gbc) {
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -89,6 +101,9 @@ public class MyEventsView extends JPanel implements ActionListener {
             // Perform action for Tutorials button
         } else if (e.getSource() == backButton) {
             viewManagerModel.setActiveView("dashboard");
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == createEventButton) {
+            viewManagerModel.setActiveView(createEventViewName);
             viewManagerModel.firePropertyChanged();
         }
     }

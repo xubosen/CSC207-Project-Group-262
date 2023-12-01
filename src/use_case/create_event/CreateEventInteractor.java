@@ -1,69 +1,87 @@
-package use_case.create_course;
+package use_case.create_event;
 
 import data_access.InMemoryCourseDataAccessObject;
 import data_access.InMemoryEmployeeDataAccessObject;
-import entity.Course;
-import entity.Employee;
-import entity.Instructor;
+import data_access.InMemoryEventDataAccessObject;
+import entity.*;
 
-public class CreateCourseInteractor implements CreateCourseInputBoundary {
+public class CreateEventInteractor implements CreateEventInputBoundary {
+    // Currently getting employeesDAO.get employee by id is returning a null value.
     // TODO: Might be completed, need to test
-    private CreateCourseOutputBoundary createCoursePresenter;
-    private InMemoryCourseDataAccessObject coursesDAO;
+    private CreateEventOutputBoundary createEventPresenter;
+    private InMemoryEventDataAccessObject eventsDAO;
     private InMemoryEmployeeDataAccessObject employeesDAO;
+    private InMemoryCourseDataAccessObject coursesDAO;
 
     /**
-     * Initializes the course creator interactor.
-     * @param createCoursePresenter Create course output boundary.
-     * @param employeesDAO The in memory DAO for Employees
-     * @param coursesDAO The in memory DAO for courses
+     * Initializes the event creator interactor.
+     * @param createEventPresenter Create Event output boundary.
+     * @param employeesDAO The in memory DAO for Employees We might not need this because it might create an empty event.
+     * @param eventsDAO The In memory DAO for events
+     * @param coursesDAO The in memory DAO for courses Maybe need this because we need to check which Course it belongs to
      */
-    public CreateCourseInteractor(CreateCourseOutputBoundary createCoursePresenter, InMemoryEmployeeDataAccessObject employeesDAO,
-                            InMemoryCourseDataAccessObject coursesDAO) {
-        this.createCoursePresenter = createCoursePresenter;
+    public CreateEventInteractor(CreateEventOutputBoundary createEventPresenter, InMemoryEmployeeDataAccessObject employeesDAO,
+                                 InMemoryEventDataAccessObject eventsDAO, InMemoryCourseDataAccessObject coursesDAO) {
+        this.createEventPresenter = createEventPresenter;
         this.employeesDAO = employeesDAO;
+        this.eventsDAO = eventsDAO;
         this.coursesDAO = coursesDAO;
     }
 
     /**
-     * Tries to create the course, creates output data to input into our presenter
+     * Tries to create the event, creates output data to input into our presenter
      * @param inputData
      */
-    public void createCourse(CreateCourseInputData inputData) {
-        CreateCourseOutputData output;
+    public void createEvent(CreateEventInputData inputData) {
+        CreateEventOutputData output;
 
-        // If the Course exists then return false and the corresponding message in output data
-        if (!doesCourseExist(inputData)) {
-            output = new CreateCourseOutputData(false, "Course already exists.");
-
-        // Make sure the course creator is type instructor. This might not be necessary because the view won't
-        // show create course for a TA
+        // If the event already exists return false and the corresponding message in output data
+        if (doesEventExist(inputData)) {
+            output = new CreateEventOutputData(false, "Event already exists.");
         } else if (!isInstructor(inputData)) {
-            output = new CreateCourseOutputData(false, "User is not an Instructor");
+            // Might not need this error message because this view shouldn't be available to those who are not instructors.
+            output = new CreateEventOutputData(false, "User is not an Instructor.");
+        // If the course does not exist.
+        } else if (!doesCourseExist(inputData)) {
+            output = new CreateEventOutputData(false, "Course does not exists.");
+
         } else {
             // Try to create the new course from the input
-            // TODO: Make sure the Employee is Instructor.
-            Instructor admin = (Instructor) getEmployeeFromInputData(inputData);
-            coursesDAO.addCourse(new Course(inputData.getCourseName(), inputData.getCourseCode(), admin));
+            // TODO: Figure out how to pull most recent button clicked so we don't need this weird course method thing.
+            Course course = coursesDAO.getByID(inputData.getCourseCode());
+            if (inputData.getTypeOfEvent().equals("Lecture"))
+            {
+                eventsDAO.addEvent(new Lecture(inputData.getEventName(), inputData.getEventID(), course));
+                output = new CreateEventOutputData(true, "event created successfully");
+            } else if (inputData.getTypeOfEvent().equals("Tutorial")){
+                eventsDAO.addEvent(new Tutorial(inputData.getEventName(), inputData.getEventID(), course));
+                output = new CreateEventOutputData(true, "event created successfully");
+            } else {
+                output = new CreateEventOutputData(false, "Invalid event type");
+            }
 
-            output = new CreateCourseOutputData(true, "Course created successfully");
+
         }
 
         // Call the presenter to present the output data
-        createCoursePresenter.prepareView(output);
+        createEventPresenter.prepareView(output);
     }
 
 
-    private boolean isInstructor(CreateCourseInputData inputData) {
-
-        return employeesDAO.getByID(inputData.getAdminID()).getClass().equals(Instructor.class);
+    private boolean isInstructor(CreateEventInputData inputData) {
+        // TODO: Is this available to instructors as well.
+        return employeesDAO.getByID(inputData.getCreatorID()).getClass().equals(Instructor.class);
     }
 
-    private Employee getEmployeeFromInputData(CreateCourseInputData inputData) {
-        return employeesDAO.getByID(inputData.getAdminID());
+//    private Employee getEmployeeFromInputData(CreateCourseInputData inputData) {
+//        return employeesDAO.getByID(inputData.getAdminID());
+//    }
+
+    private boolean doesEventExist(CreateEventInputData inputData) {
+        return eventsDAO.existsByID(inputData.getEventID());
     }
 
-    private boolean doesCourseExist(CreateCourseInputData inputData) {
+    private boolean doesCourseExist(CreateEventInputData inputData) {
         return coursesDAO.existsByID(inputData.getCourseCode());
     }
 }
