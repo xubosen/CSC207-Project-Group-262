@@ -5,7 +5,6 @@ import interface_adapter.create_event.CreateEventController;
 import interface_adapter.create_event.CreateEventState;
 import interface_adapter.create_event.CreateEventViewModel;
 import interface_adapter.ViewManagerModel;
-import view.IntroView.LabelTextPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;

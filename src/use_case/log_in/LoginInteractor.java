@@ -1,34 +1,35 @@
-//package use_case.log_in;
-//
-//import data_access.EmployeeDataAccessInterface;
-//import entity.Employee;
-//import entity.EmployeeFactory;
-//
-//public class LoginInteractor implements LoginInputBoundary {
-//    final EmployeeDataAccessInterface employeeDataAccessObject;
-//    final LoginOutputBoundary loginPresenter;
-//    final EmployeeFactory employeeFactory;
-//
-//    public LoginInteractor(EmployeeDataAccessInterface employeeDataAccessInterface,
-//                           LoginOutputBoundary loginOutputBoundary,
-//                           EmployeeFactory employeeFactory) {
-//        this.employeeDataAccessObject = employeeDataAccessInterface;
-//        this.loginPresenter = loginOutputBoundary;
-//        this.employeeFactory = employeeFactory;
-//    }
-//
-//    @Override
-//    public void execute(LoginInputData loginInputData) {
-//        Employee employee = employeeDataAccessObject.findByName(loginInputData.getUsername());
-//
-//        if (employee == null) {
-//            loginPresenter.prepareFailView("Employee does not exist.");
-//        } else if (!employee.getPassword().equals(loginInputData.getPassword())) {
-//            loginPresenter.prepareFailView("Incorrect password.");
-//        } else {
-//            LoginOutputData loginOutputData = new LoginOutputData(employee.getName(), true);
-//            loginPresenter.prepareSuccessView(loginOutputData);
-//            // Optionally, update last login time or any other necessary info
-//        }
-//    }
-//}
+package use_case.log_in;
+
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import entity.Employee;
+
+public class LoginInteractor implements LoginInputBoundary {
+    private InMemoryEmployeeDataAccessObject employeeDAO;
+    private LoginOutputBoundary loginPresenter;
+
+    public LoginInteractor(LoginOutputBoundary loginPresenter, InMemoryEmployeeDataAccessObject employeeDAO) {
+        this.employeeDAO = employeeDAO;
+        this.loginPresenter = loginPresenter;
+    }
+
+    @Override
+    public void execute(LoginInputData loginInputData) {
+        String username = loginInputData.getUsername();
+        String password = loginInputData.getPassword();
+
+        if (!employeeDAO.existsByID(username)) {
+            System.out.println(employeeDAO.existsByID(username));
+            loginPresenter.prepareFailView("User does not exist.");
+        } else if (!passwordCorrect(username, password)) {
+            loginPresenter.prepareFailView("Incorrect password.");
+        } else {
+            LoginOutputData loginOutputData = new LoginOutputData(username, true);
+            loginPresenter.prepareSuccessView(loginOutputData);
+        }
+    }
+
+    private boolean passwordCorrect(String username, String password) {
+        Employee employee = employeeDAO.getByID(username);
+        return employee.getPassword().equals(password);
+    }
+}

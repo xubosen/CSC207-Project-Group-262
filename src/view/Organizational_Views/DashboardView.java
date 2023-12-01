@@ -27,7 +27,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton sessionsButton = new JButton("Sessions");
     private final JButton calendarButton = new JButton("Calendar");
     private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
-    private final JButton employeeInformationButton = new JButton("Employee Information");
+    private final JButton logOutButton = new JButton("Log Out");
 
     // Variables for linking to other views
     private String myCoursesInsViewName;
@@ -37,6 +37,7 @@ public class DashboardView extends JPanel implements ActionListener {
     private String mySessionsViewName;
     private String leaveRequestViewName;
     private String calendarViewName;
+    private String introPageViewName;
 
 
     public DashboardView(ViewManagerModel viewManagerModel, UserState userState) {
@@ -63,7 +64,7 @@ public class DashboardView extends JPanel implements ActionListener {
         addStyledButton(sessionsButton, buttonsPanel);
         addStyledButton(calendarButton, buttonsPanel);
         addStyledButton(leavesOfAbsencesButton, buttonsPanel);
-        addStyledButton(employeeInformationButton, buttonsPanel);
+        addStyledButton(logOutButton, buttonsPanel);
 
         // Add panels to DashboardView
         add(welcomePanel);
@@ -100,6 +101,10 @@ public class DashboardView extends JPanel implements ActionListener {
         } else if (e.getSource() == leavesOfAbsencesButton) {
             viewManagerModel.setActiveView(leaveRequestViewName);
             viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == logOutButton) {
+            viewManagerModel.setActiveView(introPageViewName);
+            userState.clear();
+            viewManagerModel.firePropertyChanged();
         }
     }
 
@@ -125,12 +130,13 @@ public class DashboardView extends JPanel implements ActionListener {
 
     public void linkViews(String myCoursesInstructorViewName, String myCoursesTAViewName,
                           String myEventsInstructorViewName, String myEventsTAViewName,
-                          String mySessionsViewName) {
+                          String mySessionsViewName, String introPageViewName) {
 
         this.myCoursesInsViewName = myCoursesInstructorViewName;
         this.myCoursesTAViewName = myCoursesTAViewName;
         this.myEventsInsViewName = myEventsInstructorViewName;
         this.myEventsTAViewName = myEventsTAViewName;
         this.mySessionsViewName = mySessionsViewName;
+        this.introPageViewName = introPageViewName;
     }
 }

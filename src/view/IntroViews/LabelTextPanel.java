@@ -1,4 +1,4 @@
-package view.IntroView;
+package view.IntroViews;
 
 import javax.swing.*;
 

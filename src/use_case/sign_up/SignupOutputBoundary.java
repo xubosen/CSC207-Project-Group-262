@@ -1,4 +1,5 @@
 package use_case.sign_up;
 
-public class SignupOutputBoundary {
+public interface SignupOutputBoundary {
+    void prepareView(SignupOutputData outputData);
 }

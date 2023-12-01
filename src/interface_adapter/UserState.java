@@ -13,15 +13,20 @@ public class UserState {
         return userID;
     }
 
-    public String setUserID() {
-        return userID;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getUserType() {
         return userType;
     }
 
-    public String setUserType() {
-        return userType;
+    public void setUserType(String type) {
+        this.userType = type;
+    }
+
+    public void clear() {
+        this.userID = "";
+        this.userType = "";
     }
 }

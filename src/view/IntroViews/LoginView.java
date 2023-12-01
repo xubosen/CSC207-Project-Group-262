@@ -1,5 +1,6 @@
-package view.IntroView;
+package view.IntroViews;
 
+import interface_adapter.UserState;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.ViewManagerModel;
@@ -25,11 +26,12 @@ import javax.swing.border.Border;
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "log in";
+
+    private UserState curUserState;
+
     private final LoginViewModel loginViewModel;
 
     private final ViewManagerModel viewManagerModel;
-
-    private final String dashboardViewName;
 
     private final LoginController loginController;
 
@@ -46,17 +48,22 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     final JButton logIn;
     final JButton signUp;
-    final JButton cancel;
+    final JButton saveAndClose;
+
+    // Variables for linking to other views
+    private String dashboardViewName;
+    private String signUpViewName;
 
     /**
      * A window with a title and a JButton.
      */
-    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, LoginController loginController, String dashboardViewName) throws IOException {
+    public LoginView(LoginViewModel loginViewModel, ViewManagerModel viewManagerModel, LoginController loginController,
+                     UserState curUserState) throws IOException {
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
         this.viewManagerModel = viewManagerModel;
         this.loginController = loginController;
-        this.dashboardViewName = dashboardViewName;
+        this.curUserState = curUserState;
 
         JLabel title = new JLabel("University of Toronto HR System");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -82,12 +89,12 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         buttons.add(logIn);
         signUp = new JButton(loginViewModel.SIGNUP_BUTTON_LABEL);
         buttons.add(signUp);
-        cancel = new JButton(loginViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
+        saveAndClose = new JButton("Save and Close");
+        buttons.add(saveAndClose);
 
         logIn.addActionListener(this);
         signUp.addActionListener(this);
-        cancel.addActionListener(this);
+        saveAndClose.addActionListener(this);
 
         usernameInputField.addKeyListener(new KeyListener() {
             @Override
@@ -188,13 +195,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         if (evt.getSource() == logIn) {
             // Execute login process
             loginController.execute(
-                    loginViewModel.getState().getUsername(),
-                    loginViewModel.getState().getPassword()
+            loginViewModel.getState().getUsername(),
+            loginViewModel.getState().getPassword()
             );
-            System.out.println("Click");
         } else if (evt.getSource() == signUp) {
-            // Handle sign up action
-        } else if (evt.getSource() == cancel) {
+            // Switch to the sign up view
+            viewManagerModel.setActiveView(signUpViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (evt.getSource() == saveAndClose) {
             // Handle cancel action: Close the window
             closeWindow();
         }
@@ -219,6 +227,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             // Switch to the dashboard view on successful login
             viewManagerModel.setActiveView(dashboardViewName);
             viewManagerModel.firePropertyChanged();
+            state.setLoginSuccessful(false);
         } else {
             // Display error message
                 JOptionPane.showMessageDialog(this, state.getLoginError());
@@ -228,5 +237,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private void setFields(LoginState state) {
         usernameInputField.setText(state.getUsername());
         passwordInputField.setText(state.getPassword());
+    }
+
+    public void linkViews(String dashboardViewName, String signUpViewName) {
+        this.dashboardViewName = dashboardViewName;
+        this.signUpViewName = signUpViewName;
     }
 }

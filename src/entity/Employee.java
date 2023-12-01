@@ -2,8 +2,6 @@ package entity;
 
 import java.util.HashMap;
 
-// TODO : Implement the abstract methods here so the subclasses inherits them easily.
-
 /**
  *
  */
