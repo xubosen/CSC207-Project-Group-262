@@ -1,8 +1,7 @@
-package view.SessionViews;
+package view.session_views;
 
 import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.get_courses.GetCoursesState;
 import interface_adapter.get_sessions.GetSessionsController;
 import interface_adapter.get_sessions.GetSessionsState;
 import interface_adapter.get_sessions.GetSessionsViewModel;

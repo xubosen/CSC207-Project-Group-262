@@ -1,4 +1,4 @@
-package view.EventViews;
+package view.event_views;
 
 import interface_adapter.UserState;
 import interface_adapter.create_event.CreateEventController;

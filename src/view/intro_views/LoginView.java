@@ -1,4 +1,4 @@
-package view.IntroViews;
+package view.intro_views;
 
 import interface_adapter.UserState;
 import interface_adapter.login.LoginState;

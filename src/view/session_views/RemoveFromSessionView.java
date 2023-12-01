@@ -1,4 +1,4 @@
-package view.SessionViews;
+package view.session_views;
 
 
 

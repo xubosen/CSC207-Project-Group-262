@@ -1,9 +1,9 @@
-package view.CourseViews;
+package view.session_views;
 
-import interface_adapter.*;
-import interface_adapter.remove_from_course.RemoveFromCourseController;
-import interface_adapter.remove_from_course.RemoveFromCourseState;
-import interface_adapter.remove_from_course.RemoveFromCourseViewModel;
+import interface_adapter.invite_to_session.InviteToSessionViewModel;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.invite_to_session.InviteToSessionController;
+import interface_adapter.invite_to_session.InviteToSessionState;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,34 +17,33 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class RemoveFromCourseView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "Remove From Course";
-    private RemoveFromCourseViewModel removeFromCourseViewModel;
+public class InviteToSessionView extends JPanel implements ActionListener, PropertyChangeListener {
+    public final String viewName = "invite to session";
+
+    // Variables for functionality
+    private InviteToSessionViewModel inviteToSessionViewModel;
     private ViewManagerModel viewManagerModel;
-    private RemoveFromCourseController removeFromCourseController;
+    private InviteToSessionController inviteToSessionController;
 
 
     // Variables for setting up UI
-    private JButton remove;
+    private JButton invite;
     private JButton close;
-    private final String HEADING_TEXT = "Remove From Course";
+    private final String HEADING_TEXT = "Invite To Session";
     private String error_message = "";
-    private JTextField userToRemoveInputField = new JTextField(10);
-    private JTextField courseToRemoveFromInputField = new JTextField(10);
+    private JTextField sessionIDInputField = new JTextField(10);
+    private JTextField userToEnrollInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
-
     // Variables for linking to other views
-    private String myCoursesViewName;
+    private String mySessionsViewName;
 
-
-    public RemoveFromCourseView(RemoveFromCourseController controller, RemoveFromCourseViewModel viewModel,
-                                ViewManagerModel viewManagerModel) {
+    public InviteToSessionView(InviteToSessionController inviteToSessionController, InviteToSessionViewModel inviteToSessionViewModel,
+                             ViewManagerModel viewManagerModel){
+        this.inviteToSessionController = inviteToSessionController;
+        this.inviteToSessionViewModel = inviteToSessionViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.removeFromCourseController = controller;
-        this.removeFromCourseViewModel = viewModel;
-        removeFromCourseViewModel.addPropertyChangeListener(this);
-
+        inviteToSessionViewModel.addPropertyChangeListener(this);
         setupUI();
     }
 
@@ -63,7 +62,7 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
 
-        JPanel inputPanel = setUpInputFields();
+        JPanel inputPanel = makeInputFields();
         mainPanel.add(inputPanel);
 
         mainPanel.add(errorDisplayField);
@@ -85,19 +84,19 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         return heading;
     }
 
-    private JPanel setUpInputFields() {
+    private JPanel makeInputFields() {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
-        JPanel userToRemovePanel = new JPanel();
-        userToRemovePanel.add(new JLabel("User to remove:"));
-        userToRemovePanel.add(userToRemoveInputField);
-        inputPanel.add(userToRemovePanel);
+        JPanel sessionIDPanel = new JPanel();
+        sessionIDPanel.add(new JLabel("Session ID: "));
+        sessionIDPanel.add(sessionIDInputField);
+        inputPanel.add(sessionIDPanel);
 
-        JPanel courseToRemoveFromPanel = new JPanel();
-        courseToRemoveFromPanel.add(new JLabel("Course to remove from:"));
-        courseToRemoveFromPanel.add(courseToRemoveFromInputField);
-        inputPanel.add(courseToRemoveFromPanel);
+        JPanel userToAddPanel = new JPanel();
+        userToAddPanel.add(new JLabel("User to Add: "));
+        userToAddPanel.add(userToEnrollInputField);
+        inputPanel.add(userToAddPanel);
 
         return inputPanel;
     }
@@ -105,11 +104,11 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
     private JPanel setUpButtons() {
         JPanel buttonPanel = new JPanel();
 
-        remove = new JButton(removeFromCourseViewModel.REMOVE_BUTTON_LABEL);
-        remove.addActionListener(this);
-        buttonPanel.add(remove);
+        invite = new JButton(inviteToSessionViewModel.Invite_BUTTON_LABEL);
+        invite.addActionListener(this);
+        buttonPanel.add(invite);
 
-        close = new JButton(removeFromCourseViewModel.CLOSE_BUTTON_LABEL);
+        close = new JButton(inviteToSessionViewModel.CLOSE_BUTTON_LABEL);
         close.addActionListener(this);
         buttonPanel.add(close);
 
@@ -126,9 +125,9 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
     }
 
     private void setUpInputFieldFunctionality() {
-        RemoveFromCourseState currentState = removeFromCourseViewModel.getState();
+        InviteToSessionState currentState = inviteToSessionViewModel.getState();
 
-        userToRemoveInputField.addKeyListener(new KeyListener() {
+        userToEnrollInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -138,12 +137,12 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
 
             @Override
             public void keyReleased(KeyEvent e) {
-                currentState.setUserRemoved(userToRemoveInputField.getText());
-                removeFromCourseViewModel.setState(currentState);
+                currentState.setUserInvited(userToEnrollInputField.getText());
+                inviteToSessionViewModel.setState(currentState);
             }
         });
 
-        courseToRemoveFromInputField.addKeyListener(new KeyListener() {
+        sessionIDInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -153,30 +152,29 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
 
             @Override
             public void keyReleased(KeyEvent e) {
-                currentState.setCourseRemovedFrom(courseToRemoveFromInputField.getText());
-                removeFromCourseViewModel.setState(currentState);
+                currentState.setSessionID(sessionIDInputField.getText());
+                inviteToSessionViewModel.setState(currentState);
             }
         });
     }
 
     private void setUpInputFieldStyle() {
         Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        userToRemoveInputField.setBorder(BorderFactory.createCompoundBorder(
-                userToRemoveInputField.getBorder(), paddingBorder));
+        userToEnrollInputField.setBorder(BorderFactory.createCompoundBorder(
+                userToEnrollInputField.getBorder(), paddingBorder));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == remove) {
-            RemoveFromCourseState currentState = removeFromCourseViewModel.getState();
-            String userToRemove = currentState.getUserRemoved();
-            String courseCode = currentState.getCourseRemovedFrom();
+        // When the user clicks the invite button, call a controller and pass in the employee to enroll
+        if (event.getSource() == invite) {
+            String inviteeID = inviteToSessionViewModel.getState().getUserInvited();
+            String sessionID = inviteToSessionViewModel.getState().getSessionID();
+            inviteToSessionController.invite(inviteeID, sessionID);
 
-            removeFromCourseController.removeFromCourse(userToRemove, courseCode);
-
-        // Close the window
+        // Close the window and return to the previous screen
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(myCoursesViewName);
+            viewManagerModel.setActiveView(mySessionsViewName);
             viewManagerModel.firePropertyChanged();
 
         // Something went wrong. Throw an error.
@@ -187,13 +185,14 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
+
         // Display the response message
-        RemoveFromCourseState curState = removeFromCourseViewModel.getState();
-        errorDisplayField.setText(curState.getRemoveResponseMessage());
+        InviteToSessionState curState = inviteToSessionViewModel.getState();
+        errorDisplayField.setText(curState.getInviteResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
     }
 
-    public void linkViews(String myCoursesViewName) {
-        this.myCoursesViewName = myCoursesViewName;
+    public void linkViews(String mySessionsViewName) {
+        this.mySessionsViewName = mySessionsViewName;
     }
 }

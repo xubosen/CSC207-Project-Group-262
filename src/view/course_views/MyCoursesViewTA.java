@@ -1,4 +1,4 @@
-package view.CourseViews;
+package view.course_views;
 
 import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class MyCoursesViewTA extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "my courses instructor view";
+    public final String viewName = "my courses ta view";
 
     // Variables for Functionality
     private final ViewManagerModel viewManagerModel;

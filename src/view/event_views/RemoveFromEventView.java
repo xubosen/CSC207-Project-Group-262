@@ -1,4 +1,4 @@
-package view.EventViews;
+package view.event_views;
 
 import interface_adapter.*;
 import interface_adapter.remove_from_event.RemoveFromEventController;

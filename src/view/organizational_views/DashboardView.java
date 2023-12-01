@@ -1,12 +1,10 @@
-package view.Organizational_Views;
+package view.organizational_views;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;

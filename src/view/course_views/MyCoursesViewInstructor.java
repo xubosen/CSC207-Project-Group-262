@@ -1,4 +1,4 @@
-package view.CourseViews;
+package view.course_views;
 
 import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;

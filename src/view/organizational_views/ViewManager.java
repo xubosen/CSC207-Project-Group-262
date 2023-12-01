@@ -1,4 +1,4 @@
-package view.Organizational_Views;
+package view.organizational_views;
 
 import interface_adapter.ViewManagerModel;
 

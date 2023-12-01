@@ -103,7 +103,10 @@ public class HardCodedDAO implements DataAccessInterface{
     }
 
     @Override
-    public boolean saveToDatabase() {
+    public boolean saveToDatabase(InMemoryCourseDataAccessObject courseDAO,
+                                  InMemoryEmployeeDataAccessObject employeeDAO,
+                                  InMemoryEventDataAccessObject eventDAO,
+                                  InMemorySessionDataAccessObject sessionDAO) {
         System.out.println("Saving unsuccessful!");
         return false;
     }

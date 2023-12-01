@@ -1,4 +1,4 @@
-package view.LeaveRequestView;
+package view.leave_request_view;
 
 import javax.swing.*;
 import java.awt.*;

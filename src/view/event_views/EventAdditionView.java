@@ -1,9 +1,9 @@
-package view.SessionViews;
+package view.event_views;
 
-import interface_adapter.invite_to_session.InviteToSessionViewModel;
+import interface_adapter.add_to_event.EventAdditionViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.invite_to_session.InviteToSessionController;
-import interface_adapter.invite_to_session.InviteToSessionState;
+import interface_adapter.add_to_event.EventAdditionController;
+import interface_adapter.add_to_event.EventAdditionState;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,33 +17,32 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class InviteToSessionView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "invite to session";
+public class EventAdditionView extends JPanel implements ActionListener, PropertyChangeListener {
+    public final String viewName = "event addition";
 
-    // Variables for functionality
-    private InviteToSessionViewModel inviteToSessionViewModel;
+    // Functionality variables
+    private EventAdditionViewModel eventAdditionViewModel;
     private ViewManagerModel viewManagerModel;
-    private InviteToSessionController inviteToSessionController;
+    private EventAdditionController eventAdditionController;
+    private String myEventsViewName;
 
 
     // Variables for setting up UI
     private JButton invite;
     private JButton close;
-    private final String HEADING_TEXT = "Invite To Session";
+    private final String HEADING_TEXT = "Invite To Event";
+    private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
-    private JTextField sessionIDInputField = new JTextField(10);
-    private JTextField userToEnrollInputField = new JTextField(10);
+    private JTextField eventIDInputField = new JTextField(10);
+    private JTextField userToInviteInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
-    // Variables for linking to other views
-    private String mySessionsViewName;
-
-    public InviteToSessionView(InviteToSessionController inviteToSessionController, InviteToSessionViewModel inviteToSessionViewModel,
-                             ViewManagerModel viewManagerModel){
-        this.inviteToSessionController = inviteToSessionController;
-        this.inviteToSessionViewModel = inviteToSessionViewModel;
+    public EventAdditionView(EventAdditionController eventAdditionController, EventAdditionViewModel eventAdditionViewModel,
+                      ViewManagerModel viewManagerModel){
+        this.eventAdditionController = eventAdditionController;
+        this.eventAdditionViewModel = eventAdditionViewModel;
         this.viewManagerModel = viewManagerModel;
-        inviteToSessionViewModel.addPropertyChangeListener(this);
+        eventAdditionViewModel.addPropertyChangeListener(this);
         setupUI();
     }
 
@@ -54,7 +53,7 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        formatInputFields();
+        setUpInputField();
         setUpErrorDisplayField();
 
         // Add components to UI
@@ -62,8 +61,8 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
 
-        JPanel inputPanel = makeInputFields();
-        mainPanel.add(inputPanel);
+        JPanel inputFieldPanel = setUpInputFields();
+        mainPanel.add(inputFieldPanel);
 
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
@@ -84,31 +83,31 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         return heading;
     }
 
-    private JPanel makeInputFields() {
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+    private JPanel setUpInputFields() {
+        JPanel inputFieldPanel = new JPanel();
+        inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel, BoxLayout.Y_AXIS));
 
-        JPanel sessionIDPanel = new JPanel();
-        sessionIDPanel.add(new JLabel("Session ID: "));
-        sessionIDPanel.add(sessionIDInputField);
-        inputPanel.add(sessionIDPanel);
+        JLabel eventIDLabel = new JLabel("Event ID");
+        eventIDLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputFieldPanel.add(eventIDLabel);
+        inputFieldPanel.add(eventIDInputField);
 
-        JPanel userToAddPanel = new JPanel();
-        userToAddPanel.add(new JLabel("User to Add: "));
-        userToAddPanel.add(userToEnrollInputField);
-        inputPanel.add(userToAddPanel);
+        JLabel userToInviteLabel = new JLabel("User to Invite");
+        userToInviteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputFieldPanel.add(userToInviteLabel);
+        inputFieldPanel.add(userToInviteInputField);
 
-        return inputPanel;
+        return inputFieldPanel;
     }
 
     private JPanel setUpButtons() {
         JPanel buttonPanel = new JPanel();
 
-        invite = new JButton(inviteToSessionViewModel.Invite_BUTTON_LABEL);
+        invite = new JButton(eventAdditionViewModel.EVENT_ADDITION_BUTTON_LABEL);
         invite.addActionListener(this);
         buttonPanel.add(invite);
 
-        close = new JButton(inviteToSessionViewModel.CLOSE_BUTTON_LABEL);
+        close = new JButton(eventAdditionViewModel.CLOSE_BUTTON_LABEL);
         close.addActionListener(this);
         buttonPanel.add(close);
 
@@ -119,15 +118,13 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void formatInputFields() {
+    private void setUpInputField() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
 
     private void setUpInputFieldFunctionality() {
-        InviteToSessionState currentState = inviteToSessionViewModel.getState();
-
-        userToEnrollInputField.addKeyListener(new KeyListener() {
+        userToInviteInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -137,12 +134,13 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
 
             @Override
             public void keyReleased(KeyEvent e) {
-                currentState.setUserInvited(userToEnrollInputField.getText());
-                inviteToSessionViewModel.setState(currentState);
+                EventAdditionState currentState = eventAdditionViewModel.getState();
+                currentState.setUserInvited(userToInviteInputField.getText());
+                eventAdditionViewModel.setState(currentState);
             }
         });
 
-        sessionIDInputField.addKeyListener(new KeyListener() {
+        eventIDInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -152,32 +150,36 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
 
             @Override
             public void keyReleased(KeyEvent e) {
-                currentState.setSessionID(sessionIDInputField.getText());
-                inviteToSessionViewModel.setState(currentState);
+                EventAdditionState currentState = eventAdditionViewModel.getState();
+                currentState.setEventID(eventIDInputField.getText());
+                eventAdditionViewModel.setState(currentState);
             }
         });
     }
 
     private void setUpInputFieldStyle() {
         Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        userToEnrollInputField.setBorder(BorderFactory.createCompoundBorder(
-                userToEnrollInputField.getBorder(), paddingBorder));
+        userToInviteInputField.setBorder(BorderFactory.createCompoundBorder(
+                userToInviteInputField.getBorder(), paddingBorder));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
-            String inviteeID = inviteToSessionViewModel.getState().getUserInvited();
-            String sessionID = inviteToSessionViewModel.getState().getSessionID();
-            inviteToSessionController.invite(inviteeID, sessionID);
+            EventAdditionState curState = eventAdditionViewModel.getState();
+
+            String inviteeID = curState.getUserInvited();
+            String eventID = curState.getEventID();
+
+            eventAdditionController.addEmployeeToEvent(inviteeID, eventID);
 
         // Close the window and return to the previous screen
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(mySessionsViewName);
+            viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();
 
-        // Something went wrong. Throw an error.
+            // Something went wrong. Throw an error.
         } else {
             throw new RuntimeException("Something went wrong with the buttons");
         }
@@ -185,14 +187,13 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-
         // Display the response message
-        InviteToSessionState curState = inviteToSessionViewModel.getState();
+        EventAdditionState curState = eventAdditionViewModel.getState();
         errorDisplayField.setText(curState.getInviteResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
     }
 
-    public void linkViews(String mySessionsViewName) {
-        this.mySessionsViewName = mySessionsViewName;
+    public void linkViews(String myEventsViewName) {
+        this.myEventsViewName = myEventsViewName;
     }
 }

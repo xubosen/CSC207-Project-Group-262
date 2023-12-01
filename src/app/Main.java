@@ -41,16 +41,16 @@ import use_case.remove_from_session.RemoveFromSessionInteractor;
 import use_case.sign_up.SignupInteractor;
 
 // Views
-import view.CourseViews.*;
-import view.EventViews.*;
-import view.IntroViews.LoginView;
-import view.IntroViews.SignUpView;
-import view.SessionViews.CreateSessionView;
-import view.SessionViews.InviteToSessionView;
-import view.SessionViews.MySessionsView;
-import view.SessionViews.RemoveFromSessionView;
-import view.Organizational_Views.DashboardView;
-import view.Organizational_Views.ViewManager;
+import view.course_views.*;
+import view.event_views.*;
+import view.intro_views.LoginView;
+import view.intro_views.SignUpView;
+import view.session_views.CreateSessionView;
+import view.session_views.InviteToSessionView;
+import view.session_views.MySessionsView;
+import view.session_views.RemoveFromSessionView;
+import view.organizational_views.DashboardView;
+import view.organizational_views.ViewManager;
 
 // Swing Imports
 import javax.swing.*;
@@ -59,7 +59,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static JFrame application;
@@ -80,7 +79,7 @@ public class Main {
         InMemorySessionDataAccessObject sessionDAO = dataAccess.getSessionDAO();
 
         // Initialize Application
-        initializeApplication();
+        initializeApplication(employeeDAO, courseDAO, eventDAO, sessionDAO);
 
         // Log In
         curUserState = new UserState("","");
@@ -96,7 +95,10 @@ public class Main {
         application.setVisible(true);
     }
 
-    private static void initializeApplication() {
+    private static void initializeApplication(InMemoryEmployeeDataAccessObject employeeDAO,
+                                              InMemoryCourseDataAccessObject courseDAO,
+                                              InMemoryEventDataAccessObject eventDAO,
+                                              InMemorySessionDataAccessObject sessionDAO) {
         // We use JFrame to Build the main program window.
         // The main panel contains cards and layout.
 
@@ -121,7 +123,7 @@ public class Main {
         application.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                boolean saveSuccessful = dataAccess.saveToDatabase();
+                boolean saveSuccessful = dataAccess.saveToDatabase(courseDAO, employeeDAO, eventDAO, sessionDAO);
 
                 // If save is not successful, show a confirmation dialog
                 if (!saveSuccessful) {
@@ -166,8 +168,8 @@ public class Main {
 
 
         // Instantiate MyCoursesView
-        MyCoursesViewInstructor myCoursesViewAdmin = InstantiateMyCoursesInsView(employeeDAO);
-        addView(myCoursesViewAdmin, myCoursesViewAdmin.viewName);
+        MyCoursesViewInstructor myCoursesViewInstructor = InstantiateMyCoursesInsView(employeeDAO);
+        addView(myCoursesViewInstructor, myCoursesViewInstructor.viewName);
 
         MyCoursesViewTA myCoursesViewTA = InstantiateMyCoursesTAView(employeeDAO);
         addView(myCoursesViewTA, myCoursesViewTA.viewName);
@@ -225,7 +227,7 @@ public class Main {
 
 
         // Link Views
-        dashboardView.linkViews(myCoursesViewAdmin.viewName, myCoursesViewTA.viewName, myEventsViewInstructor.viewName,
+        dashboardView.linkViews(myCoursesViewInstructor.viewName, myCoursesViewTA.viewName, myEventsViewInstructor.viewName,
                 myEventsViewTA.viewName, mySessionsView.viewName, loginView.viewName);
 
         // Link Intro Views
@@ -233,12 +235,12 @@ public class Main {
         signUpView.linkViews(loginView.viewName);
 
         // Link Course Views
-        myCoursesViewAdmin.linkViews(dashboardView.viewName, createCourseView.viewName, removeFromCourseView.viewName,
+        myCoursesViewInstructor.linkViews(dashboardView.viewName, createCourseView.viewName, removeFromCourseView.viewName,
                 enrollView.viewName);
         myCoursesViewTA.linkViews(dashboardView.viewName);
-        createCourseView.linkViews(myCoursesViewAdmin.viewName);
-        removeFromCourseView.linkViews(myCoursesViewAdmin.viewName);
-        enrollView.linkViews(myCoursesViewAdmin.viewName);
+        createCourseView.linkViews(myCoursesViewInstructor.viewName);
+        removeFromCourseView.linkViews(myCoursesViewInstructor.viewName);
+        enrollView.linkViews(myCoursesViewInstructor.viewName);
 
         // Link Event Views
         myEventsViewInstructor.linkViews(createEventView.viewName, removeFromEventView.viewName, addToEventView.viewName,

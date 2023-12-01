@@ -1,4 +1,4 @@
-package view.SessionViews;
+package view.session_views;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_session.CreateSessionController;
