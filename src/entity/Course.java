@@ -13,7 +13,8 @@ public class Course {
         this.courseCode = courseCode;
         this.admin = admin;
         this.staff = new HashMap<>();
-        staff.put(admin.getUserID(), admin);
+        staff.put(admin.getUID(), admin);
+        admin.addCourse(this);
 
         this.myEvents = new HashMap<>();
     }
@@ -43,7 +44,7 @@ public class Course {
             return false;
         } else {
             // Otherwise, add the employee to the staff
-            staff.put(employee.getUserID(), employee);
+            staff.put(employee.getUID(), employee);
 
             // If the course is not already in the employee's list of courses, add the course to the list
             if (!employee.containsCourse(this)) {
@@ -64,7 +65,7 @@ public class Course {
      * @return true if the employee was successfully removed, false if the employee is not in the staff of the course.
      */
     public boolean removeStaff(Employee employee) {
-        String userID = employee.getUserID();
+        String userID = employee.getUID();
 
         // If the employee is in the staff, remove the employee from the staff.
         if (staff.containsKey(userID)) {
@@ -87,7 +88,7 @@ public class Course {
     }
 
     public boolean containsStaff(Employee employee) {
-        return staff.containsKey(employee.getUserID());
+        return staff.containsKey(employee.getUID());
     }
 
     public boolean addEvent(Event event) {
@@ -131,3 +132,5 @@ public class Course {
         return new HashMap<>(myEvents);
     }
 }
+
+

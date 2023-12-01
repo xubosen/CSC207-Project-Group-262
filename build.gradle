@@ -1,0 +1,31 @@
+// This file is for the library imports that we can't get through regular means.
+
+// Seems to be just common build logic for java and maybe intelij idea.
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+// This produces certain files when you build with gradle it seems.
+repositories {
+    mavenCentral()
+}
+
+// This would be the different library imports.
+dependencies {
+    implementation 'org.mongodb:mongo-java-driver:3.12.14'
+    implementation 'org.mongodb:mongodb-driver-core:4.10.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'org.json:json:20230618'
+    implementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
+}
+
+// This just figures out which directory is marked as src too allow the imports to work in there.
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/']
+        }
+    }
+}
