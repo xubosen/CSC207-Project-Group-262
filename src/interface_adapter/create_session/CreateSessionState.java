@@ -1,108 +1,153 @@
 package interface_adapter.create_session;
 
+import java.time.LocalDateTime;
+
 public class CreateSessionState {
+    private String sessionID = "";
+    private String sessionName = "";
+    private String description = "";
+    private String location = "";
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String parentEventID = "";
+    private boolean sessionCreationSuccessful = false;
+    private String sessionCreationResponseMessage = "";
 
-    private String eventName = "";
-    private String eventID = "";
-    private boolean eventCreationSuccessful = false;
-    private String eventCreationResponseMessage = "";
-//     TODO: Want to check whether they want to create tutorial or Lecture.
-    private String eventType = "";
-
-    /**
-     * Initializer for CreateEventState when you have a pre-existing CreateEventState.
-     * @param copy The Pre-existing CreateEventState.
-     */
     public CreateSessionState(CreateSessionState copy) {
-        eventName = copy.eventName;
-        eventID = copy.eventID;
-        eventCreationSuccessful = copy.eventCreationSuccessful;
-        eventCreationResponseMessage = copy.eventCreationResponseMessage;
-        eventType = copy.eventType;
+        this.sessionID = copy.getSessionID();
+        this.sessionName = copy.getSessionName();
+        this.description = copy.getDescription();
+        this.location = copy.getLocation();
+        this.startTime = copy.getStartTime();
+        this.endTime = copy.getEndTime();
+        this.parentEventID = copy.getParentEventID();
+        this.sessionCreationSuccessful = copy.isSessionCreationSuccessful();
+        this.sessionCreationResponseMessage = copy.getSessionCreationResponseMessage();
     }
 
     /**
      * Initializer if there is no input.
      */
-    public CreateSessionState() {}
+    public CreateSessionState() {
+    }
 
-    /**
-     * Getter for eventID variable.
-     * @return eventID
-     */
-    public String getEventID() {
-        return eventID;
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public void setSessionName(String sessionName) {
+        this.sessionName = sessionName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Setter method to change the eventID attribute.
-     * @param eventCreated
+     * Gets the location of the session.
+     * @return The location of the session.
      */
-    public void setEventID(String eventCreated) {
-        this.eventID = eventID;
+    public String getLocation() {
+        return location;
     }
 
     /**
-     * Getter method to retrieve the event name.
-     * @return event name state
+     * Sets the location of the session.
+     * @param location The location of the session.
      */
-    public String getEventName() {
-        return eventName;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**
-     * Setter method to set event name.
-     * @param eventName What you want the created event's name to be
+     * Gets the start time of the session.
+     * @return The start time of the session.
      */
-    public void setCourseName(String eventName) {
-        this.eventName = eventName;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     /**
-     * Getter for whether event creation was successful.
-     * @return Whether course was created or not
+     * Sets the start time of the session.
+     * @param startTime The start time of the session.
      */
-    public boolean isEventCreationSuccessful() {
-        return eventCreationSuccessful;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     /**
-     * Setter method for boolean on whether event was created successfully.
-     * @param eventCreationSuccessful
+     * Gets the end time of the session.
+     * @return The end time of the session.
      */
-    public void setEventCreationSuccessful(boolean eventCreationSuccessful) {
-        this.eventCreationSuccessful = eventCreationSuccessful;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     /**
-     * Getter for the response message.
-     * @return Message on event creation status
+     * Sets the end time of the session.
+     * @param endTime The end time of the session.
      */
-    public String getEventCreationResponseMessage() {
-        return eventCreationResponseMessage;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     /**
-     * Setter for changing the event creation message.
-     * @param eventCreationResponseMessage The messaage you want to output for whether course creation worked.
+     * Gets the parent event ID of the session.
+     * @return The parent event ID of the session.
      */
-    public void setEventCreationResponseMessage(String eventCreationResponseMessage) {
-        this.eventCreationResponseMessage = eventCreationResponseMessage;
+    public String getParentEventID() {
+        return parentEventID;
     }
 
     /**
-     * Getter for eventType variable.
-     * @return eventType
+     * Sets the parent event ID of the session.
+     * @param parentEventID The parent event ID of the session.
      */
-    public String getEventType() {
-        return eventType;
+    public void setParentEventID(String parentEventID) {
+        this.parentEventID = parentEventID;
     }
 
     /**
-     * Setter method to change the eventID attribute.
-     * @param eventType
+     * Gets whether the session creation was successful.
+     * @return Whether the session creation was successful.
      */
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public boolean isSessionCreationSuccessful() {
+        return sessionCreationSuccessful;
+    }
+
+    /**
+     * Sets whether the session creation was successful.
+     * @param sessionCreationSuccessful Whether the session creation was successful.
+     */
+    public void setSessionCreationSuccessful(boolean sessionCreationSuccessful) {
+        this.sessionCreationSuccessful = sessionCreationSuccessful;
+    }
+
+    /**
+     * Gets the session creation response message.
+     * @return The session creation response message.
+     */
+    public String getSessionCreationResponseMessage() {
+        return sessionCreationResponseMessage;
+    }
+
+    /**
+     * Sets the session creation response message.
+     * @param sessionCreationResponseMessage The session creation response message.
+     */
+    public void setSessionCreationResponseMessage(String sessionCreationResponseMessage) {
+        this.sessionCreationResponseMessage = sessionCreationResponseMessage;
     }
 }

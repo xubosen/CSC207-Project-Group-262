@@ -1,5 +1,6 @@
 package view.CourseViews;
 
+import interface_adapter.UserState;
 import interface_adapter.enroll.EnrollViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.enroll.EnrollController;
@@ -25,7 +26,7 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     private EnrollViewModel enrollViewModel;
     private ViewManagerModel viewManagerModel;
     private EnrollController enrollController;
-    private String curUserID;
+    private UserState curUserState;
     
 
     // Variables for setting up UI
@@ -44,11 +45,11 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
     
 
     public EnrollView(EnrollController enrollController, EnrollViewModel enrollViewModel,
-                      ViewManagerModel viewManagerModel, String curUserID){
+                      ViewManagerModel viewManagerModel, UserState curUserState){
         this.enrollController = enrollController;
         this.enrollViewModel = enrollViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.curUserID = curUserID;
+        this.curUserState = curUserState;
         enrollViewModel.addPropertyChangeListener(this);
         setupUI();
     }
@@ -178,6 +179,7 @@ public class EnrollView extends JPanel implements ActionListener, PropertyChange
 
             String inviteeID = curState.getUserInvited();
             String courseCode = curState.getCourseCode();
+            String curUserID = curUserState.getUserID();
 
             enrollController.enroll(curUserID, inviteeID, courseCode);
 

@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 
 
 // TODO: Need to change this to not have a hard coded csc207 button and instead pull from the employees courses.
-public class MyCoursesViewAdmin extends JPanel implements ActionListener {
-    public final String viewName = "my courses view";
+public class MyCoursesViewInstructor extends JPanel implements ActionListener {
+    public final String viewName = "my courses instructor view";
     private final ViewManagerModel viewManagerModel;
 
     // Variables for UI elements
@@ -29,7 +29,7 @@ public class MyCoursesViewAdmin extends JPanel implements ActionListener {
 
 
 
-    public MyCoursesViewAdmin(ViewManagerModel viewManagerModel) {
+    public MyCoursesViewInstructor(ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);

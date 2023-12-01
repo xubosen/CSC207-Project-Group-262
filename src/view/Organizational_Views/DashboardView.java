@@ -6,13 +6,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
 
 public class DashboardView extends JPanel implements ActionListener {
 
     public final String viewName = "dashboard";
 
+    // Variables for functionality
     private final ViewManagerModel viewManagerModel;
+    private UserState userState;
+
+
+    // Variables for UI components
 
     private JLabel welcomeLabel; // Label for the welcome message
 
@@ -24,15 +30,18 @@ public class DashboardView extends JPanel implements ActionListener {
     private final JButton employeeInformationButton = new JButton("Employee Information");
 
     // Variables for linking to other views
-    private String myCoursesViewName;
-    private String myEventsViewName;
+    private String myCoursesInsViewName;
+    private String myCoursesTAViewName;
+    private String myEventsInsViewName;
+    private String myEventsTAViewName;
     private String mySessionsViewName;
     private String leaveRequestViewName;
     private String calendarViewName;
 
 
-    public DashboardView(ViewManagerModel viewManagerModel) {
+    public DashboardView(ViewManagerModel viewManagerModel, UserState userState) {
         this.viewManagerModel = viewManagerModel;
+        this.userState = userState;
 
         // Set layout to BoxLayout for horizontal alignment
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -79,11 +88,9 @@ public class DashboardView extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == coursesButton) {
-            viewManagerModel.setActiveView(myCoursesViewName);
-            viewManagerModel.firePropertyChanged();
+            setCoursesPage(userState.getUserType());
         } else if (e.getSource() == eventsButton) {
-            viewManagerModel.setActiveView(myEventsViewName);
-            viewManagerModel.firePropertyChanged();
+            setEventsPage(userState.getUserType());
         } else if (e.getSource() == sessionsButton) {
             viewManagerModel.setActiveView(mySessionsViewName);
             viewManagerModel.firePropertyChanged();
@@ -96,9 +103,34 @@ public class DashboardView extends JPanel implements ActionListener {
         }
     }
 
-    public void linkViews(String myCoursesViewName, String myEventsViewName, String mySessionsViewName) {
-        this.myCoursesViewName = myCoursesViewName;
-        this.myEventsViewName = myEventsViewName;
+    private void setCoursesPage(String userType) {
+        if (userType.equals("instructor")) {
+            viewManagerModel.setActiveView(myCoursesInsViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (userType.equals("ta")) {
+            viewManagerModel.setActiveView(myCoursesTAViewName);
+            viewManagerModel.firePropertyChanged();
+        }
+    }
+
+    private void setEventsPage(String userType) {
+        if (userType.equals("instructor")) {
+            viewManagerModel.setActiveView(myEventsInsViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (userType.equals("ta")) {
+            viewManagerModel.setActiveView(myEventsTAViewName);
+            viewManagerModel.firePropertyChanged();
+        }
+    }
+
+    public void linkViews(String myCoursesInstructorViewName, String myCoursesTAViewName,
+                          String myEventsInstructorViewName, String myEventsTAViewName,
+                          String mySessionsViewName) {
+
+        this.myCoursesInsViewName = myCoursesInstructorViewName;
+        this.myCoursesTAViewName = myCoursesTAViewName;
+        this.myEventsInsViewName = myEventsInstructorViewName;
+        this.myEventsTAViewName = myEventsTAViewName;
         this.mySessionsViewName = mySessionsViewName;
     }
 }

@@ -7,29 +7,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MyEventsView extends JPanel implements ActionListener {
-    public final String viewName = "my events";
+public class MyEventsViewTA extends JPanel implements ActionListener {
+    public final String viewName = "my events ta view";
     private final ViewManagerModel viewManagerModel;
 
     // Buttons
-    private final JButton createEventButton = new JButton("Create Event");
     private final JButton addToEventButton = new JButton("Add To Event");
     private final JButton removeFromEventButton = new JButton("Remove From Event");
     private final JButton backButton = new JButton("Back");
 
     // Variables for linking to other views
-    private String createEventViewName;
     private String addToEventViewName;
     private String removeFromEventViewName;
     private String dashboardViewName;
 
 
 
-    public MyEventsView(ViewManagerModel viewManagerModel) {
+    public MyEventsViewTA(ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);
-        makeCreateEventButton(gbc);
         makeAddToEventButton(gbc);
         makeRemoveFromEventButton(gbc);
         makeBackButton(gbc);
@@ -52,22 +49,10 @@ public class MyEventsView extends JPanel implements ActionListener {
         add(headingLabel, gbc);
     }
 
-    private void makeCreateEventButton(GridBagConstraints gbc) {
-        createEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        createEventButton.setPreferredSize(new Dimension(createEventButton.getPreferredSize().width, 150));
-        add(createEventButton, gbc);
-        createEventButton.addActionListener(this);
-    }
-
     private void makeAddToEventButton(GridBagConstraints gbc) {
         addToEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -79,7 +64,7 @@ public class MyEventsView extends JPanel implements ActionListener {
     private void makeRemoveFromEventButton(GridBagConstraints gbc) {
         removeFromEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -91,7 +76,7 @@ public class MyEventsView extends JPanel implements ActionListener {
     private void makeBackButton(GridBagConstraints gbc) {
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
@@ -102,10 +87,7 @@ public class MyEventsView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == createEventButton) {
-            viewManagerModel.setActiveView(createEventViewName);
-            viewManagerModel.firePropertyChanged();
-        } else if (e.getSource() == addToEventButton) {
+        if (e.getSource() == addToEventButton) {
             viewManagerModel.setActiveView(addToEventViewName);
             viewManagerModel.firePropertyChanged();
         } else if (e.getSource() == removeFromEventButton) {
@@ -117,9 +99,7 @@ public class MyEventsView extends JPanel implements ActionListener {
         }
     }
 
-    public void linkViews(String createEventViewName, String addToEventViewName, String removeFromEventViewName,
-                          String dashboardViewName) {
-        this.createEventViewName = createEventViewName;
+    public void linkViews(String addToEventViewName, String removeFromEventViewName, String dashboardViewName) {
         this.addToEventViewName = addToEventViewName;
         this.removeFromEventViewName = removeFromEventViewName;
         this.dashboardViewName = dashboardViewName;

@@ -1,6 +1,5 @@
 package use_case.create_session;
 
-import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.CalendarEvent;
@@ -35,21 +34,33 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
         CreateSessionOutputData output;
 
         // If the session already exists return false and the corresponding message in output data
-        if (!doesSessionExist(inputData)) {
+        if (doesSessionExist(inputData)) {
             output = new CreateSessionOutputData(false, "Session already exists.");
+        } else if (!eventsDAO.existsByID(inputData.getParentEventID())) {
+            output = new CreateSessionOutputData(false, "Parent event does not exist.");
+        } else if (inputData.getDateTimeSpan().getStart().isAfter(inputData.getDateTimeSpan().getEnd())) {
+            output = new CreateSessionOutputData(false, "Start time is after end time.");
+        } else if (inputData.getDateTimeSpan().getStart().isEqual(inputData.getDateTimeSpan().getEnd())) {
+            output = new CreateSessionOutputData(false, "Start time is equal to end time.");
+        } else if (!doesEventExist(inputData)){
+            output = new CreateSessionOutputData(false, "Parent event does not exist.");
         } else {
-            // Create the session
-            ClassSession newSession = makeSession(inputData);
-            sessionsDAO.save(newSession);
-            output = new CreateSessionOutputData(true, "Session created successfully");
-        }
+                // Create the session
+                ClassSession newSession = makeSession(inputData);
+                sessionsDAO.save(newSession);
+                output = new CreateSessionOutputData(true, "Session created successfully");
+            }
 
-        // Call the presenter to present the output data
-        createSessionPresenter.prepareView(output);
-    }
+            // Call the presenter to present the output data
+            createSessionPresenter.prepareView(output);
+        }
 
     private boolean doesSessionExist(CreateSessionInputData inputData) {
         return sessionsDAO.existsByID(inputData.getSessionID());
+    }
+
+    private boolean doesEventExist(CreateSessionInputData inputData) {
+        return eventsDAO.existsByID(inputData.getParentEventID());
     }
 
     private ClassSession makeSession(CreateSessionInputData inputData) {

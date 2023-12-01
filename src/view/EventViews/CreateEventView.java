@@ -1,5 +1,6 @@
 package view.EventViews;
 
+import interface_adapter.UserState;
 import interface_adapter.create_event.CreateEventController;
 import interface_adapter.create_event.CreateEventState;
 import interface_adapter.create_event.CreateEventViewModel;
@@ -23,6 +24,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
     private CreateEventViewModel createEventViewModel;
     private ViewManagerModel viewManagerModel;
     private CreateEventController createEventController;
+    private UserState curUserState;
 
 
     // Variables for setting up UI
@@ -46,11 +48,13 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
      * @param viewManagerModel Manages the current view to display
      */
     public CreateEventView(CreateEventController createEventController, CreateEventViewModel createEventViewModel,
-                            ViewManagerModel viewManagerModel){
+                           ViewManagerModel viewManagerModel, UserState curUserState){
         this.createEventController = createEventController;
         this.createEventViewModel = createEventViewModel;
         this.viewManagerModel = viewManagerModel;
         createEventViewModel.addPropertyChangeListener(this);
+
+        this.curUserState = curUserState;
         setupUI();
     }
 
@@ -61,7 +65,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputField();
         setUpErrorDisplayField();
 
         // Add components to UI
@@ -136,7 +140,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputField() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
@@ -156,7 +160,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
             @Override
             public void keyReleased(KeyEvent e) {
                 currentState.setEventID(eventIDTextField.getText());
-
                 createEventViewModel.setState(currentState);
             }
         });
@@ -173,7 +176,6 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
             @Override
             public void keyReleased(KeyEvent e) {
                 currentState.setEventName(eventNameTextField.getText());
-
                 createEventViewModel.setState(currentState);
             }
         });
@@ -239,18 +241,11 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
             String eventName = curState.getEventName();
             String eventType = curState.getEventType();
             String courseCode = curState.getCourseCode();
+            String curUserID = curUserState.getUserID();
 
-            String creatorID = "sim";
+            createEventController.createEvent(eventName, eventID, eventType, curUserID, courseCode);
 
-            System.out.println("Event ID: " + eventID);
-            System.out.println("Event Name: " + eventName);
-            System.out.println("Event Type: " + eventType);
-            System.out.println("Course Code: " + courseCode);
-            System.out.println("Creator ID: " + creatorID);
-
-            createEventController.createEvent(eventName, eventID, eventType, creatorID, courseCode);
-
-        // Close the window and return to the dashboard
+        // Close the window and return to my events view
         } else if (event.getSource() == close) {
             viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();

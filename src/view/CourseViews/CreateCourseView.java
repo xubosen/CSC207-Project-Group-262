@@ -1,5 +1,7 @@
 package view.CourseViews;
 
+import entity.User;
+import interface_adapter.UserState;
 import interface_adapter.create_course.CreateCourseController;
 import interface_adapter.create_course.CreateCourseState;
 import interface_adapter.create_course.CreateCourseViewModel;
@@ -22,7 +24,7 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
     private CreateCourseViewModel createCourseViewModel;
     private ViewManagerModel viewManagerModel;
     private CreateCourseController createCourseController;
-    private String curUserID;
+    private UserState curUserState;
 
 
     // Variables for setting up UI
@@ -50,13 +52,13 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
      * @param viewManagerModel Manages the current view to display
      */
     public CreateCourseView(CreateCourseController createCourseController, CreateCourseViewModel createCourseViewModel,
-                      ViewManagerModel viewManagerModel, String curUserID){
+                      ViewManagerModel viewManagerModel, UserState curUserState){
         this.createCourseController = createCourseController;
         this.createCourseViewModel = createCourseViewModel;
         this.viewManagerModel = viewManagerModel;
         createCourseViewModel.addPropertyChangeListener(this);
 
-        this.curUserID = curUserID;
+        this.curUserState = curUserState;
 
         setupUI();
     }
@@ -186,8 +188,9 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
 
             String courseCode = curState.getCourseCreated();
             String courseName = curState.getCourseName();
+            String instructor = curUserState.getUserID();
 
-            createCourseController.createCourse(courseCode, courseName, curUserID);
+            createCourseController.createCourse(courseCode, courseName, instructor);
 
         // Close the window and return to the myCourses view
         } else if (event.getSource() == close) {

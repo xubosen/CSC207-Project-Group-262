@@ -102,8 +102,8 @@ public class MySessionsView extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == createSessionButton) {
-//            viewManagerModel.setActiveView(createSessionViewName);
-//            viewManagerModel.firePropertyChanged();
+            viewManagerModel.setActiveView(createSessionViewName);
+            viewManagerModel.firePropertyChanged();
         } else if (e.getSource() == inviteToSessionButton) {
             viewManagerModel.setActiveView(inviteToSessionViewName);
             viewManagerModel.firePropertyChanged();
