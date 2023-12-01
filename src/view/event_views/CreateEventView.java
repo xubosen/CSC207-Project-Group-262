@@ -190,8 +190,7 @@ public class CreateEventView extends JPanel implements ActionListener, PropertyC
 
             @Override
             public void keyReleased(KeyEvent e) {
-                currentState.setEventType(typeOfEventTextField.getText());
-                System.out.println("Event type: " + typeOfEventTextField.getText());
+                currentState.setEventType(typeOfEventTextField.getText().toLowerCase());
                 createEventViewModel.setState(currentState);
             }
         });

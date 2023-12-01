@@ -42,4 +42,12 @@ public class InMemoryEventDataAccessObject {
         }
         return false;
     }
+
+    public Set<String> getAllIDs() {
+        return events.keySet();
+    }
+
+    public HashMap<String, Event> getEvents() {
+        return new HashMap<>(events);
+    }
 }

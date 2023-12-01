@@ -2,6 +2,7 @@ package app;
 
 // Data Access
 import data_access.DataAccessInterface;
+import data_access.file_dao.MongoDBDAO;
 import data_access.in_memory_dao.*;
 import data_access.HardCodedDAO;
 
@@ -123,7 +124,12 @@ public class Main {
         application.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                boolean saveSuccessful = dataAccess.saveToDatabase(courseDAO, employeeDAO, eventDAO, sessionDAO);
+                boolean saveSuccessful = false;
+                try {
+                    saveSuccessful = dataAccess.saveToDatabase(courseDAO, employeeDAO, eventDAO, sessionDAO);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 // If save is not successful, show a confirmation dialog
                 if (!saveSuccessful) {
@@ -137,14 +143,18 @@ public class Main {
                         // if the user chooses no, keep the window open
                         application.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                     }
+                } else {
+                    // if the save is successful, close the window
+                    application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    application.dispose();
                 }
             }
         });
     }
 
-    private static void readFromDataAccess() {
-        // TODO: Change this to read from mongodb
-        dataAccess = new HardCodedDAO();
+    private static void readFromDataAccess() throws IOException {
+//        dataAccess = new HardCodedDAO();
+        dataAccess = new MongoDBDAO();
     }
 
     private static String initializeViews(InMemorySessionDataAccessObject sessionDAO,
@@ -243,7 +253,7 @@ public class Main {
         enrollView.linkViews(myCoursesViewInstructor.viewName);
 
         // Link Event Views
-        myEventsViewInstructor.linkViews(createEventView.viewName, removeFromEventView.viewName, addToEventView.viewName,
+        myEventsViewInstructor.linkViews(createEventView.viewName, addToEventView.viewName, removeFromEventView.viewName,
                 dashboardView.viewName);
         myEventsViewTA.linkViews(dashboardView.viewName, addToEventView.viewName, removeFromEventView.viewName);
         createEventView.linkViews(myEventsViewInstructor.viewName);

@@ -42,4 +42,8 @@ public class InMemoryCourseDataAccessObject {
         }
         return false;
     }
+
+    public HashMap<String, Course> getCourses() {
+        return new HashMap<>(courses);
+    }
 }

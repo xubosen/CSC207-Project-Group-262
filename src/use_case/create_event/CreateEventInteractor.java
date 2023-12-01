@@ -60,12 +60,12 @@ public class CreateEventInteractor implements CreateEventInputBoundary {
             Instructor curUser = (Instructor) employeesDAO.getByID(inputData.getCreatorID());
 
 
-            if (inputData.getTypeOfEvent().equals("Lecture")) {
+            if (inputData.getTypeOfEvent().equals("lecture")) {
                 Lecture newLecture = new Lecture(inputData.getEventName(), inputData.getEventID(), course);
                 eventsDAO.addEvent(newLecture);
                 output = new CreateEventOutputData(true, "Event created successfully");
 
-            } else if (inputData.getTypeOfEvent().equals("Tutorial")){
+            } else if (inputData.getTypeOfEvent().equals("tutorial")){
                 Tutorial newTutorial = new Tutorial(inputData.getEventName(), inputData.getEventID(), course);
                 eventsDAO.addEvent(newTutorial);
                 output = new CreateEventOutputData(true, "Event created successfully");

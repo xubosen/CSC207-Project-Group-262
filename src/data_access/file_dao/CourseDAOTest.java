@@ -1,11 +1,12 @@
-package data_access;
+package data_access.file_dao;
 
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -23,11 +24,11 @@ public class CourseDAOTest {
         // For some reason buffered reader can't read the file.
         FileCourseDataAccessObject fileCourseDataAccessObject = new FileCourseDataAccessObject("./courseInformation.csv",
                 new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()));
-        // Updates current alexander to have MAT157 as one of their courses.
-        employeeDataAccessObject.save(alexander);
-
-        // Updates courses to have MAT157 included.
-        fileCourseDataAccessObject.save(mat157);
+//        // Updates current alexander to have MAT157 as one of their courses.
+//        employeeDataAccessObject.save(alexander);
+//
+//        // Updates courses to have MAT157 included.
+//        fileCourseDataAccessObject.save(mat157);
     }
 
     @Test
