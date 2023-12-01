@@ -2,8 +2,8 @@ package use_case.position_checking;
 
 import entity.Course;
 import entity.Employee;
-import data_access.InMemoryCourseDataAccessObject;
-import data_access.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 
 public class PositionCheckingInteractor implements PositionCheckingInputBoundary{
     private InMemoryEmployeeDataAccessObject employeeDAO;
@@ -19,7 +19,7 @@ public class PositionCheckingInteractor implements PositionCheckingInputBoundary
     public void checkIsAdmin(PositionCheckingInputData inputData) {
         Course curCourse = courseDAO.getByID(inputData.getCourseCode());
         Employee curEmployee = employeeDAO.getByID(inputData.getUserID());
-        boolean isAdmin = curCourse.getAdmin().getUserID().equals(curEmployee.getUserID());
+        boolean isAdmin = curCourse.getAdmin().getUID().equals(curEmployee.getUID());
         presenter.presentIsAdmin(isAdmin);
     }
 }

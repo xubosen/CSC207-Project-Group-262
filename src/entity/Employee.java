@@ -2,8 +2,6 @@ package entity;
 
 import java.util.HashMap;
 
-// TODO : Implement the abstract methods here so the subclasses inherits them easily.
-
 /**
  *
  */
@@ -12,6 +10,7 @@ public class Employee {
     private String name;
     private String email;
     private String password;
+    protected String role;
     private HashMap<String, Course> myCourses = new HashMap<String, Course>();
     private HashMap<String, ClassSession> mySessions = new HashMap<String, ClassSession>();
 
@@ -22,6 +21,7 @@ public class Employee {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = "employee";
     }
 
     public String getUID() {
@@ -50,8 +50,6 @@ public class Employee {
     /**
      * Adds a session to the employee's list of sessions. If the employee is not already in the session's list of staff,
      * add the employee to the session's list of staff.
-     *
-     * TODO: Discuss whether we want to allow sessions to be added even if they conflict with existing sessions
      *
      * @param curSession The session to be added.
      * @return true if the session was successfully added, false otherwise.
@@ -181,4 +179,11 @@ public class Employee {
         return myCalendar;
     }
 
+    /**
+     * Returns the type of the employee.
+     * @return The type of the employee as a String.
+     */
+    public String getType() {
+        return this.role;
+    }
 }

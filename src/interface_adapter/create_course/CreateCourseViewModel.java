@@ -8,8 +8,6 @@ public class CreateCourseViewModel extends ViewModel {
     public final String CREATE_COURSE_BUTTON_LABEL = "Create Course";
     public final String CLOSE_BUTTON_LABEL = "Close";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    // TODO: complete the todo of asking simon inside the CreateCourseState Class
     private CreateCourseState state = new CreateCourseState();
     public CreateCourseViewModel() {
         super("create course view");

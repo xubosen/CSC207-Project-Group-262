@@ -1,7 +1,7 @@
 package use_case.remove_from_session;
 
-import data_access.InMemoryEmployeeDataAccessObject;
-import data_access.InMemorySessionDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.ClassSession;
 import entity.Employee;
 
@@ -33,7 +33,7 @@ public class RemoveFromSessionInteractor implements RemoveFromSessionInputBounda
 
         // Check if the employee is in the session
         Employee curEmployee = employeeDAO.getByID(employeeId);
-        ClassSession curSession = sessionDAO.getEvent(inputData.getSessionId());
+        ClassSession curSession = sessionDAO.getByID(inputData.getSessionId());
         if (!curSession.containsStaff(curEmployee)) {
             RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(false,
                     "Employee is not in the session");

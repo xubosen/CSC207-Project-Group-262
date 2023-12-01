@@ -24,6 +24,14 @@ public class RemoveFromSessionState {
         this.userRemoved = userRemoved;
     }
 
+    public String getSessionRemovedFrom() {
+        return sessionRemovedFrom;
+    }
+
+    public void setSessionRemovedFrom(String sessionRemovedFrom) {
+        this.sessionRemovedFrom = sessionRemovedFrom;
+    }
+
     public boolean isRemoveSuccessful() {
         return this.removeSuccessful;
     }
@@ -38,13 +46,5 @@ public class RemoveFromSessionState {
 
     public void setRemoveResponseMessage(String removeResponseMessage) {
         this.removeResponseMessage = removeResponseMessage;
-    }
-
-    public String getSessionRemovedFrom() {
-        return sessionRemovedFrom;
-    }
-
-    public void setSessionRemovedFrom(String sessionRemovedFrom) {
-        this.sessionRemovedFrom = sessionRemovedFrom;
     }
 }

@@ -2,8 +2,8 @@ package use_case.enroll;
 
 import entity.Employee;
 import entity.Course;
-import data_access.InMemoryCourseDataAccessObject;
-import data_access.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 
 public class EnrollInteractor implements EnrollInputBoundary{
 
@@ -22,17 +22,21 @@ public class EnrollInteractor implements EnrollInputBoundary{
         public void enroll(EnrollInputData inputData) {
             EnrollOutputData output;
 
-            // If the employee does not exist return false and a corresponding message in output data
+            // If the invitee does not exist return false and a corresponding message in output data
             if (! doesEmployeeExist(inputData)) {
-                output = new EnrollOutputData(false, "Employee does not exist");
+                output = new EnrollOutputData(false, "Invitee does not exist");
+
+            // If the invitor is not the admin of the course return false and a corresponding message in output data
+            } else if (!isUserAdmin(inputData)) {
+                output = new EnrollOutputData(false, "Access denied. You are not the admin of this course");
 
             // If the course does not exist return false and a corresponding message in output data
-            } else if (! doesCourseExist(inputData)) {
+            } else if (!doesCourseExist(inputData)) {
                 output = new EnrollOutputData(false, "Course does not exist");
 
             // If the employee exists and the course exists, try to add the employee to the course
             } else {
-                Employee curEmployee = getEmployeeFromInputData(inputData);
+                Employee curEmployee = employeesDAO.getByID(inputData.getInviteeID());
                 Course curCourse = getCourseFromInputData(inputData);
 
                 // Try to add the employee to the course
@@ -54,11 +58,15 @@ public class EnrollInteractor implements EnrollInputBoundary{
         }
 
         private boolean doesEmployeeExist(EnrollInputData inputData) {
-            return employeesDAO.existsByID(inputData.getUserID());
+            return employeesDAO.existsByID(inputData.getInviteeID());
         }
 
-        private Employee getEmployeeFromInputData(EnrollInputData inputData) {
-            return employeesDAO.getByID(inputData.getUserID());
+        private boolean isUserAdmin(EnrollInputData inputData) {
+            Employee curEmployee = employeesDAO.getByID(inputData.getInviteeID());
+            Course curCourse = getCourseFromInputData(inputData);
+            String curEmployeeID = curEmployee.getUID();
+            String curCourseAdminID = curCourse.getAdmin().getUID();
+            return curEmployeeID.equals(curCourseAdminID);
         }
 
         private boolean doesCourseExist(EnrollInputData inputData) {
