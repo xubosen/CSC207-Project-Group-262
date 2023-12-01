@@ -1,7 +1,8 @@
 package data_access;
 
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import entity.*;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class JsonToSession {
     private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
@@ -64,7 +64,7 @@ public class JsonToSession {
 
         ArrayList<String> listTimeSpan = arrayListFromKey(calEventKey);
 
-        Event event = inMemoryEventDataAccessObject.getEvent(eventID);
+        Event event = inMemoryEventDataAccessObject.getByID(eventID);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CalendarEvent calendarEvent = getCalendarEvent(listTimeSpan, formatter);
