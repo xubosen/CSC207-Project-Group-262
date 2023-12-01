@@ -16,6 +16,9 @@ import interface_adapter.enroll.*;
 import interface_adapter.get_courses.GetCoursesController;
 import interface_adapter.get_courses.GetCoursesPresenter;
 import interface_adapter.get_courses.GetCoursesViewModel;
+import interface_adapter.get_events.GetEventController;
+import interface_adapter.get_events.GetEventPresenter;
+import interface_adapter.get_events.GetEventViewModel;
 import interface_adapter.get_sessions.GetSessionsController;
 import interface_adapter.get_sessions.GetSessionsPresenter;
 import interface_adapter.get_sessions.GetSessionsViewModel;
@@ -33,6 +36,7 @@ import use_case.create_event.CreateEventInteractor;
 import use_case.create_session.CreateSessionInteractor;
 import use_case.enroll.EnrollInteractor;
 import use_case.get_courses.GetCoursesInteractor;
+import use_case.get_events.GetEventInteractor;
 import use_case.get_sessions.GetSessionsInteractor;
 import use_case.invite_to_session.InviteToSessionInteractor;
 import use_case.log_in.LoginInteractor;
@@ -153,8 +157,8 @@ public class Main {
     }
 
     private static void readFromDataAccess() throws IOException {
-//        dataAccess = new HardCodedDAO();
-        dataAccess = new MongoDBDAO();
+        dataAccess = new HardCodedDAO();
+//        dataAccess = new MongoDBDAO();
     }
 
     private static String initializeViews(InMemorySessionDataAccessObject sessionDAO,
@@ -199,10 +203,10 @@ public class Main {
 
 
         // Initialize MyEvents view
-        MyEventsViewInstructor myEventsViewInstructor = new MyEventsViewInstructor(viewManagerModel);
+        MyEventsViewInstructor myEventsViewInstructor = instantiateMyEventsInstructorUseCase(employeeDAO);
         addView(myEventsViewInstructor, myEventsViewInstructor.viewName);
 
-        MyEventsViewTA myEventsViewTA = new MyEventsViewTA(viewManagerModel);
+        MyEventsViewTA myEventsViewTA = instantiateMyEventsTAUseCase(employeeDAO);
         addView(myEventsViewTA, myEventsViewTA.viewName);
 
         // Instantiate CreateEventUseCaseView
@@ -255,7 +259,7 @@ public class Main {
         // Link Event Views
         myEventsViewInstructor.linkViews(createEventView.viewName, addToEventView.viewName, removeFromEventView.viewName,
                 dashboardView.viewName);
-        myEventsViewTA.linkViews(dashboardView.viewName, addToEventView.viewName, removeFromEventView.viewName);
+        myEventsViewTA.linkViews(dashboardView.viewName);
         createEventView.linkViews(myEventsViewInstructor.viewName);
         removeFromEventView.linkViews(myEventsViewInstructor.viewName);
         addToEventView.linkViews(myEventsViewInstructor.viewName);
@@ -350,7 +354,25 @@ public class Main {
         return createCourseView;
     }
 
+    private static MyEventsViewInstructor instantiateMyEventsInstructorUseCase(InMemoryEmployeeDataAccessObject employeeDAO) {
+        GetEventViewModel getEventViewModel = new GetEventViewModel();
+        GetEventPresenter getEventPresenter = new GetEventPresenter(getEventViewModel);
+        GetEventInteractor getEventInteractor = new GetEventInteractor(getEventPresenter, employeeDAO);
+        GetEventController getEventController = new GetEventController(getEventInteractor);
+        MyEventsViewInstructor myEventsViewInstructor = new MyEventsViewInstructor(viewManagerModel, getEventController,
+                getEventViewModel, curUserState);
+        return myEventsViewInstructor;
+    }
 
+    private static MyEventsViewTA instantiateMyEventsTAUseCase(InMemoryEmployeeDataAccessObject employeeDAO) {
+        GetEventViewModel getEventViewModel = new GetEventViewModel();
+        GetEventPresenter getEventPresenter = new GetEventPresenter(getEventViewModel);
+        GetEventInteractor getEventInteractor = new GetEventInteractor(getEventPresenter, employeeDAO);
+        GetEventController getEventController = new GetEventController(getEventInteractor);
+        MyEventsViewTA myEventsViewTA = new MyEventsViewTA(viewManagerModel, getEventController,
+                getEventViewModel);
+        return myEventsViewTA;
+    }
 
     private static EventAdditionView instantiateEventAdditionUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
                                                                      InMemoryEventDataAccessObject eventDAO) {
