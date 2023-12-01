@@ -89,4 +89,10 @@ public class HardCodedDAO implements DataAccessInterface{
     public InMemorySessionDataAccessObject getSessionDAO() {
         return sessionDAO;
     }
+
+    @Override
+    public boolean saveToDatabase() {
+        System.out.println("Saving unsuccessful!");
+        return false;
+    }
 }

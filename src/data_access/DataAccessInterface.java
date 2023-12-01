@@ -11,4 +11,6 @@ public interface DataAccessInterface {
     public InMemoryEventDataAccessObject getEventDAO();
     public InMemorySessionDataAccessObject getSessionDAO();
 
+    public boolean saveToDatabase();
+
 }

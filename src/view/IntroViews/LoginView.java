@@ -48,7 +48,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     final JButton logIn;
     final JButton signUp;
-    final JButton saveAndClose;
 
     // Variables for linking to other views
     private String dashboardViewName;
@@ -89,12 +88,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         buttons.add(logIn);
         signUp = new JButton(loginViewModel.SIGNUP_BUTTON_LABEL);
         buttons.add(signUp);
-        saveAndClose = new JButton("Save and Close");
-        buttons.add(saveAndClose);
 
         logIn.addActionListener(this);
         signUp.addActionListener(this);
-        saveAndClose.addActionListener(this);
 
         usernameInputField.addKeyListener(new KeyListener() {
             @Override
@@ -202,9 +198,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             // Switch to the sign up view
             viewManagerModel.setActiveView(signUpViewName);
             viewManagerModel.firePropertyChanged();
-        } else if (evt.getSource() == saveAndClose) {
-            // Handle cancel action: Close the window
-            closeWindow();
         }
     }
 
