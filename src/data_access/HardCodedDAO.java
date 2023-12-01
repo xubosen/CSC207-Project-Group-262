@@ -6,6 +6,7 @@ import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class HardCodedDAO implements DataAccessInterface{
@@ -50,6 +51,9 @@ public class HardCodedDAO implements DataAccessInterface{
         csc207.addStaff(ta2);
         csc207.addStaff(ta3);
 
+        mat157.addStaff(ta1);
+        mat157.addStaff(ta2);
+        mat157.addStaff(ta3);
         mat157.addStaff(ta4);
 
         // Create some events & add some employees to them
@@ -70,8 +74,16 @@ public class HardCodedDAO implements DataAccessInterface{
         TS2.addStaff(ta2);
 
         // Create some sessions & add some employees to them
+        LocalDateTime start = LocalDateTime.of(2020, 1, 1, 12, 0);
+        LocalDateTime end = LocalDateTime.of(2020, 1, 1, 13, 0);
+        DateTimeSpan dateTimeSpan = new DateTimeSpan(start, end);
+        CalendarEvent calendarEvent = new CalendarEvent("CSC207 - Lecture Session 1", "CSC207-LEC0101",
+                dateTimeSpan);
+        ClassSession session1 = new ClassSession("111", "CSC207-LEC0101", calendarEvent, "here",
+                LS1);
+        sessionDAO.addSession(session1);
 
-
+        session1.addStaff(simon);
     }
 
     public InMemoryEmployeeDataAccessObject getEmployeeDAO() {

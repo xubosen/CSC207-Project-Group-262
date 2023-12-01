@@ -15,6 +15,9 @@ import interface_adapter.enroll.*;
 import interface_adapter.get_courses.GetCoursesController;
 import interface_adapter.get_courses.GetCoursesPresenter;
 import interface_adapter.get_courses.GetCoursesViewModel;
+import interface_adapter.get_sessions.GetSessionsController;
+import interface_adapter.get_sessions.GetSessionsPresenter;
+import interface_adapter.get_sessions.GetSessionsViewModel;
 import interface_adapter.invite_to_session.*;
 import interface_adapter.login.*;
 import interface_adapter.remove_from_course.*;
@@ -29,6 +32,7 @@ import use_case.create_event.CreateEventInteractor;
 import use_case.create_session.CreateSessionInteractor;
 import use_case.enroll.EnrollInteractor;
 import use_case.get_courses.GetCoursesInteractor;
+import use_case.get_sessions.GetSessionsInteractor;
 import use_case.invite_to_session.InviteToSessionInteractor;
 import use_case.log_in.LoginInteractor;
 import use_case.remove_from_course.RemoveFromCourseInteractor;
@@ -165,7 +169,7 @@ public class Main {
         MyCoursesViewInstructor myCoursesViewAdmin = InstantiateMyCoursesInsView(employeeDAO);
         addView(myCoursesViewAdmin, myCoursesViewAdmin.viewName);
 
-        MyCoursesViewTA myCoursesViewTA = new MyCoursesViewTA(viewManagerModel);
+        MyCoursesViewTA myCoursesViewTA = InstantiateMyCoursesTAView(employeeDAO);
         addView(myCoursesViewTA, myCoursesViewTA.viewName);
 
         // Instantiate CreateCourseUseCaseView
@@ -204,7 +208,7 @@ public class Main {
 
 
         // Initialize my Sessions view
-        MySessionsView mySessionsView = new MySessionsView(viewManagerModel);
+        MySessionsView mySessionsView = instantiateMySessionsUseCase(employeeDAO);
         addView(mySessionsView, mySessionsView.viewName);
 
         // Instantiate CreateSessionUseCaseView
@@ -287,6 +291,16 @@ public class Main {
         return myCoursesViewInstructor;
     }
 
+    private static MyCoursesViewTA InstantiateMyCoursesTAView(InMemoryEmployeeDataAccessObject employeeDAO) {
+        GetCoursesViewModel getCoursesViewModel = new GetCoursesViewModel();
+        GetCoursesPresenter getCoursesPresenter = new GetCoursesPresenter(getCoursesViewModel);
+        GetCoursesInteractor getCoursesInteractor = new GetCoursesInteractor(getCoursesPresenter, employeeDAO);
+        GetCoursesController getCoursesController = new GetCoursesController(getCoursesInteractor);
+        MyCoursesViewTA myCoursesViewTA = new MyCoursesViewTA(viewManagerModel, getCoursesController,
+                getCoursesViewModel, curUserState);
+        return myCoursesViewTA;
+    }
+
     private static EnrollView instantiateEnrollUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
                                                        InMemoryCourseDataAccessObject courseDAO) {
         EnrollViewModel enrollViewModel = new EnrollViewModel();
@@ -366,6 +380,15 @@ public class Main {
         return removeFromEventView;
     }
 
+    private static MySessionsView instantiateMySessionsUseCase(InMemoryEmployeeDataAccessObject employeeDAO) {
+        GetSessionsViewModel getSessionsViewModel = new GetSessionsViewModel();
+        GetSessionsPresenter getSessionsPresenter = new GetSessionsPresenter(getSessionsViewModel);
+        GetSessionsInteractor getSessionsInteractor = new GetSessionsInteractor(getSessionsPresenter, employeeDAO);
+        GetSessionsController getSessionsController = new GetSessionsController(getSessionsInteractor);
+        MySessionsView mySessionsView = new MySessionsView(viewManagerModel, getSessionsController,
+                getSessionsViewModel, curUserState);
+        return mySessionsView;
+    }
 
     private static CreateSessionView instantiateCreateSessionUseCase(InMemoryEventDataAccessObject eventDAO,
                                                                      InMemorySessionDataAccessObject sessionDAO) {
