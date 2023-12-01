@@ -8,20 +8,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MyEventsView extends JPanel implements ActionListener {
-    public final String viewName = "my events view";
-    private final JButton lecturesButton = new JButton("Lectures");
-    private final JButton tutorialsButton = new JButton("Tutorials");
-    private final String createEventViewName = "create event view";
+    public final String viewName = "my events";
     private final ViewManagerModel viewManagerModel;
 
-    private final JButton backButton = new JButton("Back");
+    // Buttons
     private final JButton createEventButton = new JButton("Create Event");
+    private final JButton addToEventButton = new JButton("Add To Event");
+    private final JButton removeFromEventButton = new JButton("Remove From Event");
+    private final JButton backButton = new JButton("Back");
+
+    // Variables for linking to other views
+    private String createEventViewName;
+    private String addToEventViewName;
+    private String removeFromEventViewName;
+    private String dashboardViewName;
+
+
 
     public MyEventsView(ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);
-        makeEventButtons(gbc);
+        makeCreateEventButton(gbc);
+        makeAddToEventButton(gbc);
+        makeRemoveFromEventButton(gbc);
         makeBackButton(gbc);
     }
 
@@ -42,7 +52,7 @@ public class MyEventsView extends JPanel implements ActionListener {
         add(headingLabel, gbc);
     }
 
-    private void makeEventButtons(GridBagConstraints gbc) {
+    private void makeCreateEventButton(GridBagConstraints gbc) {
         createEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -52,26 +62,30 @@ public class MyEventsView extends JPanel implements ActionListener {
         createEventButton.setPreferredSize(new Dimension(createEventButton.getPreferredSize().width, 150));
         add(createEventButton, gbc);
         createEventButton.addActionListener(this);
+    }
 
-        lecturesButton.setFont(new Font("Arial", Font.PLAIN, 20));
+    private void makeAddToEventButton(GridBagConstraints gbc) {
+        addToEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
-        lecturesButton.setPreferredSize(new Dimension(lecturesButton.getPreferredSize().width, 150));
-        add(lecturesButton, gbc);
-        lecturesButton.addActionListener(this);
+        addToEventButton.setPreferredSize(new Dimension(addToEventButton.getPreferredSize().width, 150));
+        add(addToEventButton, gbc);
+        addToEventButton.addActionListener(this);
+    }
 
-        tutorialsButton.setFont(new Font("Arial", Font.PLAIN, 20));
+    private void makeRemoveFromEventButton(GridBagConstraints gbc) {
+        removeFromEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 0, 0);
-        tutorialsButton.setPreferredSize(new Dimension(tutorialsButton.getPreferredSize().width, 150));
-        add(tutorialsButton, gbc);
-        tutorialsButton.addActionListener(this);
+        removeFromEventButton.setPreferredSize(new Dimension(removeFromEventButton.getPreferredSize().width, 150));
+        add(removeFromEventButton, gbc);
+        removeFromEventButton.addActionListener(this);
     }
 
     private void makeBackButton(GridBagConstraints gbc) {
@@ -88,22 +102,26 @@ public class MyEventsView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == lecturesButton) {
-            System.out.println("Lectures button pressed");
-            viewManagerModel.setActiveView("event addition");
-            viewManagerModel.firePropertyChanged();
-            // Perform action for Lectures button
-        } else if (e.getSource() == tutorialsButton) {
-            System.out.println("Tutorials button pressed");
-            viewManagerModel.setActiveView("event addition");
-            viewManagerModel.firePropertyChanged();
-            // Perform action for Tutorials button
-        } else if (e.getSource() == backButton) {
-            viewManagerModel.setActiveView("dashboard");
-            viewManagerModel.firePropertyChanged();
-        } else if (e.getSource() == createEventButton) {
+        if (e.getSource() == createEventButton) {
             viewManagerModel.setActiveView(createEventViewName);
             viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == addToEventButton) {
+            viewManagerModel.setActiveView(addToEventViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == removeFromEventButton) {
+            viewManagerModel.setActiveView(removeFromEventViewName);
+            viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == backButton) {
+            viewManagerModel.setActiveView(dashboardViewName);
+            viewManagerModel.firePropertyChanged();
         }
+    }
+
+    public void linkViews(String createEventViewName, String addToEventViewName, String removeFromEventViewName,
+                          String dashboardViewName) {
+        this.createEventViewName = createEventViewName;
+        this.addToEventViewName = addToEventViewName;
+        this.removeFromEventViewName = removeFromEventViewName;
+        this.dashboardViewName = dashboardViewName;
     }
 }

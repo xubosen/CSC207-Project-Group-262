@@ -3,6 +3,7 @@ package interface_adapter.invite_to_session;
 
 public class InviteToSessionState {
     private String userInvited = "";
+    private String sessionID = "";
     private boolean inviteSuccessful = false;
     private String inviteResponseMessage = "";
 
@@ -10,6 +11,7 @@ public class InviteToSessionState {
         userInvited = copy.userInvited;
         inviteSuccessful = copy.inviteSuccessful;
         inviteResponseMessage = copy.inviteResponseMessage;
+        sessionID = copy.sessionID;
     }
 
     public InviteToSessionState () {}
@@ -20,6 +22,14 @@ public class InviteToSessionState {
 
     public void setUserInvited(String userInvited) {
         this.userInvited = userInvited;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
     }
 
     public boolean isInviteSuccessful() {

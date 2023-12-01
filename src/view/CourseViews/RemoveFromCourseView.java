@@ -21,22 +21,26 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
     public final String viewName = "Remove From Course";
     private RemoveFromCourseViewModel removeFromCourseViewModel;
     private ViewManagerModel viewManagerModel;
-    private String currentCourseViewName;
     private RemoveFromCourseController removeFromCourseController;
-    private String userToRemove = "";
+
 
     // Variables for setting up UI
     private JButton remove;
     private JButton close;
     private final String HEADING_TEXT = "Remove From Course";
-    private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
     private JTextField userToRemoveInputField = new JTextField(10);
+    private JTextField courseToRemoveFromInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
-    public RemoveFromCourseView(RemoveFromCourseController controller, RemoveFromCourseViewModel viewModel, ViewManagerModel viewManagerModel, String currentCourseViewName) {
+
+    // Variables for linking to other views
+    private String myCoursesViewName;
+
+
+    public RemoveFromCourseView(RemoveFromCourseController controller, RemoveFromCourseViewModel viewModel,
+                                ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
-        this.currentCourseViewName = currentCourseViewName;
         this.removeFromCourseController = controller;
         this.removeFromCourseViewModel = viewModel;
         removeFromCourseViewModel.addPropertyChangeListener(this);
@@ -51,14 +55,17 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputFields();
         setUpErrorDisplayField();
 
         // Add components to UI
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(userToRemoveInputField);
+
+        JPanel inputPanel = setUpInputFields();
+        mainPanel.add(inputPanel);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -76,6 +83,23 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel setUpInputFields() {
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+        JPanel userToRemovePanel = new JPanel();
+        userToRemovePanel.add(new JLabel("User to remove:"));
+        userToRemovePanel.add(userToRemoveInputField);
+        inputPanel.add(userToRemovePanel);
+
+        JPanel courseToRemoveFromPanel = new JPanel();
+        courseToRemoveFromPanel.add(new JLabel("Course to remove from:"));
+        courseToRemoveFromPanel.add(courseToRemoveFromInputField);
+        inputPanel.add(courseToRemoveFromPanel);
+
+        return inputPanel;
     }
 
     private JPanel setUpButtons() {
@@ -96,12 +120,14 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputFields() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
 
     private void setUpInputFieldFunctionality() {
+        RemoveFromCourseState currentState = removeFromCourseViewModel.getState();
+
         userToRemoveInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -112,8 +138,22 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
 
             @Override
             public void keyReleased(KeyEvent e) {
-                RemoveFromCourseState currentState = removeFromCourseViewModel.getState();
                 currentState.setUserRemoved(userToRemoveInputField.getText());
+                removeFromCourseViewModel.setState(currentState);
+            }
+        });
+
+        courseToRemoveFromInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                currentState.setCourseRemovedFrom(courseToRemoveFromInputField.getText());
                 removeFromCourseViewModel.setState(currentState);
             }
         });
@@ -127,18 +167,19 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        // When the user clicks the remove button, call the controller to try to remove the user from the current course
         if (event.getSource() == remove) {
-            String userToRemove = removeFromCourseViewModel.getState().getUserRemoved();
-            String courseCode = "001"; // TODO: get the courseCode of the Course the user is currently viewing
+            RemoveFromCourseState currentState = removeFromCourseViewModel.getState();
+            String userToRemove = currentState.getUserRemoved();
+            String courseCode = currentState.getCourseRemovedFrom();
+
             removeFromCourseController.removeFromCourse(userToRemove, courseCode);
 
-            // Close the window
+        // Close the window
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(currentCourseViewName);
+            viewManagerModel.setActiveView(myCoursesViewName);
             viewManagerModel.firePropertyChanged();
 
-            // Something went wrong. Throw an error.
+        // Something went wrong. Throw an error.
         } else {
             throw new RuntimeException("Something went wrong with the buttons");
         }
@@ -150,5 +191,9 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         RemoveFromCourseState curState = removeFromCourseViewModel.getState();
         errorDisplayField.setText(curState.getRemoveResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
+    }
+
+    public void linkViews(String myCoursesViewName) {
+        this.myCoursesViewName = myCoursesViewName;
     }
 }

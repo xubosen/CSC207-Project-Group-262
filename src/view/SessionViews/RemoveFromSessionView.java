@@ -94,15 +94,15 @@ public class RemoveFromSessionView extends JPanel implements ActionListener, Pro
         JPanel inputFieldPanel = new JPanel();
         inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel, BoxLayout.Y_AXIS));
 
-        JPanel courseCodePanel = new JPanel();
-        courseCodePanel.add(new JLabel("Session ID:"));
-        courseCodePanel.add(sessionIDInputField);
-        inputFieldPanel.add(courseCodePanel);
+        JPanel sessionIDPanel = new JPanel();
+        sessionIDPanel.add(new JLabel("Session ID:"));
+        sessionIDPanel.add(sessionIDInputField);
+        inputFieldPanel.add(sessionIDPanel);
 
-        JPanel userToEnrollPanel = new JPanel();
-        userToEnrollPanel.add(new JLabel("User to Remove:"));
-        userToEnrollPanel.add(userToRemoveInputField);
-        inputFieldPanel.add(userToEnrollPanel);
+        JPanel userToRemovePanel = new JPanel();
+        userToRemovePanel.add(new JLabel("User to Remove:"));
+        userToRemovePanel.add(userToRemoveInputField);
+        inputFieldPanel.add(userToRemovePanel);
 
         return inputFieldPanel;
     }

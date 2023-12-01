@@ -19,27 +19,30 @@ import javax.swing.border.Border;
 
 public class InviteToSessionView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "invite to session";
+
+    // Variables for functionality
     private InviteToSessionViewModel inviteToSessionViewModel;
     private ViewManagerModel viewManagerModel;
-    private String mySessionsViewName;
     private InviteToSessionController inviteToSessionController;
-    private String userToEnroll = "";
+
 
     // Variables for setting up UI
     private JButton invite;
     private JButton close;
     private final String HEADING_TEXT = "Invite To Session";
-    private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
+    private JTextField sessionIDInputField = new JTextField(10);
     private JTextField userToEnrollInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
+    // Variables for linking to other views
+    private String mySessionsViewName;
+
     public InviteToSessionView(InviteToSessionController inviteToSessionController, InviteToSessionViewModel inviteToSessionViewModel,
-                             ViewManagerModel viewManagerModel, String mySessionsViewName){
+                             ViewManagerModel viewManagerModel){
         this.inviteToSessionController = inviteToSessionController;
         this.inviteToSessionViewModel = inviteToSessionViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.mySessionsViewName = mySessionsViewName;
         inviteToSessionViewModel.addPropertyChangeListener(this);
         setupUI();
     }
@@ -51,14 +54,17 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputFields();
         setUpErrorDisplayField();
 
         // Add components to UI
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(userToEnrollInputField);
+
+        JPanel inputPanel = makeInputFields();
+        mainPanel.add(inputPanel);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -76,6 +82,23 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel makeInputFields() {
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+        JPanel sessionIDPanel = new JPanel();
+        sessionIDPanel.add(new JLabel("Session ID: "));
+        sessionIDPanel.add(sessionIDInputField);
+        inputPanel.add(sessionIDPanel);
+
+        JPanel userToAddPanel = new JPanel();
+        userToAddPanel.add(new JLabel("User to Add: "));
+        userToAddPanel.add(userToEnrollInputField);
+        inputPanel.add(userToAddPanel);
+
+        return inputPanel;
     }
 
     private JPanel setUpButtons() {
@@ -96,12 +119,14 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputFields() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
 
     private void setUpInputFieldFunctionality() {
+        InviteToSessionState currentState = inviteToSessionViewModel.getState();
+
         userToEnrollInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -112,8 +137,22 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
 
             @Override
             public void keyReleased(KeyEvent e) {
-                InviteToSessionState currentState = inviteToSessionViewModel.getState();
                 currentState.setUserInvited(userToEnrollInputField.getText());
+                inviteToSessionViewModel.setState(currentState);
+            }
+        });
+
+        sessionIDInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                currentState.setSessionID(sessionIDInputField.getText());
                 inviteToSessionViewModel.setState(currentState);
             }
         });
@@ -130,15 +169,15 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
             String inviteeID = inviteToSessionViewModel.getState().getUserInvited();
-            String sessionID = "002";
+            String sessionID = inviteToSessionViewModel.getState().getSessionID();
             inviteToSessionController.invite(inviteeID, sessionID);
 
-            // Close the window and return to the previous screen
+        // Close the window and return to the previous screen
         } else if (event.getSource() == close) {
             viewManagerModel.setActiveView(mySessionsViewName);
             viewManagerModel.firePropertyChanged();
 
-            // Something went wrong. Throw an error.
+        // Something went wrong. Throw an error.
         } else {
             throw new RuntimeException("Something went wrong with the buttons");
         }
@@ -151,5 +190,9 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
         InviteToSessionState curState = inviteToSessionViewModel.getState();
         errorDisplayField.setText(curState.getInviteResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
+    }
+
+    public void linkViews(String mySessionsViewName) {
+        this.mySessionsViewName = mySessionsViewName;
     }
 }

@@ -19,24 +19,27 @@ import javax.swing.border.Border;
 
 public class RemoveFromEventView extends JPanel implements ActionListener, PropertyChangeListener{
     public final String viewName = "Remove From Event";
+
+    // Variables for Functionality
     private RemoveFromEventViewModel removeFromEventViewModel;
     private ViewManagerModel viewManagerModel;
-    private String currentEventViewName;
     private RemoveFromEventController removeFromEventController;
-    private String userToRemove = "";
 
     // Variables for setting up UI
     private JButton remove;
     private JButton close;
     private final String HEADING_TEXT = "Remove From Event";
-    private final String INPUT_FIELD_LABEL = "";
     private String error_message = "";
+    private JTextField eventIDInputField = new JTextField(10);
     private JTextField userToRemoveInputField = new JTextField(10);
     private JLabel errorDisplayField = new JLabel(error_message);
 
-    public RemoveFromEventView(RemoveFromEventController controller, RemoveFromEventViewModel viewModel, ViewManagerModel viewManagerModel, String currentEventViewName) {
+    // Variables for linking to other views
+    private String myEventsViewName;
+
+
+    public RemoveFromEventView(RemoveFromEventController controller, RemoveFromEventViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
-        this.currentEventViewName = currentEventViewName;
         this.removeFromEventController = controller;
         this.removeFromEventViewModel = viewModel;
         removeFromEventViewModel.addPropertyChangeListener(this);
@@ -51,14 +54,17 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputField();
         setUpErrorDisplayField();
 
         // Add components to UI
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(userToRemoveInputField);
+
+        JPanel inputPanel = makeInputFields();
+        mainPanel.add(inputPanel);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -76,6 +82,23 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel makeInputFields() {
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+        JLabel eventIDLabel = new JLabel("Event ID: ");
+        eventIDLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputPanel.add(eventIDLabel);
+        inputPanel.add(eventIDInputField);
+
+        JLabel userToRemoveLabel = new JLabel("User to Remove: ");
+        userToRemoveLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputPanel.add(userToRemoveLabel);
+        inputPanel.add(userToRemoveInputField);
+
+        return inputPanel;
     }
 
     private JPanel setUpButtons() {
@@ -96,7 +119,7 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputField() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
@@ -117,6 +140,22 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
                 removeFromEventViewModel.setState(currentState);
             }
         });
+
+        eventIDInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                RemoveFromEventState currentState = removeFromEventViewModel.getState();
+                currentState.setEventRemovedFrom(eventIDInputField.getText());
+                removeFromEventViewModel.setState(currentState);
+            }
+        });
     }
 
     private void setUpInputFieldStyle() {
@@ -130,12 +169,12 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
         // When the user clicks the remove button, call the controller to try to remove the user from the current event
         if (event.getSource() == remove) {
             String userToRemove = removeFromEventViewModel.getState().getUserRemoved();
-            String eventID = "001"; // TODO: get the event ID of the event the user is currently viewing
+            String eventID = removeFromEventViewModel.getState().getEventRemovedFrom();
             removeFromEventController.removeFromEvent(userToRemove, eventID);
 
-            // Close the window
+        // Close the window
         } else if (event.getSource() == close) {
-            viewManagerModel.setActiveView(currentEventViewName);
+            viewManagerModel.setActiveView(myEventsViewName);
             viewManagerModel.firePropertyChanged();
 
             // Something went wrong. Throw an error.
@@ -150,5 +189,9 @@ public class RemoveFromEventView extends JPanel implements ActionListener, Prope
         RemoveFromEventState curState = removeFromEventViewModel.getState();
         errorDisplayField.setText(curState.getRemoveResponseMessage());
         errorDisplayField.setForeground(Color.BLUE);
+    }
+
+    public void linkViews(String myEventsViewName) {
+        this.myEventsViewName = myEventsViewName;
     }
 }

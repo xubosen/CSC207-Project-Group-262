@@ -68,15 +68,17 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
         // Make components of UI
         JLabel headingLabel = makeHeading();
         JPanel buttonPanel = setUpButtons();
-        setUpInputField();
+        formatInputFields();
         setUpErrorDisplayField();
 
         // Add components to UI
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(headingLabel);
-        mainPanel.add(courseCodeTextField);
-        mainPanel.add(courseNameTextField);
+
+        JPanel inputFieldPanel = makeInputFields();
+        mainPanel.add(inputFieldPanel);
+
         mainPanel.add(errorDisplayField);
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonPanel);
@@ -94,6 +96,23 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
         JLabel heading = new JLabel(HEADING_TEXT);
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
         return heading;
+    }
+
+    private JPanel makeInputFields() {
+        JPanel inputFieldPanel = new JPanel();
+        inputFieldPanel.setLayout(new BoxLayout(inputFieldPanel, BoxLayout.Y_AXIS));
+
+        JPanel courseCodePanel = new JPanel();
+        courseCodePanel.add(new JLabel("Course Code:"));
+        courseCodePanel.add(courseCodeTextField);
+        inputFieldPanel.add(courseCodePanel);
+
+        JPanel courseNamePanel = new JPanel();
+        courseNamePanel.add(new JLabel("Course Name:"));
+        courseNamePanel.add(courseNameTextField);
+        inputFieldPanel.add(courseNamePanel);
+
+        return inputFieldPanel;
     }
 
     private JPanel setUpButtons() {
@@ -114,7 +133,7 @@ public class CreateCourseView extends JPanel implements ActionListener, Property
         errorDisplayField.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    private void setUpInputField() {
+    private void formatInputFields() {
         setUpInputFieldFunctionality();
         setUpInputFieldStyle();
     }
