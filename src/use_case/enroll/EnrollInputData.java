@@ -1,24 +1,24 @@
 package use_case.enroll;
 
 public class EnrollInputData {
-    private String userID;
+    private String invitorID;
+    private String inviteeID;
     private String email;
     private String courseCode;
 
 
-    public EnrollInputData(String userID, String email, String courseCode) {
-        this.userID = userID;
-        this.email = email;
+    public EnrollInputData(String invitorID, String inviteeID, String courseCode) {
+        this.invitorID = invitorID;
+        this.inviteeID = inviteeID;
         this.courseCode = courseCode;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getInvitorID() {
+        return invitorID;
     }
 
-    // TODO: Discuss using email instead of userID at next meeting
-    public String getEmail() {
-        return email;
+    public String getInviteeID() {
+        return inviteeID;
     }
 
     public String getCourseCode() {

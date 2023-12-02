@@ -14,6 +14,7 @@ public class Course {
         this.admin = admin;
         this.staff = new HashMap<>();
         staff.put(admin.getUID(), admin);
+        admin.addCourse(this);
 
         this.myEvents = new HashMap<>();
     }
@@ -131,3 +132,5 @@ public class Course {
         return new HashMap<>(myEvents);
     }
 }
+
+

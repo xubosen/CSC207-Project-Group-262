@@ -1,96 +1,113 @@
 package data_access;
+
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
-public class HardCodedDAO {
+public class HardCodedDAO implements DataAccessInterface{
     private InMemoryEmployeeDataAccessObject employeeDAO = new InMemoryEmployeeDataAccessObject();
-    private InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
     private InMemoryEventDataAccessObject eventDAO = new InMemoryEventDataAccessObject();
+    private InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
     private InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
 
     public HardCodedDAO() {
-        // Create employees
-        Instructor employee1 = new Instructor("001", "John", "John@gmail.com", "123");
-        TeachingAssistant employee2 = new TeachingAssistant("002", "Jane", "Jane@gmail.com", "234");
-        Instructor employee3 = new Instructor("003", "Jack", "Jack@gmail.com", "345");
-        TeachingAssistant employee4 = new TeachingAssistant("004", "Jill", "Jill@gmail.com", "456");
 
-        employeeDAO.addEmployee(employee1);
-        employeeDAO.addEmployee(employee2);
-        employeeDAO.addEmployee(employee3);
-        employeeDAO.addEmployee(employee4);
+        // Create some employees
+        employeeDAO.addEmployee(new Instructor("simon", "simon", "s@gmail.com", "123"));
+        employeeDAO.addEmployee(new Instructor("alex", "alex", "a@gmail.com", "1234"));
+        employeeDAO.addEmployee(new Instructor("dan", "dan", "d@gmail.com", "12345"));
+        employeeDAO.addEmployee(new Instructor("yoo", "yoo", "y@gmai.com", "123456"));
+        employeeDAO.addEmployee(new TeachingAssistant("ta1", "ta1", "t1@g.com", "1234567"));
+        employeeDAO.addEmployee(new TeachingAssistant("ta2", "ta2", "t2@g.com", "12345678"));
+        employeeDAO.addEmployee(new TeachingAssistant("ta3", "ta3", "t3@g.com", "123456789"));
+        employeeDAO.addEmployee(new TeachingAssistant("ta4", "ta4", "t4@g.com", "1234567890"));
 
+        Instructor simon = (Instructor) employeeDAO.getByID("simon");
+        Instructor alex = (Instructor) employeeDAO.getByID("alex");
+        Instructor dan = (Instructor) employeeDAO.getByID("dan");
+        Instructor yoo = (Instructor) employeeDAO.getByID("yoo");
+        TeachingAssistant ta1 = (TeachingAssistant) employeeDAO.getByID("ta1");
+        TeachingAssistant ta2 = (TeachingAssistant) employeeDAO.getByID("ta2");
+        TeachingAssistant ta3 = (TeachingAssistant) employeeDAO.getByID("ta3");
+        TeachingAssistant ta4 = (TeachingAssistant) employeeDAO.getByID("ta4");
 
-        // Create courses
-        Course course1 = new Course("Software Design", "CSC207", employee1);
-        Course course2 = new Course("Underwater Basket Weaving", "UBW2000", employee2);
+        // Create some courses & add some employees to them
+        courseDAO.addCourse(new Course("Basket Weaving", "BW1000", simon));
+        courseDAO.addCourse(new Course("Software Design", "CSC207", alex));
+        courseDAO.addCourse(new Course("Analysis I", "MAT157", dan));
+        courseDAO.addCourse(new Course("Analysis II", "MAT257", yoo));
 
-        employee1.addCourse(course2);
-        employee2.addCourse(course1);
+        Course basketWeaving = courseDAO.getByID("BW1000");
+        Course csc207 = courseDAO.getByID("CSC207");
+        Course mat157 = courseDAO.getByID("MAT157");
+        Course mat257 = courseDAO.getByID("MAT257");
 
-        courseDAO.addCourse(course1);
-        courseDAO.addCourse(course2);
+        csc207.addStaff(ta1);
+        csc207.addStaff(ta2);
+        csc207.addStaff(ta3);
 
+        mat157.addStaff(ta1);
+        mat157.addStaff(ta2);
+        mat157.addStaff(ta3);
+        mat157.addStaff(ta4);
 
-        // Create events
-        Lecture event1 = new Lecture("Lecture0101", "001", course1);
-        Tutorial event2 = new Tutorial("Tutorial0101", "002", course1);
-        course1.addEvent(event1);
-        course1.addEvent(event2);
+        // Create some events & add some employees to them
+        eventDAO.addEvent(new Lecture("CSC207 - Lecture Session 1", "CSC207-LEC0101", csc207));
+        eventDAO.addEvent(new Lecture("CSC207 - Lecture Session 2", "CSC207-LEC0201", csc207));
+        eventDAO.addEvent(new Tutorial("CSC207 - Tutorial Session 1", "CSC207-TUT0101", csc207));
+        eventDAO.addEvent(new Tutorial("CSC207 - Tutorial Session 2", "CSC207-TUT0201", csc207));
 
-        Lecture event3 = new Lecture("Lecture0102", "003", course2);
-        Tutorial event4 = new Tutorial("Tutorial0102", "004", course2);
-        course2.addEvent(event3);
-        course2.addEvent(event4);
+        Lecture LS1 = (Lecture) eventDAO.getByID("CSC207-LEC0101");
+        Lecture LS2 = (Lecture) eventDAO.getByID("CSC207-LEC0201");
+        Tutorial TS1 = (Tutorial) eventDAO.getByID("CSC207-TUT0101");
+        Tutorial TS2 = (Tutorial) eventDAO.getByID("CSC207-TUT0201");
 
-        eventDAO.addEvent(event1);
-        eventDAO.addEvent(event2);
-        eventDAO.addEvent(event3);
-        eventDAO.addEvent(event4);
+        LS1.addStaff(simon);
+        LS2.addStaff(alex);
 
-        //Add employees to events
-        event1.addStaff(employee1);
+        TS1.addStaff(ta1);
+        TS2.addStaff(ta2);
 
-
-        // Create sessions
-        LocalDateTime start = LocalDateTime.of(2023, 11, 13, 19, 0);
-        LocalDateTime end = LocalDateTime.of(2023, 11, 13, 21, 0);
-        DateTimeSpan session1DateTimeSpan = new DateTimeSpan(start, end);
-        CalendarEvent session1CalEvent = new CalendarEvent("TUT0101-Nov13", "A Tutorial", session1DateTimeSpan);
-        ClassSession session1 = new ClassSession("001", "TUT0101-Nov13", session1CalEvent, "BA10000", event1);
-        event1.addSession(session1);
-
-        start = LocalDateTime.of(2023, 11, 20, 19, 0);
-        end = LocalDateTime.of(2023, 11, 20, 21, 0);
-        DateTimeSpan session2DateTimeSpan = new DateTimeSpan(start, end);
-        CalendarEvent session2CalEvent = new CalendarEvent("TUT0101-Nov20", "Another Tutorial", session2DateTimeSpan);
-        ClassSession session2 = new ClassSession("002", "TUT0101-Nov20", session2CalEvent, "BA10000", event1);
-        event2.addSession(session2);
-
+        // Create some sessions & add some employees to them
+        LocalDateTime start = LocalDateTime.of(2020, 1, 1, 12, 0);
+        LocalDateTime end = LocalDateTime.of(2020, 1, 1, 13, 0);
+        DateTimeSpan dateTimeSpan = new DateTimeSpan(start, end);
+        CalendarEvent calendarEvent = new CalendarEvent("CSC207 - Lecture Session 1", "CSC207-LEC0101",
+                dateTimeSpan);
+        ClassSession session1 = new ClassSession("111", "CSC207-LEC0101", calendarEvent, "here",
+                LS1);
         sessionDAO.addSession(session1);
-        sessionDAO.addSession(session2);
 
-
-        // Add employees to sessions
-        System.out.println(session1.addStaff(employee1));
-        System.out.println(employee1.addSession(session1));
-        System.out.println(session1.containsStaff(employee1));
+        session1.addStaff(simon);
     }
 
     public InMemoryEmployeeDataAccessObject getEmployeeDAO() {
         return employeeDAO;
     }
 
-    public InMemoryCourseDataAccessObject getCourseDAO() {
-        return courseDAO;
-    }
-
     public InMemoryEventDataAccessObject getEventDAO() {
         return eventDAO;
     }
 
+    public InMemoryCourseDataAccessObject getCourseDAO() {
+        return courseDAO;
+    }
+
     public InMemorySessionDataAccessObject getSessionDAO() {
         return sessionDAO;
+    }
+
+    @Override
+    public boolean saveToDatabase(InMemoryCourseDataAccessObject courseDAO,
+                                  InMemoryEmployeeDataAccessObject employeeDAO,
+                                  InMemoryEventDataAccessObject eventDAO,
+                                  InMemorySessionDataAccessObject sessionDAO) {
+        System.out.println("Saving unsuccessful!");
+        return false;
     }
 }

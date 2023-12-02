@@ -10,8 +10,8 @@ public class RemoveFromSessionController {
         this.removeFromSessionInteractor = removeFromSessionInteractor;
     }
 
-    public void removeFromSession(String userID, String courseCode) {
-        RemoveFromSessionInputData inputData = new RemoveFromSessionInputData(userID, courseCode);
+    public void removeFromSession(String userID, String sessionID) {
+        RemoveFromSessionInputData inputData = new RemoveFromSessionInputData(userID, sessionID);
         removeFromSessionInteractor.removeFromSession(inputData);
     }
 }

@@ -2,8 +2,8 @@ package use_case.position_checking;
 
 import entity.Course;
 import entity.Employee;
-import data_access.InMemoryCourseDataAccessObject;
-import data_access.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 
 public class PositionCheckingInteractor implements PositionCheckingInputBoundary{
     private InMemoryEmployeeDataAccessObject employeeDAO;

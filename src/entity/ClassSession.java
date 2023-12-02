@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClassSession {
-    private String SessionID;
+    private String sessionID;
     private String name;
     private CalendarEvent calEvent;
     private HashMap<String, Employee> staff;
     private String location;
     private Event event;
 
-    public ClassSession(String SessionID, String name, CalendarEvent calEvent, String location, Event event) {
-        this.SessionID = SessionID;
+    public ClassSession(String sessionID, String name, CalendarEvent calEvent, String location, Event event) {
+        this.sessionID = sessionID;
         this.name = name;
         this.calEvent = calEvent;
         this.location = location;
         this.event = event;
-
+        event.addSession(this);
         this.staff = new HashMap<String, Employee>();
     }
 
     public String getSessionID() {
-        return SessionID;
+        return sessionID;
     }
 
     public String getName() {
@@ -62,6 +62,7 @@ public class ClassSession {
 
         // Otherwise, add staff to the hashmap and return true
         this.staff.put(staff.getUID(), staff);
+        staff.addSession(this);
         return true;
     }
 
@@ -102,7 +103,7 @@ public class ClassSession {
      */
     public boolean reschedule(CalendarEvent newCalEvent) {
         // Check if new time conflicts with other class sessions in the event. If it does, return false
-        ClassSession tempSession = new ClassSession(this.SessionID, this.name, newCalEvent, this.location, this.event);
+        ClassSession tempSession = new ClassSession(this.sessionID, this.name, newCalEvent, this.location, this.event);
         if (this.event.conflictsWith(tempSession)) {
             return false;
         // Otherwise, set the new time and return true

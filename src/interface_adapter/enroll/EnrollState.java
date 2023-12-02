@@ -2,6 +2,7 @@ package interface_adapter.enroll;
 
 public class EnrollState {
     private String userInvited = "";
+    private String courseCode = "";
     private boolean inviteSuccessful = false;
     private String inviteResponseMessage = "";
 
@@ -19,6 +20,14 @@ public class EnrollState {
 
     public void setUserInvited(String userInvited) {
         this.userInvited = userInvited;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 
     public boolean isInviteSuccessful() {
