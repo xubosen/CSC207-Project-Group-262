@@ -1,5 +1,5 @@
 package entityTests;
-import entity.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
