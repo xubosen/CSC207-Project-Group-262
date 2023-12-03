@@ -10,7 +10,6 @@ public class EnrollPresenter implements EnrollOutputBoundary{
     }
 
     public void prepareView(EnrollOutputData outputData) {
-        System.out.println(outputData.getMessage());
         EnrollState curState = enrollViewModel.getState();
         curState.setInviteSuccessful(outputData.isSuccessful());
         curState.setInviteResponseMessage(outputData.getMessage());

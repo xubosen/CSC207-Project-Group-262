@@ -1,21 +1,34 @@
 package view.event_views;
 
+import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.get_events.GetEventController;
+import interface_adapter.get_events.GetEventViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
-public class MyEventsViewInstructor extends JPanel implements ActionListener {
+public class MyEventsViewInstructor extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "my events instructor view";
-    private final ViewManagerModel viewManagerModel;
+
+    // Variables for Functionality
+    private ViewManagerModel viewManagerModel;
+    private ArrayList<String> events = new ArrayList<>();
+    private UserState userState;
+    private GetEventController getEventController;
+    private GetEventViewModel getEventViewModel;
 
     // Buttons
     private final JButton createEventButton = new JButton("Create Event");
     private final JButton addToEventButton = new JButton("Add To Event");
     private final JButton removeFromEventButton = new JButton("Remove From Event");
     private final JButton backButton = new JButton("Back");
+    private final JButton refreshButton = new JButton("Refresh");
 
     // Variables for linking to other views
     private String createEventViewName;
@@ -24,15 +37,18 @@ public class MyEventsViewInstructor extends JPanel implements ActionListener {
     private String dashboardViewName;
 
 
-
-    public MyEventsViewInstructor(ViewManagerModel viewManagerModel) {
+    public MyEventsViewInstructor(ViewManagerModel viewManagerModel, GetEventController getEventController,
+                                  GetEventViewModel getEventViewModel, UserState userState) {
         this.viewManagerModel = viewManagerModel;
+        this.getEventController = getEventController;
+        this.getEventViewModel = getEventViewModel;
+        this.getEventViewModel.addPropertyChangeListener(this);
+
+        this.userState = userState;
         GridBagConstraints gbc = formatScreenLayout();
         makeHeading(gbc);
-        makeCreateEventButton(gbc);
-        makeAddToEventButton(gbc);
-        makeRemoveFromEventButton(gbc);
-        makeBackButton(gbc);
+        makeHeaderButtons(gbc);
+        makeEventsList(gbc);
     }
 
     private GridBagConstraints formatScreenLayout() {
@@ -52,52 +68,62 @@ public class MyEventsViewInstructor extends JPanel implements ActionListener {
         add(headingLabel, gbc);
     }
 
-    private void makeCreateEventButton(GridBagConstraints gbc) {
-        createEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
+    private void makeHeaderButtons(GridBagConstraints gbc) {
+        JPanel buttonPanel = new JPanel();
+
+        formatButton(createEventButton);
+        formatButton(addToEventButton);
+        formatButton(removeFromEventButton);
+        formatButton(refreshButton);
+        formatButton(backButton);
+
+        buttonPanel.add(createEventButton);
+        buttonPanel.add(addToEventButton);
+        buttonPanel.add(removeFromEventButton);
+        buttonPanel.add(refreshButton);
+        buttonPanel.add(backButton);
+
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        createEventButton.setPreferredSize(new Dimension(createEventButton.getPreferredSize().width, 150));
-        add(createEventButton, gbc);
-        createEventButton.addActionListener(this);
+        add(buttonPanel, gbc);
     }
 
-    private void makeAddToEventButton(GridBagConstraints gbc) {
-        addToEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
+    private void formatButton(JButton button) {
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50));
+        if (button.getActionListeners().length == 0) {
+            button.addActionListener(this);
+        }
+    }
+
+    private void makeEventsList(GridBagConstraints gbc) {
+        // Set position on page
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        addToEventButton.setPreferredSize(new Dimension(addToEventButton.getPreferredSize().width, 150));
-        add(addToEventButton, gbc);
-        addToEventButton.addActionListener(this);
-    }
 
-    private void makeRemoveFromEventButton(GridBagConstraints gbc) {
-        removeFromEventButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 3;
+        // Fill remaining page space
         gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        removeFromEventButton.setPreferredSize(new Dimension(removeFromEventButton.getPreferredSize().width, 150));
-        add(removeFromEventButton, gbc);
-        removeFromEventButton.addActionListener(this);
-    }
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
 
-    private void makeBackButton(GridBagConstraints gbc) {
-        backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        backButton.setPreferredSize(new Dimension(backButton.getPreferredSize().width, 150));
-        add(backButton, gbc);
-        backButton.addActionListener(this);
+        JPanel scrollPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcScroll = new GridBagConstraints();
+        gbcScroll.weightx = 1;
+        gbcScroll.fill = GridBagConstraints.HORIZONTAL;
+        gbcScroll.gridwidth = GridBagConstraints.REMAINDER;
+
+        JScrollPane labelsScroll = new JScrollPane(scrollPanel);
+
+        JButton courseButton;
+        for (String eventID : events) {
+            courseButton = new JButton(eventID);
+            formatButton(courseButton);
+            scrollPanel.add(courseButton, gbcScroll);
+        }
+
+        add(labelsScroll, gbc);
     }
 
     @Override
@@ -114,6 +140,8 @@ public class MyEventsViewInstructor extends JPanel implements ActionListener {
         } else if (e.getSource() == backButton) {
             viewManagerModel.setActiveView(dashboardViewName);
             viewManagerModel.firePropertyChanged();
+        } else if (e.getSource() == refreshButton) {
+            getEventController.getEvent(userState.getUserID());
         }
     }
 
@@ -123,5 +151,17 @@ public class MyEventsViewInstructor extends JPanel implements ActionListener {
         this.addToEventViewName = addToEventViewName;
         this.removeFromEventViewName = removeFromEventViewName;
         this.dashboardViewName = dashboardViewName;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        events = getEventViewModel.getState().getEventIDs();
+
+        removeAll();
+        GridBagConstraints gbc = formatScreenLayout();
+        makeHeading(gbc);
+        makeHeaderButtons(gbc);
+        makeEventsList(gbc);
+        revalidate();
     }
 }

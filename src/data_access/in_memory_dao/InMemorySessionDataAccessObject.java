@@ -40,4 +40,12 @@ public class InMemorySessionDataAccessObject {
         }
         return false;
     }
+
+    public Set<String> getAllIDs() {
+        return session.keySet();
+    }
+
+    public HashMap<String, ClassSession> getSessions() {
+        return new HashMap<>(session);
+    }
 }
