@@ -1,5 +1,6 @@
 package view.leave_request_view;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,8 +16,12 @@ import javax.imageio.ImageIO;
 
 import interface_adapter.request_leave.LeaveRequestViewModel;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_event.CreateEventController;
+import interface_adapter.create_event.CreateEventViewModel;
 
 public class LeaveRequestView extends JPanel implements ActionListener, PropertyChangeListener {
+    private CreateEventViewModel createEventViewModel;
+    private CreateEventController createEventController;
 
     public final String viewName = "leaveRequest";
     private final String dashboardViewName;
@@ -27,6 +32,7 @@ public class LeaveRequestView extends JPanel implements ActionListener, Property
     final JButton returnButton;
 
     public LeaveRequestView(LeaveRequestViewModel leaveRequestViewModel, ViewManagerModel viewManagerModel, String dashboardViewName) throws IOException  {
+
         this.viewManagerModel = viewManagerModel;
         this.dashboardViewName = dashboardViewName;
 
