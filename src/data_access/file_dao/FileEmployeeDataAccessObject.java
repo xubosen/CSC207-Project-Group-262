@@ -1,4 +1,4 @@
-package data_access;
+package data_access.file_dao;
 
 import com.mongodb.client.*;
 // Should not be able to rely on entities so it needs data access interactor to create the needed entities
@@ -18,18 +18,18 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface {
+public class FileEmployeeDataAccessObject {
     private final File databaseFiles;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final HashMap<String, Employee> accounts = new HashMap<>();
 
     /**
      * Initializer for the EmployeeDAO
+     *
      * @param databasePath
      * @throws IOException
      */
     public FileEmployeeDataAccessObject(String databasePath) throws IOException {
-        // TODO: Need to figure out how to convert this to clean Architecture.
         this.databaseFiles = new File(databasePath);
 
         headers.put("databaseLink", 0);
@@ -84,12 +84,24 @@ public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface
         return uriAndNames;
     }
 
-    public void save(Employee employee){
-        accounts.put(employee.getUID(), employee);
+//    public void save(Employee employee){
+//        accounts.put(employee.getUID(), employee);
+//        try {
+//            this.save();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+
+    public boolean save(HashMap<String, Employee> employees) {
+        accounts.clear();
+        accounts.putAll(employees);
         try {
             this.save();
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -143,6 +155,7 @@ public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface
 
     /**
      * Return whether a Teaching Assistant sts with user identifier.
+     *
      * @param userID the username to check.
      * @return whether a Teaching Assistant exists with username identifier
      */
@@ -150,15 +163,14 @@ public class FileEmployeeDataAccessObject implements EmployeeDataAccessInterface
         return accounts.containsKey(userID);
     }
 
-    public String getAccounts() {
-        StringBuilder accounts = new StringBuilder();
-        for (Map.Entry<String, Employee> entry : this.accounts.entrySet()) {
-            accounts.append(entry.getKey()).append("\n");
-        }
-        return accounts.toString();
-    }
+//    public String getAccounts() {
+//        StringBuilder accounts = new StringBuilder();
+//        for (Map.Entry<String, Employee> entry : this.accounts.entrySet()) {
+//            accounts.append(entry.getKey()).append("\n");
+//        }
+//        return accounts.toString();
+//    }
 
-    @Override
     public HashMap<String, Employee> getAccount() {
         return accounts;
     }

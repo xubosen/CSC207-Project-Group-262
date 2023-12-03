@@ -13,8 +13,8 @@ public class EventAdditionController {
         this.eventAdditionInteractor = eventAdditionInteractor;
     }
 
-    public void addEmployeeToEvent(String userID, String eventID) {
-        EventAdditionInputData inputData = new EventAdditionInputData(userID, "", eventID);
+    public void addEmployeeToEvent(String userID, String inviteeID, String eventID) {
+        EventAdditionInputData inputData = new EventAdditionInputData(userID, inviteeID, eventID);
         eventAdditionInteractor.addEmployeeToEvent(inputData);
 
     }

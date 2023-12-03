@@ -1,5 +1,6 @@
 package view.session_views;
 
+import interface_adapter.UserState;
 import interface_adapter.invite_to_session.InviteToSessionViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.invite_to_session.InviteToSessionController;
@@ -24,6 +25,7 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
     private InviteToSessionViewModel inviteToSessionViewModel;
     private ViewManagerModel viewManagerModel;
     private InviteToSessionController inviteToSessionController;
+    private UserState userState;
 
 
     // Variables for setting up UI
@@ -39,11 +41,12 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
     private String mySessionsViewName;
 
     public InviteToSessionView(InviteToSessionController inviteToSessionController, InviteToSessionViewModel inviteToSessionViewModel,
-                             ViewManagerModel viewManagerModel){
+                               ViewManagerModel viewManagerModel, UserState userState){
         this.inviteToSessionController = inviteToSessionController;
         this.inviteToSessionViewModel = inviteToSessionViewModel;
         this.viewManagerModel = viewManagerModel;
         inviteToSessionViewModel.addPropertyChangeListener(this);
+        this.userState = userState;
         setupUI();
     }
 
@@ -168,9 +171,10 @@ public class InviteToSessionView extends JPanel implements ActionListener, Prope
     public void actionPerformed(ActionEvent event) {
         // When the user clicks the invite button, call a controller and pass in the employee to enroll
         if (event.getSource() == invite) {
+
             String inviteeID = inviteToSessionViewModel.getState().getUserInvited();
             String sessionID = inviteToSessionViewModel.getState().getSessionID();
-            inviteToSessionController.invite(inviteeID, sessionID);
+            inviteToSessionController.invite(inviteeID, userState.getUserID(), sessionID);
 
         // Close the window and return to the previous screen
         } else if (event.getSource() == close) {

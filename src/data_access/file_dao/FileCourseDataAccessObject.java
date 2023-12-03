@@ -1,6 +1,7 @@
-package data_access;
+package data_access.file_dao;
 
 import com.mongodb.client.*;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import entity.*;
 import org.bson.Document;
 
@@ -66,11 +67,18 @@ public class FileCourseDataAccessObject {
 
     /**
      * Saves this course into the courses HashMap and then proceeds to save it into the database.
-     * @param course The course that you want to save.
+     * @param courses The course that you want to save.
      */
-    public void save(Course course) throws IOException {
-        courses.put(course.getCourseCode(), course);
-        this.save();
+    public boolean save(HashMap<String, Course> courses) throws IOException {
+        this.courses.clear();
+        this.courses.putAll(courses);
+
+        try {
+            this.save();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     /**
@@ -114,9 +122,11 @@ public class FileCourseDataAccessObject {
                     eventList.add(event.getEventID());
                 }
 
-                Document courseDoc = new Document("course_name", course.getName()).
-                        append("course_code", course.getCourseCode()).append("staff", staffList).
-                        append("events", course.getEvents()).append("admin", course.getAdmin().getUID());
+                Document courseDoc = new Document("course_name", course.getName());
+                courseDoc.append("course_code", course.getCourseCode());
+                courseDoc.append("staff", staffList);
+                courseDoc.append("events", new ArrayList<String> (course.getEvents().keySet()));
+                courseDoc.append("admin", course.getAdmin().getUID());
 
                 // This adds the employee information to the mongodb
                 documents.add(courseDoc);

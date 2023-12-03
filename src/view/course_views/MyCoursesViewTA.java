@@ -95,7 +95,9 @@ public class MyCoursesViewTA extends JPanel implements ActionListener, PropertyC
     private void formatButton(JButton button) {
         button.setFont(new Font("Arial", Font.PLAIN, 20));
         button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50));
-        button.addActionListener(this);
+        if (button.getActionListeners().length == 0) {
+            button.addActionListener(this);
+        }
     }
 
     private void makeCourseList(GridBagConstraints gbc) {

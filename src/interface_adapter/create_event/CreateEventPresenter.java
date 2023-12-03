@@ -19,9 +19,6 @@ public class CreateEventPresenter implements CreateEventOutputBoundary {
      * @param outputData The data that will be output when createCourse has been tried.
      */
     public void prepareView(CreateEventOutputData outputData) {
-        // TODO: Delete this line after testing
-        System.out.println(outputData.getMessage());
-
         CreateEventState curState = createEventViewModel.getState();
         curState.setEventCreationSuccessful(outputData.isSuccessful());
         curState.setEventCreationResponseMessage(outputData.getMessage());

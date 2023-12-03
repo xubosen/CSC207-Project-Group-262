@@ -1,7 +1,10 @@
-package data_access;
+package data_access.file_dao;
 
 import com.mongodb.client.*;
-import entity.*;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import entity.ClassSession;
+import entity.Employee;
 import org.bson.Document;
 
 import java.io.IOException;
@@ -14,14 +17,15 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileEventDataAccessObject {
+
+// TODO: implement an interface in between so I can follow Clean Architecture
+public class FileSessionDataAccessObject {
     private final File databaseFiles;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
-
-    private static final HashMap<String, Event> events = new HashMap<>();
-    public FileEventDataAccessObject(String databasePath,
-                                     InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
-                                      InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject) throws IOException {
+    private static final HashMap<String, ClassSession> sessions = new HashMap<>();
+    public FileSessionDataAccessObject(String databasePath,
+                                       InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject,
+                                       InMemoryEventDataAccessObject inMemoryEventDataAccessObject) throws IOException {
         this.databaseFiles = new File(databasePath);
 
         headers.put("databaseLink", 0);
@@ -44,11 +48,10 @@ public class FileEventDataAccessObject {
             // iterate code goes here
             try {
                 while (cursor.hasNext()) {
-                    String eventInJsonForm = cursor.next().toJson();
-                    JsonToEvent jsonToEvent = new JsonToEvent(eventInJsonForm, inMemoryCourseDataAccessObject,
-                            inMemoryEmployeeDataAccessObject);
-                    Event event = jsonToEvent.convert();
-                    events.put(event.getEventID(), event);
+                    String sessionInJsonForm = cursor.next().toJson();
+                    JsonToSession jsonToSession = new JsonToSession(sessionInJsonForm, inMemoryEmployeeDataAccessObject, inMemoryEventDataAccessObject);
+                    ClassSession session = jsonToSession.convert();
+                    sessions.put(session.getSessionID(), session);
                 }
             } finally {
                 cursor.close();
@@ -56,13 +59,20 @@ public class FileEventDataAccessObject {
         }
     }
 
-    public void save(Event event) throws IOException {
-        events.put(event.getEventID(), event);
-        this.save();
+    public boolean save(HashMap<String, ClassSession> sessions) throws IOException {
+        this.sessions.clear();
+        this.sessions.putAll(sessions);
+
+        try {
+            this.save();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
-    public Event get(String eventID) {
-        return events.get(eventID);
+    public ClassSession get(String sessionID) {
+        return sessions.get(sessionID);
     }
 
     private void save() throws IOException {
@@ -81,22 +91,23 @@ public class FileEventDataAccessObject {
             List<Document> documents = new ArrayList<>();
 
 
-            for (Event event : events.values()) {
+            for (ClassSession session : sessions.values()) {
                 ArrayList<String> staffList = new ArrayList<>();
-                for (Employee employee : event.listStaff().values()) {
+                for (Employee employee : session.listStaff()) {
                     staffList.add(employee.getUID());
                 }
 
-                ArrayList<String> sessionsList = new ArrayList<>();
+                // DateTimeSpanStorage
+                ArrayList<String> dateList = new ArrayList<>();
+                dateList.add(session.toCalendarEvent().getName());
+                dateList.add(session.toCalendarEvent().getDescription());
+                dateList.add(session.toCalendarEvent().getDateTimeSpan().getStart().toString());
+                dateList.add(session.toCalendarEvent().getDateTimeSpan().getEnd().toString());
 
-                for (ClassSession session : event.getSessions().values()) {
-                    sessionsList.add(session.getSessionID());
-                }
-
-                Document eventDoc = new Document("name", event.getName()).
-                        append("eventID", event.getEventID()).append("course", event.getCourse()).
-                        append("sessions", sessionsList).append("staff", staffList).
-                        append("event_type", event.getClass());
+                Document eventDoc = new Document("sessionID", session.getSessionID()).
+                        append("session_name", session.getName()).append("cal_event", dateList).
+                        append("staff", staffList).append("location", session.getLocation()).
+                        append("eventID", session.getEvent().getEventID());
 
                 // This adds the employee information to the mongodb
                 documents.add(eventDoc);
@@ -112,32 +123,24 @@ public class FileEventDataAccessObject {
 
 
     /**
-     * Return whether a event exists with their identifier.
-     * @param eventID
-     * @return whether the event code is inside
+     * Return whether a session exists with their identifier.
+     * @param sessionID
+     * @return whether the session ID is stored inside the sessions Hashmap
      */
-    public boolean existsByCode(String eventID) {
-        return events.containsKey(eventID);
+    public boolean existsByID(String sessionID) {
+        return sessions.containsKey(sessionID);
     }
 
-    /**
-     * Get the string form of the events in the DAO.
-     * @return string of events
-     */
-    public String getEventsString() {
-        StringBuilder events = new StringBuilder();
-        for (Map.Entry<String, Event> entry : this.events.entrySet()) {
-            events.append(entry.getKey()).append("\n");
+    public String getSessionsString() {
+        StringBuilder sessions = new StringBuilder();
+        for (Map.Entry<String, ClassSession> entry : this.sessions.entrySet()) {
+            sessions.append(entry.getKey()).append("\n");
         }
-        return events.toString();
+        return sessions.toString();
     }
 
-    /**
-     * Getter for events Hashmap
-     * @return events Hashmap of the DAO
-     */
-    public HashMap<String, Event> getEvents() {
-        return events;
+    public HashMap<String, ClassSession> getSessions() {
+        return sessions;
     }
 
     private ArrayList<String> getURIAndDBNames() throws IOException {

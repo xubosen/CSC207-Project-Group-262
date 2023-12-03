@@ -1,5 +1,8 @@
-package data_access;
+package data_access.file_dao;
 
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import entity.Course;
 import entity.Instructor;
 import entity.Lecture;
@@ -34,15 +37,15 @@ public class EventDAOTest {
                 new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()),
                 new InMemoryCourseDataAccessObject(fileCourseDataAccessObject.getCourses()));
 
-        // Updates current alexander to have MAT157 as one of their courses.
-        employeeDataAccessObject.save(alexander);
-
-        // Updates courses to have MAT157 included.
-        fileCourseDataAccessObject.save(mat157);
-
-        // Updates events to have one lecture and one tutorial.
-        fileEventDAO.save(lec0101);
-        fileEventDAO.save(tut5201);
+//        // Updates current alexander to have MAT157 as one of their courses.
+//        employeeDataAccessObject.save(alexander);
+//
+//        // Updates courses to have MAT157 included.
+//        fileCourseDataAccessObject.save(mat157);
+//
+//        // Updates events to have one lecture and one tutorial.
+//        fileEventDAO.save(lec0101);
+//        fileEventDAO.save(tut5201);
     }
 
     @Test
@@ -61,7 +64,7 @@ public class EventDAOTest {
         HashMap<String, String> events = new HashMap<>();
         events.put("LEC0101", "blah");
         events.put("TUT5201", "blah");
-        assertEquals(events.keySet(), eventDAO.getAllEventIDS());
+        assertEquals(events.keySet(), eventDAO.getAllIDs());
         // This test worked and didn't create duplicates of the documents either
     }
 }

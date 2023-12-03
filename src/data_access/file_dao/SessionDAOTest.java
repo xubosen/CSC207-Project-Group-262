@@ -1,5 +1,9 @@
-package data_access;
+package data_access.file_dao;
 
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,19 +59,19 @@ public class SessionDAOTest {
                 new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()),
                 new InMemoryEventDataAccessObject(fileEventDAO.getEvents()));
 
-        // Updates current alexander to have CSC236 as one of their courses.
-        employeeDataAccessObject.save(alexander);
-
-        // Updates courses to have MAT157 included.
-        fileCourseDataAccessObject.save(csc236);
-
-        // Updates events to have one lecture and one tutorial.
-        fileEventDAO.save(lec0101);
-        fileEventDAO.save(tut5201);
-
-        // Updates Class Sessions to include the lectures class session.
-        fileSessionDAO.save(lec0101M);
-        fileSessionDAO.save(lec0101F);
+//        // Updates current alexander to have CSC236 as one of their courses.
+//        employeeDataAccessObject.save(alexander);
+//
+//        // Updates courses to have MAT157 included.
+//        fileCourseDataAccessObject.save(csc236);
+//
+//        // Updates events to have one lecture and one tutorial.
+//        fileEventDAO.save(lec0101);
+//        fileEventDAO.save(tut5201);
+//
+//        // Updates Class Sessions to include the lectures class session.
+//        fileSessionDAO.save(lec0101M);
+//        fileSessionDAO.save(lec0101F);
     }
 
     @Test
@@ -91,7 +95,7 @@ public class SessionDAOTest {
         HashMap<String, String> classSessions = new HashMap<>();
         classSessions.put("LEC0101M 11/27 1-2", "");
         classSessions.put("LEC0101F 12/01 1-2", "");
-        assertEquals(classSessions.keySet(), sessionDAO.getSessionIDS());
+        assertEquals(classSessions.keySet(), sessionDAO.getAllIDs());
         // This test worked and didn't create duplicates of the documents either
     }
 }
