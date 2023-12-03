@@ -101,8 +101,8 @@ public class FileSessionDataAccessObject {
                 ArrayList<String> dateList = new ArrayList<>();
                 dateList.add(session.toCalendarEvent().getName());
                 dateList.add(session.toCalendarEvent().getDescription());
-                dateList.add(session.toCalendarEvent().getDateTimeSpan().getStart().toString());
-                dateList.add(session.toCalendarEvent().getDateTimeSpan().getEnd().toString());
+                dateList.add(session.toCalendarEvent().getDateTimeSpan().getStart().toString().replace("T", " "));
+                dateList.add(session.toCalendarEvent().getDateTimeSpan().getEnd().toString().replace("T", " "));
 
                 Document eventDoc = new Document("sessionID", session.getSessionID()).
                         append("session_name", session.getName()).append("cal_event", dateList).
