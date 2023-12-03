@@ -1,8 +1,12 @@
-package data_access.file_dao;
+package daoTests;
 
 import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
-import entity.*;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import entity.Course;
+import entity.Instructor;
+import entity.Lecture;
+import entity.Tutorial;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +15,7 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-public class CourseDAOTest {
+public class EventDAOTest {
     @Before
     public void setUp() throws IOException {
         Instructor alexander = new Instructor("phanale1231423", "Alexander Phan12",
@@ -19,16 +23,29 @@ public class CourseDAOTest {
 
         Course mat157 = new Course("Calculus", "MAT157", alexander);
 
+        Lecture lec0101 = new Lecture("Math LEC0101", "LEC0101", mat157);
+
+        Tutorial tut5201 = new Tutorial("Math TUT5201", "TUT5201", mat157);
+
         FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("./employeeInformation.csv");
 
-        // For some reason buffered reader can't read the file.
         FileCourseDataAccessObject fileCourseDataAccessObject = new FileCourseDataAccessObject("./courseInformation.csv",
                 new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()));
+
+        // Create the file event DAO with the new lecture and tutorial.
+        FileEventDataAccessObject fileEventDAO = new FileEventDataAccessObject("./eventInformation.csv",
+                new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()),
+                new InMemoryCourseDataAccessObject(fileCourseDataAccessObject.getCourses()));
+
 //        // Updates current alexander to have MAT157 as one of their courses.
 //        employeeDataAccessObject.save(alexander);
 //
 //        // Updates courses to have MAT157 included.
 //        fileCourseDataAccessObject.save(mat157);
+//
+//        // Updates events to have one lecture and one tutorial.
+//        fileEventDAO.save(lec0101);
+//        fileEventDAO.save(tut5201);
     }
 
     @Test
@@ -40,9 +57,14 @@ public class CourseDAOTest {
                 inMemoryEmployeeDataAccessObject);
         InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject = new InMemoryCourseDataAccessObject(courseDataAccessObject.getCourses());
 
-        HashMap<String, String> courses = new HashMap<>();
-        courses.put("MAT157", "");
-        assertEquals(courses.keySet(), inMemoryCourseDataAccessObject.getAllIDs());
+        FileEventDataAccessObject fileEventDataAccessObject = new FileEventDataAccessObject("./eventInformation.csv",
+                inMemoryEmployeeDataAccessObject, inMemoryCourseDataAccessObject);
+        InMemoryEventDataAccessObject eventDAO = new InMemoryEventDataAccessObject(fileEventDataAccessObject.getEvents());
+
+        HashMap<String, String> events = new HashMap<>();
+        events.put("LEC0101", "blah");
+        events.put("TUT5201", "blah");
+        assertEquals(events.keySet(), eventDAO.getAllIDs());
         // This test worked and didn't create duplicates of the documents either
     }
 }

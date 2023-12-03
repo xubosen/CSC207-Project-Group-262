@@ -1,8 +1,7 @@
-package data_access.file_dao;
+package daoTests;
 
 
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
-import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
