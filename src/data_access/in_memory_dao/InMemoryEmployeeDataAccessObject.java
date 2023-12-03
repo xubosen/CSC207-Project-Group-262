@@ -32,6 +32,10 @@ public class InMemoryEmployeeDataAccessObject {
         return employees.keySet();
     }
 
+    public HashMap<String, Employee> getEmployees() {
+        return new HashMap<>(employees);
+    }
+
     public void addEmployee(Employee employee) {
         this.employees.put(employee.getUID(), employee);
     }
@@ -43,5 +47,4 @@ public class InMemoryEmployeeDataAccessObject {
         }
         return false;
     }
-
 }

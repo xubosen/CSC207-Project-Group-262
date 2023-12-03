@@ -6,6 +6,8 @@ import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import data_access.in_memory_dao.InMemorySessionDataAccessObject;
 import entity.Employee;
 
+import java.io.IOException;
+
 public interface DataAccessInterface {
     public InMemoryCourseDataAccessObject getCourseDAO();
     public InMemoryEmployeeDataAccessObject getEmployeeDAO();
@@ -15,6 +17,6 @@ public interface DataAccessInterface {
     public boolean saveToDatabase(InMemoryCourseDataAccessObject courseDAO,
                                   InMemoryEmployeeDataAccessObject employeeDAO,
                                   InMemoryEventDataAccessObject eventDAO,
-                                  InMemorySessionDataAccessObject sessionDAO);
+                                  InMemorySessionDataAccessObject sessionDAO) throws IOException;
 
 }

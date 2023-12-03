@@ -26,20 +26,21 @@ public class RemoveFromCourseInteractor implements RemoveFromCourseInputBoundary
         } else if (!courseDAO.existsByID(inputData.getCourseCode())) {
             RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(false, "Course does not exist");
             myPresenter.prepareView(outputData);
-        }
-
-        // Check if the employee is in the course
-        Employee curEmployee = employeeDAO.getByID(employeeID);
-        Course curCourse = courseDAO.getByID(inputData.getCourseCode());
-        if (!curCourse.containsStaff(curEmployee)) {
-            RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(false, "Employee is not in the course");
-            myPresenter.prepareView(outputData);
         } else {
-            // Remove the employee from the course
-            curCourse.removeStaff(curEmployee);
+            // Check if the employee is in the course
+            Employee curEmployee = employeeDAO.getByID(employeeID);
+            Course curCourse = courseDAO.getByID(inputData.getCourseCode());
 
-            RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(true, "Employee removed from the course");
-            myPresenter.prepareView(outputData);
+            if (!curCourse.containsStaff(curEmployee)) {
+                RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(false, "Employee is not in the course");
+                myPresenter.prepareView(outputData);
+            } else {
+                // Remove the employee from the course
+                curCourse.removeStaff(curEmployee);
+
+                RemoveFromCourseOutputData outputData = new RemoveFromCourseOutputData(true, "Employee removed from the course");
+                myPresenter.prepareView(outputData);
+            }
         }
     }
 }

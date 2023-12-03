@@ -19,7 +19,6 @@ public class CreateSessionPresenter implements CreateSessionOutputBoundary {
      * @param outputData The data that will be output when createCourse has been tried.
      */
     public void prepareView(CreateSessionOutputData outputData) {
-        System.out.println(outputData.getMessage());
         CreateSessionState curState = createSessionViewModel.getState();
         curState.setSessionCreationSuccessful(outputData.isSuccessful());
         curState.setSessionCreationResponseMessage(outputData.getMessage());

@@ -1,4 +1,4 @@
-package data_access;
+package data_access.file_dao;
 
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import data_access.in_memory_dao.InMemoryEventDataAccessObject;
@@ -17,7 +17,7 @@ public class JsonToSession {
     private String sessionNameKey = "session_name";
     private String sessionIDKey = "sessionID";
     private String locationKey = "location";
-    private String eventKey = "event";
+    private String eventKey = "eventID";
     private String staffKey = "staff";
     private String calEventKey = "cal_event";
     private String jsonString;

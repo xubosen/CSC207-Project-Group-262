@@ -24,9 +24,6 @@ public class EnrollViewModel extends ViewModel {
     }
 
     public void firePropertyChanged() {
-        System.out.println(state.getUserInvited());
-        System.out.println(state.isInviteSuccessful());
-        System.out.println(state.getInviteResponseMessage());
         support.firePropertyChange("state", null, state);
     }
 

@@ -29,22 +29,22 @@ public class RemoveFromSessionInteractor implements RemoveFromSessionInputBounda
             RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(false,
                     "Session does not exist");
             myPresenter.prepareView(outputData);
-        }
-
-        // Check if the employee is in the session
-        Employee curEmployee = employeeDAO.getByID(employeeId);
-        ClassSession curSession = sessionDAO.getByID(inputData.getSessionId());
-        if (!curSession.containsStaff(curEmployee)) {
-            RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(false,
-                    "Employee is not in the session");
-            myPresenter.prepareView(outputData);
         } else {
-            // Remove the employee from the session and the session from the employee
-            curSession.removeStaff(curEmployee);
+            // Check if the employee is in the session
+            Employee curEmployee = employeeDAO.getByID(employeeId);
+            ClassSession curSession = sessionDAO.getByID(inputData.getSessionId());
+            if (!curSession.containsStaff(curEmployee)) {
+                RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(false,
+                        "Employee is not in the session");
+                myPresenter.prepareView(outputData);
+            } else {
+                // Remove the employee from the session and the session from the employee
+                curSession.removeStaff(curEmployee);
 
-            RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(true,
-                    "Successfully removed employee from session");
-            myPresenter.prepareView(outputData);
+                RemoveFromSessionOutputData outputData = new RemoveFromSessionOutputData(true,
+                        "Successfully removed employee from session");
+                myPresenter.prepareView(outputData);
+            }
         }
     }
 }

@@ -40,6 +40,8 @@ public class CreateEventInteractor implements CreateEventInputBoundary {
 
         // Initialize the output data package
         CreateEventOutputData output;
+        Course course = coursesDAO.getByID(inputData.getCourseCode());
+        Employee curUser = employeesDAO.getByID(inputData.getCreatorID());
 
         // If the event already exists return false and the corresponding message in output data
         if (doesEventExist(inputData)) {
@@ -50,22 +52,19 @@ public class CreateEventInteractor implements CreateEventInputBoundary {
             // This error message is only here for testing purposes because this view shouldn't be available to those
             // who are not instructors.
             output = new CreateEventOutputData(false, "Access denied. User is not an Instructor.");
-
-        // If the course does not exist.
         } else if (!doesCourseExist(inputData)) {
             output = new CreateEventOutputData(false, "Course does not exist.");
 
+        } else if (!course.containsStaff(curUser)) {
+            output = new CreateEventOutputData(false, "Access denied. User is not an Instructor.");
         } else {
-            Course course = coursesDAO.getByID(inputData.getCourseCode());
-            Instructor curUser = (Instructor) employeesDAO.getByID(inputData.getCreatorID());
 
-
-            if (inputData.getTypeOfEvent().equals("Lecture")) {
+            if (inputData.getTypeOfEvent().equals("lecture")) {
                 Lecture newLecture = new Lecture(inputData.getEventName(), inputData.getEventID(), course);
                 eventsDAO.addEvent(newLecture);
                 output = new CreateEventOutputData(true, "Event created successfully");
 
-            } else if (inputData.getTypeOfEvent().equals("Tutorial")){
+            } else if (inputData.getTypeOfEvent().equals("tutorial")){
                 Tutorial newTutorial = new Tutorial(inputData.getEventName(), inputData.getEventID(), course);
                 eventsDAO.addEvent(newTutorial);
                 output = new CreateEventOutputData(true, "Event created successfully");
@@ -79,18 +78,10 @@ public class CreateEventInteractor implements CreateEventInputBoundary {
         createEventPresenter.prepareView(output);
     }
 
-    // TODO: Delete this method after testing
-    private void viewInputData(CreateEventInputData inputData) {
-        System.out.println(inputData.getEventID());
-        System.out.println(inputData.getEventName());
-        System.out.println(inputData.getTypeOfEvent());
-        System.out.println(inputData.getCourseCode());
-        System.out.println(inputData.getCreatorID());
-    }
 
     private boolean isInstructor(CreateEventInputData inputData) {
         Employee curUser = employeesDAO.getByID(inputData.getCreatorID());
-        return curUser instanceof Instructor;
+        return curUser.getType().equals("instructor");
     }
 
 

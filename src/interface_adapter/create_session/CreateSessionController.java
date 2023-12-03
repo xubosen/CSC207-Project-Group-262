@@ -26,9 +26,9 @@ public class CreateSessionController {
      * @param endTime The created course's end time
      * @param eventID The event code that the session is being created in
      */
-    public void createSession(String sessionID, String sessionName, String description, String location,
+    public void createSession(String userID, String sessionID, String sessionName, String description, String location,
                               LocalDateTime startTime, LocalDateTime endTime, String eventID) {
-        CreateSessionInputData inputData = new CreateSessionInputData(sessionID, sessionName, description, location,
+        CreateSessionInputData inputData = new CreateSessionInputData(userID, sessionID, sessionName, description, location,
                 startTime, endTime, eventID);
         createSessionInteractor.createSession(inputData);
     }

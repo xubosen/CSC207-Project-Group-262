@@ -1,14 +1,13 @@
 package use_case.create_session;
 
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import data_access.in_memory_dao.InMemorySessionDataAccessObject;
-import entity.CalendarEvent;
-import entity.ClassSession;
-import entity.DateTimeSpan;
-import entity.Event;
+import entity.*;
 
 public class CreateSessionInteractor implements CreateSessionInputBoundary {
     private CreateSessionOutputBoundary createSessionPresenter;
+    private InMemoryEmployeeDataAccessObject employeeDAO;
     private InMemoryEventDataAccessObject eventsDAO;
     private InMemorySessionDataAccessObject sessionsDAO;
 
@@ -20,10 +19,12 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
      */
     public CreateSessionInteractor(CreateSessionOutputBoundary createSessionPresenter,
                                    InMemoryEventDataAccessObject eventsDAO,
-                                   InMemorySessionDataAccessObject sessionsDAO) {
+                                   InMemorySessionDataAccessObject sessionsDAO,
+                                   InMemoryEmployeeDataAccessObject employeeDAO) {
         this.createSessionPresenter = createSessionPresenter;
         this.eventsDAO = eventsDAO;
         this.sessionsDAO = sessionsDAO;
+        this.employeeDAO = employeeDAO;
     }
 
     /**
@@ -32,18 +33,21 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
      */
     public void createSession(CreateSessionInputData inputData) {
         CreateSessionOutputData output;
+        Employee curUser = employeeDAO.getByID(inputData.getUserID());
+        Event curEvent = eventsDAO.getByID(inputData.getParentEventID());
 
         // If the session already exists return false and the corresponding message in output data
         if (doesSessionExist(inputData)) {
             output = new CreateSessionOutputData(false, "Session already exists.");
         } else if (!eventsDAO.existsByID(inputData.getParentEventID())) {
             output = new CreateSessionOutputData(false, "Parent event does not exist.");
-        } else if (inputData.getDateTimeSpan().getStart().isAfter(inputData.getDateTimeSpan().getEnd())) {
-            output = new CreateSessionOutputData(false, "Start time is after end time.");
-        } else if (inputData.getDateTimeSpan().getStart().isEqual(inputData.getDateTimeSpan().getEnd())) {
-            output = new CreateSessionOutputData(false, "Start time is equal to end time.");
-        } else if (!doesEventExist(inputData)){
+        } else if (!isTimeSpanValid(inputData)) {
+            output = new CreateSessionOutputData(false, "Invalid time span.");
+        } else if (!doesEventExist(inputData)) {
             output = new CreateSessionOutputData(false, "Parent event does not exist.");
+        } else if (!curEvent.containStaff(curUser)) {
+            output = new CreateSessionOutputData(false, "Access Denied: User is not staff of parent " +
+                    "event.");
         } else {
                 // Create the session
                 ClassSession newSession = makeSession(inputData);
@@ -75,5 +79,15 @@ public class CreateSessionInteractor implements CreateSessionInputBoundary {
         Event parentEvent = eventsDAO.getByID(parentEventID);
         ClassSession session = new ClassSession(sessionID, sessionName, calEvent, location, parentEvent);
         return session;
+    }
+
+    private boolean isTimeSpanValid(CreateSessionInputData inputData) {
+        DateTimeSpan dateTimeSpan = inputData.getDateTimeSpan();
+        if (dateTimeSpan.getStart() == null || dateTimeSpan.getEnd() == null) {
+            return false;
+        } else if (dateTimeSpan.getStart().isAfter(dateTimeSpan.getEnd())) {
+            return false;
+        }
+        return true;
     }
 }

@@ -25,7 +25,6 @@ public class GetSessionsInteractor implements GetSessionsInputBoundary{
             sessionList.add(key);
         }
         GetSessionsOutputData output = new GetSessionsOutputData(sessionList);
-        System.out.println(sessionList);
         presenter.present(output);
     }
 }

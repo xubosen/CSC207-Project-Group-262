@@ -28,13 +28,4 @@ public class CreateEventController {
 //        viewInputData(inputData);
         createEventInteractor.createEvent(inputData);
     }
-
-    // TODO: Delete this method after testing is done
-    private void viewInputData(CreateEventInputData inputData) {
-        System.out.println("Event Name: " + inputData.getEventName());
-        System.out.println("Event ID: " + inputData.getEventID());
-        System.out.println("Type of Event: " + inputData.getTypeOfEvent());
-        System.out.println("Creator ID: " + inputData.getCreatorID());
-        System.out.println("Course Code: " + inputData.getCourseCode());
-    }
 }

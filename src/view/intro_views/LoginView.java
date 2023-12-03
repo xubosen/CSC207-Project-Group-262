@@ -122,23 +122,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             public void keyReleased(KeyEvent e) {}
         });
 
-        logIn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(logIn)) {
-                    // Update the password in LoginState right before executing the login process
-                    LoginState currentState = loginViewModel.getState();
-                    currentState.setPassword(new String(passwordInputField.getPassword()));
-                    loginViewModel.setState(currentState);
-
-                    // Execute login process
-                    loginController.execute(
-                            loginViewModel.getState().getUsername(),
-                            loginViewModel.getState().getPassword()
-                    );
-                }
-            }
-        });
-
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -216,8 +199,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             state.setLoginSuccessful(false);
         } else {
             // Display error message
-                JOptionPane.showMessageDialog(this, state.getLoginError());
-            }
+            JOptionPane.showMessageDialog(this, state.getLoginError());
+        }
         }
 
     private void setFields(LoginState state) {

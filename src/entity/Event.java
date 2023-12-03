@@ -101,6 +101,16 @@ public abstract class Event {
     }
 
     /**
+     * Return whether the event contains the employee
+     *
+     * @param employee
+     * @return true if the event contains the employee, false otherwise
+     */
+    public boolean containStaff(Employee employee) {
+        return staff.containsKey(employee.getUID());
+    }
+
+    /**
      * Add a class session to the event. Return false if the session is already in the event or if the session is in
      * another event.
      *
