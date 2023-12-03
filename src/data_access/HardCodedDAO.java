@@ -47,10 +47,12 @@ public class HardCodedDAO implements DataAccessInterface{
         Course mat157 = courseDAO.getByID("MAT157");
         Course mat257 = courseDAO.getByID("MAT257");
 
+        csc207.addStaff(simon);
         csc207.addStaff(ta1);
         csc207.addStaff(ta2);
         csc207.addStaff(ta3);
 
+        mat157.addStaff(simon);
         mat157.addStaff(ta1);
         mat157.addStaff(ta2);
         mat157.addStaff(ta3);
@@ -68,9 +70,12 @@ public class HardCodedDAO implements DataAccessInterface{
         Tutorial TS2 = (Tutorial) eventDAO.getByID("CSC207-TUT0201");
 
         LS1.addStaff(simon);
+
         LS2.addStaff(alex);
 
+        TS1.addStaff(simon);
         TS1.addStaff(ta1);
+
         TS2.addStaff(ta2);
 
         // Create some sessions & add some employees to them
@@ -79,7 +84,8 @@ public class HardCodedDAO implements DataAccessInterface{
         DateTimeSpan dateTimeSpan = new DateTimeSpan(start, end);
         CalendarEvent calendarEvent = new CalendarEvent("CSC207 - Lecture Session 1", "CSC207-LEC0101",
                 dateTimeSpan);
-        ClassSession session1 = new ClassSession("111", "CSC207-LEC0101", calendarEvent, "here",
+        ClassSession session1 = new ClassSession("Test", "Test Session",
+                calendarEvent, "here",
                 LS1);
         sessionDAO.addSession(session1);
 

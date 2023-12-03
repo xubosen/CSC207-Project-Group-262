@@ -3,10 +3,10 @@ package interface_adapter.get_events;
 import use_case.get_events.GetEventInputBoundary;
 import use_case.get_events.GetEventInputData;
 
-public class getEventController {
+public class GetEventController {
     private GetEventInputBoundary getEventInteractor;
 
-    public getEventController(GetEventInputBoundary getEventInteractor) {
+    public GetEventController(GetEventInputBoundary getEventInteractor) {
         this.getEventInteractor = getEventInteractor;
     }
 

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreateSessionInputData {
+    private String userID;
     private String sessionID;
     private String sessionName;
     private String description;
@@ -15,8 +16,9 @@ public class CreateSessionInputData {
     private String parentEventID;
 
 
-    public CreateSessionInputData(String sessionID, String sessionName, String description, String location,
+    public CreateSessionInputData(String userID, String sessionID, String sessionName, String description, String location,
                                   LocalDateTime startTime, LocalDateTime endTime, String parentEventID) {
+        this.userID = userID;
         this.sessionID = sessionID;
         this.sessionName = sessionName;
         this.description = description;
@@ -26,6 +28,9 @@ public class CreateSessionInputData {
         this.endTime = endTime;
 
         this.parentEventID = parentEventID;
+    }
+    public String getUserID() {
+        return userID;
     }
 
     public String getSessionName() {

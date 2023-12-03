@@ -5,7 +5,9 @@ import entity.Course;
 import entity.Employee;
 import entity.Event;
 
-public class GetEventInteractor {
+import java.util.ArrayList;
+
+public class GetEventInteractor implements GetEventInputBoundary{
     private GetEventOutputBoundary presenter;
     private InMemoryEmployeeDataAccessObject employeeDAO;
 
@@ -14,15 +16,17 @@ public class GetEventInteractor {
         this.employeeDAO = employeeDAO;
     }
 
-    public void getEvents(GetEventInputData inputData) {
-//        Employee currentEmployee = employeeDAO.getByID(inputData.getUserID());
-//        Event event
-//        for (Course course : currentEmployee.getCourses().values()) {
-//
-//            for (Event event : course.getEvents().values()) {
-//                presenter.present(event);
-//            }
-//        }
-
+    public void getEvent(GetEventInputData inputData) {
+        Employee currentEmployee = employeeDAO.getByID(inputData.getUserID());
+        ArrayList<String> eventIDs = new ArrayList<>();
+        for (Course course : currentEmployee.getCourses().values()) {
+            for (Event event : course.getEvents().values()) {
+                if (event.containStaff(currentEmployee)) {
+                    eventIDs.add(event.getEventID());
+                }
+            }
+        }
+        presenter.present(new GetEventOutputData(eventIDs));
     }
+
 }

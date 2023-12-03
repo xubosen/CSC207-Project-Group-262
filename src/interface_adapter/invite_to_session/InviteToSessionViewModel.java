@@ -25,10 +25,6 @@ public class InviteToSessionViewModel extends ViewModel {
     }
 
     public void firePropertyChanged() {
-        // TODO: Remove this print statement when done debugging
-        System.out.println(state.getUserInvited());
-        System.out.println(state.isInviteSuccessful());
-        System.out.println(state.getInviteResponseMessage());
         support.firePropertyChange("state", null, state);
     }
 

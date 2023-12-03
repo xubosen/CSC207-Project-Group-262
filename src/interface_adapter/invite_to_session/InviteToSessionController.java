@@ -10,8 +10,8 @@ public class InviteToSessionController {
         this.inviteToSessionInteractor = inviteToSessionInteractor;
     }
 
-    public void invite(String userID, String sessionID) {
-        InviteToSessionInputData inputData = new InviteToSessionInputData(userID, "", sessionID);
+    public void invite(String inviteeID, String invitorID, String sessionID) {
+        InviteToSessionInputData inputData = new InviteToSessionInputData(inviteeID, invitorID, sessionID);
         inviteToSessionInteractor.invite(inputData);
     }
 }
