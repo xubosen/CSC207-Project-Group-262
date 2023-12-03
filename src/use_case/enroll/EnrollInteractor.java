@@ -62,7 +62,7 @@ public class EnrollInteractor implements EnrollInputBoundary{
         }
 
         private boolean isUserAdmin(EnrollInputData inputData) {
-            Employee curEmployee = employeesDAO.getByID(inputData.getInviteeID());
+            Employee curEmployee = employeesDAO.getByID(inputData.getInvitorID());
             Course curCourse = getCourseFromInputData(inputData);
             String curEmployeeID = curEmployee.getUID();
             String curCourseAdminID = curCourse.getAdmin().getUID();
