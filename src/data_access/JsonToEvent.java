@@ -1,10 +1,14 @@
-package data_access;
+package data_access.file_dao;
 
 import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import entity.*;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
+
 
 public class JsonToEvent {
     private InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject;
@@ -18,7 +22,7 @@ public class JsonToEvent {
     private JSONObject jsonObject;
 
     public JsonToEvent(String jsonString, InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject,
-                          InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
+                       InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject) {
         this.jsonString = jsonString;
         this.inMemoryEmployeeDataAccessObject = inMemoryEmployeeDataAccessObject;
         this.inMemoryCourseDataAccessObject = inMemoryCourseDataAccessObject;
