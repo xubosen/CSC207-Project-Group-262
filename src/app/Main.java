@@ -383,7 +383,7 @@ public class Main {
         GetEventInteractor getEventInteractor = new GetEventInteractor(getEventPresenter, employeeDAO);
         GetEventController getEventController = new GetEventController(getEventInteractor);
         MyEventsViewTA myEventsViewTA = new MyEventsViewTA(viewManagerModel, getEventController,
-                getEventViewModel);
+                getEventViewModel, curUserState);
         return myEventsViewTA;
     }
 
