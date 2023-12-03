@@ -22,9 +22,6 @@ public class CreateEventViewModel extends ViewModel {
     }
 
     public void firePropertyChanged() {
-        System.out.println(state.getEventID());
-        System.out.println(state.getEventName());
-        System.out.println(state.getEventCreationResponseMessage());
         support.firePropertyChange("state", null, state);
     }
 

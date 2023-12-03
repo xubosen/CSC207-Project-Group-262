@@ -95,7 +95,9 @@ public class MySessionsView extends JPanel implements ActionListener, PropertyCh
     private void formatButton(JButton button) {
         button.setFont(new Font("Arial", Font.PLAIN, 20));
         button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50));
-        button.addActionListener(this);
+        if (button.getActionListeners().length == 0) {
+            button.addActionListener(this);
+        }
     }
 
     private void makeSessionsList(GridBagConstraints gbc) {
@@ -154,16 +156,19 @@ public class MySessionsView extends JPanel implements ActionListener, PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        GetSessionsState curState = getSessionsViewModel.getState();
-        sessions = curState.getSessions();
-        System.out.println(sessions);
+        if (evt.getPropertyName().equals("state")) {
+            GetSessionsState curState = getSessionsViewModel.getState();
+            sessions = curState.getSessions();
 
-        removeAll();
-        GridBagConstraints gbc = formatScreenLayout();
-        makeHeading(gbc);
-        makeHeaderButtons(gbc);
-        makeSessionsList(gbc);
-        revalidate();
-        repaint();
+            removeAll();
+            GridBagConstraints gbc = formatScreenLayout();
+            makeHeading(gbc);
+            makeHeaderButtons(gbc);
+            makeSessionsList(gbc);
+            revalidate();
+            repaint();
+
+
+        }
     }
 }

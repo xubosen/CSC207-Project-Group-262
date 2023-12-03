@@ -22,9 +22,6 @@ public class CreateCourseViewModel extends ViewModel {
     }
 
     public void firePropertyChanged() {
-        System.out.println(state.getCourseCreated());
-        System.out.println(state.isCourseCreationSuccessful());
-        System.out.println(state.getCourseCreationResponseMessage());
         support.firePropertyChange("state", null, state);
     }
 

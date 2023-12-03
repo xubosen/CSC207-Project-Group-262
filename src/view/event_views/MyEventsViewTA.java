@@ -82,7 +82,9 @@ public class MyEventsViewTA extends JPanel implements PropertyChangeListener, Ac
     private void formatButton(JButton button) {
         button.setFont(new Font("Arial", Font.PLAIN, 20));
         button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50));
-        button.addActionListener(this);
+        if (button.getActionListeners().length == 0) {
+            button.addActionListener(this);
+        }
     }
 
     private void makeEventsList(GridBagConstraints gbc) {

@@ -19,7 +19,6 @@ public class CreateCoursePresenter implements CreateCourseOutputBoundary {
      * @param outputData The data that will be output when createCourse has been tried.
      */
     public void prepareView(CreateCourseOutputData outputData) {
-        System.out.println(outputData.getMessage());
         CreateCourseState curState = createCourseViewModel.getState();
         curState.setCourseCreationSuccessful(outputData.isSuccessful());
         curState.setCourseCreationResponseMessage(outputData.getMessage());

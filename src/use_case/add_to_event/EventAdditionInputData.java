@@ -4,12 +4,12 @@ package use_case.add_to_event;
 public class EventAdditionInputData {
 
     private String userID;
-    private String email;
+    private String inviteeID;
     private String eventID;
 
-    public EventAdditionInputData(String userID, String email, String eventID) {
+    public EventAdditionInputData(String userID, String inviteeID, String eventID) {
         this.userID = userID;
-        this.email = email;
+        this.inviteeID = inviteeID;
         this.eventID = eventID;
     }
 
@@ -17,9 +17,8 @@ public class EventAdditionInputData {
         return userID;
     }
 
-
-    public String getEmail() {
-        return email;
+    public String getInviteeID() {
+        return inviteeID;
     }
 
     public String getEventID() {

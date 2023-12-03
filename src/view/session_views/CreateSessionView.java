@@ -1,5 +1,6 @@
 package view.session_views;
 
+import interface_adapter.UserState;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_session.CreateSessionController;
 import interface_adapter.create_session.CreateSessionState;
@@ -25,6 +26,7 @@ public class CreateSessionView extends JPanel implements ActionListener, Propert
     private CreateSessionViewModel createSessionViewModel;
     private ViewManagerModel viewManagerModel;
     private CreateSessionController createSessionController;
+    private UserState userState;
 
 
     // Variables for setting up UI
@@ -53,11 +55,13 @@ public class CreateSessionView extends JPanel implements ActionListener, Propert
      * @param viewManagerModel Manages the current view to display
      */
     public CreateSessionView(CreateSessionController createSessionController,
-                             CreateSessionViewModel createSessionViewModel, ViewManagerModel viewManagerModel){
+                             CreateSessionViewModel createSessionViewModel, ViewManagerModel viewManagerModel,
+                             UserState userState){
         this.createSessionController = createSessionController;
         this.createSessionViewModel = createSessionViewModel;
         this.viewManagerModel = viewManagerModel;
         createSessionViewModel.addPropertyChangeListener(this);
+        this.userState = userState;
         setupUI();
     }
 
@@ -306,6 +310,7 @@ public class CreateSessionView extends JPanel implements ActionListener, Propert
         if (event.getSource() == createSession) {
             CreateSessionState curState = createSessionViewModel.getState();
 
+            String userID = userState.getUserID();
             String sessionName = curState.getSessionName();
             String sessionID = curState.getSessionID();
             String sessionDescription = curState.getDescription();
@@ -314,8 +319,8 @@ public class CreateSessionView extends JPanel implements ActionListener, Propert
             LocalDateTime endTime = curState.getEndTime();
             String parentEvent = curState.getParentEventID();
 
-            createSessionController.createSession(sessionID, sessionName, sessionDescription, location, startTime,
-                    endTime, parentEvent);
+            createSessionController.createSession(userID, sessionID, sessionName, sessionDescription, location,
+                    startTime, endTime, parentEvent);
 
         } else if (event.getSource() == close) {
             viewManagerModel.setActiveView(mySessionsViewName);

@@ -1,5 +1,6 @@
 package view.event_views;
 
+import interface_adapter.UserState;
 import interface_adapter.add_to_event.EventAdditionViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.add_to_event.EventAdditionController;
@@ -25,6 +26,7 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
     private ViewManagerModel viewManagerModel;
     private EventAdditionController eventAdditionController;
     private String myEventsViewName;
+    private UserState curUserState;
 
 
     // Variables for setting up UI
@@ -38,11 +40,12 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
     private JLabel errorDisplayField = new JLabel(error_message);
 
     public EventAdditionView(EventAdditionController eventAdditionController, EventAdditionViewModel eventAdditionViewModel,
-                      ViewManagerModel viewManagerModel){
+                             ViewManagerModel viewManagerModel, UserState curUserState){
         this.eventAdditionController = eventAdditionController;
         this.eventAdditionViewModel = eventAdditionViewModel;
         this.viewManagerModel = viewManagerModel;
         eventAdditionViewModel.addPropertyChangeListener(this);
+        this.curUserState = curUserState;
         setupUI();
     }
 
@@ -172,7 +175,7 @@ public class EventAdditionView extends JPanel implements ActionListener, Propert
             String inviteeID = curState.getUserInvited();
             String eventID = curState.getEventID();
 
-            eventAdditionController.addEmployeeToEvent(inviteeID, eventID);
+            eventAdditionController.addEmployeeToEvent(curUserState.getUserID(), inviteeID, eventID);
 
         // Close the window and return to the previous screen
         } else if (event.getSource() == close) {

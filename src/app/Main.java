@@ -228,7 +228,7 @@ public class Main {
         addView(mySessionsView, mySessionsView.viewName);
 
         // Instantiate CreateSessionUseCaseView
-        CreateSessionView createSessionView = instantiateCreateSessionUseCase(eventDAO, sessionDAO);
+        CreateSessionView createSessionView = instantiateCreateSessionUseCase(eventDAO, sessionDAO, employeeDAO);
         addView(createSessionView, createSessionView.viewName);
 
         // Instantiate Add to Session Use Case View
@@ -284,8 +284,7 @@ public class Main {
         LoginPresenter loginPresenter = new LoginPresenter(loginViewModel);
         LoginInteractor loginInteractor = new LoginInteractor(loginPresenter, employeeDAO);
         LoginController loginController = new LoginController(loginInteractor);
-        LoginView loginView = new LoginView(loginViewModel, viewManagerModel, loginController, curUserState);
-        return loginView;
+        return new LoginView(loginViewModel, viewManagerModel, loginController, curUserState);
     }
 
     private static SignUpView instantiateSignUpUseCase(InMemoryEmployeeDataAccessObject employeeDAO){
@@ -383,7 +382,7 @@ public class Main {
                 employeeDAO, eventDAO);
         EventAdditionController eventAdditionController = new EventAdditionController(eventAdditionInteractor);
         EventAdditionView eventAdditionView = new EventAdditionView(eventAdditionController, eventAdditionViewModel,
-                viewManagerModel);
+                viewManagerModel, curUserState);
         return eventAdditionView;
     }
 
@@ -425,16 +424,16 @@ public class Main {
     }
 
     private static CreateSessionView instantiateCreateSessionUseCase(InMemoryEventDataAccessObject eventDAO,
-                                                                     InMemorySessionDataAccessObject sessionDAO) {
+                                                                     InMemorySessionDataAccessObject sessionDAO,
+                                                                     InMemoryEmployeeDataAccessObject employeeDAO) {
         CreateSessionViewModel createSessionViewModel = new CreateSessionViewModel();
         CreateSessionPresenter createSessionPresenter = new CreateSessionPresenter(createSessionViewModel);
         CreateSessionInteractor createSessionInteractor = new CreateSessionInteractor(createSessionPresenter,
-                eventDAO, sessionDAO);
+                eventDAO, sessionDAO, employeeDAO);
         CreateSessionController createSessionController = new CreateSessionController(createSessionInteractor);
         CreateSessionView createSessionView = new CreateSessionView(createSessionController, createSessionViewModel,
-                viewManagerModel);
+                viewManagerModel, curUserState);
         return createSessionView;
-
     }
 
     private static RemoveFromSessionView instantiateRemoveFromSessionUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
@@ -446,9 +445,8 @@ public class Main {
                 removeFromSessionPresenter, employeeDAO, sessionsDAO);
         RemoveFromSessionController removeFromSessionController = new RemoveFromSessionController(
                 removeFromSessionInteractor);
-        RemoveFromSessionView removeFromSessionView = new RemoveFromSessionView(removeFromSessionController,
+        return new RemoveFromSessionView(removeFromSessionController,
                 removeFromSessionViewModel, viewManagerModel);
-        return removeFromSessionView;
     }
 
     private static InviteToSessionView instantiateInviteToSessionUseCase(InMemoryEmployeeDataAccessObject employeeDAO,
@@ -460,8 +458,7 @@ public class Main {
                 inviteToSessionPresenter, employeeDAO, sessionsDAO);
         InviteToSessionController inviteToSessionController = new InviteToSessionController(
                 inviteToSessionInteractor);
-        InviteToSessionView inviteToSessionView = new InviteToSessionView(inviteToSessionController,
-                inviteToSessionViewModel, viewManagerModel);
-        return inviteToSessionView;
+        return new InviteToSessionView(inviteToSessionController,
+                inviteToSessionViewModel, viewManagerModel, curUserState);
     }
 }
