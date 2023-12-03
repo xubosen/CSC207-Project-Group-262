@@ -109,14 +109,13 @@ public class Main {
 
         // The main application window.
         application = new JFrame("CSC207 Project - Class Management HR System");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         // Set the size of the application window.
         application.setSize(1000, 600);
 
-        CardLayout cardLayout = new CardLayout();
-
         // Panel that contains the views.
+        CardLayout cardLayout = new CardLayout();
         views = new JPanel(cardLayout);
         application.add(views);
 
@@ -128,37 +127,50 @@ public class Main {
         application.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                boolean saveSuccessful = false;
-                try {
-                    saveSuccessful = dataAccess.saveToDatabase(courseDAO, employeeDAO, eventDAO, sessionDAO);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                boolean saveSuccessful = saveToDataAccess(employeeDAO, courseDAO, eventDAO, sessionDAO);
 
                 // If save is not successful, show a confirmation dialog
                 if (!saveSuccessful) {
-                    int option = JOptionPane.showConfirmDialog(new JFrame(), "Data not saved! Are you sure you " +
-                            "want to quit?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION);
+                    int option = JOptionPane.showConfirmDialog(application, "Data not saved! Are you sure you "
+                            + "want to quit?", "Confirm", JOptionPane.YES_NO_OPTION);
+
                     // if the user chooses yes, close the window
                     if (option == JOptionPane.YES_OPTION) {
-                        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                        application.dispose();
-                    } else {
-                        // if the user chooses no, keep the window open
-                        application.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                        closeProgram();
                     }
-                } else {
-                    // if the save is successful, close the window
-                    application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    application.dispose();
+
+                    // if the user chooses no, do nothing (no code required)
                 }
             }
         });
     }
 
-    private static void readFromDataAccess() throws IOException {
+    private static void closeProgram() {
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.dispose();
+    }
+
+    private static void readFromDataAccess() {
         dataAccess = new HardCodedDAO();
-//        dataAccess = new MongoDBDAO();
+//        try {
+//            dataAccess = new MongoDBDAO();
+//        } catch (Exception e) {
+//            int option = JOptionPane.showConfirmDialog(application, "Data load failed. Closing program",
+//                    "Data Loading Error", JOptionPane.YES_OPTION);
+//            System.out.println("Data load failed. Closing program");
+//            closeProgram();
+//        }
+    }
+
+    private static boolean saveToDataAccess(InMemoryEmployeeDataAccessObject employeeDAO,
+                                            InMemoryCourseDataAccessObject courseDAO,
+                                            InMemoryEventDataAccessObject eventDAO,
+                                            InMemorySessionDataAccessObject sessionDAO) {
+        try {
+            return dataAccess.saveToDatabase(courseDAO, employeeDAO, eventDAO, sessionDAO);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private static String initializeViews(InMemorySessionDataAccessObject sessionDAO,
