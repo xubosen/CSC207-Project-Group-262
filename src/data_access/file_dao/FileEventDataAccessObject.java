@@ -121,28 +121,6 @@ public class FileEventDataAccessObject {
         }
     }
 
-
-    /**
-     * Return whether a event exists with their identifier.
-     * @param eventID
-     * @return whether the event code is inside
-     */
-    public boolean existsByCode(String eventID) {
-        return events.containsKey(eventID);
-    }
-
-    /**
-     * Get the string form of the events in the DAO.
-     * @return string of events
-     */
-    public String getEventsString() {
-        StringBuilder events = new StringBuilder();
-        for (Map.Entry<String, Event> entry : this.events.entrySet()) {
-            events.append(entry.getKey()).append("\n");
-        }
-        return events.toString();
-    }
-
     /**
      * Getter for events Hashmap
      * @return events Hashmap of the DAO

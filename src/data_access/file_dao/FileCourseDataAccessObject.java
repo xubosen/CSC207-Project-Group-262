@@ -140,28 +140,6 @@ public class FileCourseDataAccessObject {
         }
     }
 
-
-    /**
-     * Return whether a course exists with their identifier.
-     * @param courseCode the co
-     * @return whether the course code is inside
-     */
-    public boolean existsByCode(String courseCode) {
-        return courses.containsKey(courseCode);
-    }
-
-    /**
-     * Converts the Hashmap of courses into a String where each of their course code is displayed on a new line.
-     * @return Every single course code line by line.
-     */
-    public String getCoursesString() {
-        StringBuilder courses = new StringBuilder();
-        for (Map.Entry<String, Course> entry : this.courses.entrySet()) {
-            courses.append(entry.getKey()).append("\n");
-        }
-        return courses.toString();
-    }
-
     /**
      * Returns the HashMap of course code and courses
      * @return this.courses
