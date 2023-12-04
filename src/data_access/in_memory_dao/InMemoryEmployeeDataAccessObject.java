@@ -40,11 +40,11 @@ public class InMemoryEmployeeDataAccessObject {
         this.employees.put(employee.getUID(), employee);
     }
 
-    public boolean removeEmployee(Employee employee) {
-        if (this.employees.containsKey(employee.getUID())){
-            this.employees.remove(employee.getUID());
-            return true;
-        }
-        return false;
-    }
+//    public boolean removeEmployee(Employee employee) {
+//        if (this.employees.containsKey(employee.getUID())){
+//            this.employees.remove(employee.getUID());
+//            return true;
+//        }
+//        return false;
+//    }
 }
