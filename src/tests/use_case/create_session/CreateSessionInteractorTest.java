@@ -23,7 +23,7 @@ public class CreateSessionInteractorTest {
     // Example setup, adapt as necessary
     @Before
     public void setUp() {
-        // Initialize your DAOs and any other necessary setup
+
     }
 
     @Test
