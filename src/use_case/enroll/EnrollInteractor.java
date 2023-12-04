@@ -26,13 +26,13 @@ public class EnrollInteractor implements EnrollInputBoundary{
             if (! doesEmployeeExist(inputData)) {
                 output = new EnrollOutputData(false, "Invitee does not exist");
 
-            // If the invitor is not the admin of the course return false and a corresponding message in output data
-            } else if (!isUserAdmin(inputData)) {
-                output = new EnrollOutputData(false, "Access denied. You are not the admin of this course");
-
             // If the course does not exist return false and a corresponding message in output data
             } else if (!doesCourseExist(inputData)) {
                 output = new EnrollOutputData(false, "Course does not exist");
+
+            // If the invitor is not the admin of the course return false and a corresponding message in output data
+            } else if (!isUserAdmin(inputData)) {
+                output = new EnrollOutputData(false, "Access denied. You are not the admin of this course");
 
             // If the employee exists and the course exists, try to add the employee to the course
             } else {

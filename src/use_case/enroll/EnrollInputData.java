@@ -3,7 +3,6 @@ package use_case.enroll;
 public class EnrollInputData {
     private String invitorID;
     private String inviteeID;
-    private String email;
     private String courseCode;
 
 

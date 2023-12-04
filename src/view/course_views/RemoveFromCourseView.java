@@ -89,15 +89,15 @@ public class RemoveFromCourseView extends JPanel implements ActionListener, Prop
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
-        JPanel userToRemovePanel = new JPanel();
-        userToRemovePanel.add(new JLabel("User to remove:"));
-        userToRemovePanel.add(userToRemoveInputField);
-        inputPanel.add(userToRemovePanel);
-
         JPanel courseToRemoveFromPanel = new JPanel();
         courseToRemoveFromPanel.add(new JLabel("Course to remove from:"));
         courseToRemoveFromPanel.add(courseToRemoveFromInputField);
         inputPanel.add(courseToRemoveFromPanel);
+
+        JPanel userToRemovePanel = new JPanel();
+        userToRemovePanel.add(new JLabel("User to remove:"));
+        userToRemovePanel.add(userToRemoveInputField);
+        inputPanel.add(userToRemovePanel);
 
         return inputPanel;
     }
