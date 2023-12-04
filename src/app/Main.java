@@ -153,15 +153,15 @@ public class Main {
     }
 
     private static void readFromDataAccess() {
-        dataAccess = new HardCodedDAO();
-//        try {
-//            dataAccess = new MongoDBDAO();
-//        } catch (Exception e) {
-//            int option = JOptionPane.showConfirmDialog(application, "Data load failed. Closing program",
-//                    "Data Loading Error", JOptionPane.YES_OPTION);
-//            System.out.println("Data load failed. Closing program");
-//            closeProgram();
-//        }
+//        dataAccess = new HardCodedDAO();
+        try {
+            dataAccess = new MongoDBDAO();
+        } catch (Exception e) {
+            int option = JOptionPane.showConfirmDialog(application, "Data load failed. Closing program",
+                    "Data Loading Error", JOptionPane.YES_OPTION);
+            System.out.println("Data load failed. Closing program");
+            closeProgram();
+        }
     }
 
     private static boolean saveToDataAccess(InMemoryEmployeeDataAccessObject employeeDAO,
