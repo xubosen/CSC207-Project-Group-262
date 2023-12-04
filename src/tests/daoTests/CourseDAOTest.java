@@ -30,11 +30,11 @@ public class CourseDAOTest {
 
         InMemoryEmployeeDataAccessObject memoryEmpDAO = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
 
-        // For some reason buffered reader can't read the file.
         FileCourseDataAccessObject fileCourseDataAccessObject = new FileCourseDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/courseInfo.csv",
                 new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()));
         HashMap<String, Course> courses = new HashMap<>(fileCourseDataAccessObject.getCourses());
         courses.put(mat157.getCourseCode(), mat157);
+
         // Updates current alexander to have MAT157 as one of their courses.
         InMemoryCourseDataAccessObject memoryCourseDAO = new InMemoryCourseDataAccessObject(fileCourseDataAccessObject.getCourses());
         employeeDataAccessObject.save(employees);
@@ -60,6 +60,5 @@ public class CourseDAOTest {
         courses.put("Basket Weaving", "");
         courses.put("Rocket Flying", "");
         assertEquals(courses.keySet(), inMemoryCourseDataAccessObject.getAllIDs());
-        // This test worked and didn't create duplicates of the documents either
     }
 }

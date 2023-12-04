@@ -57,6 +57,5 @@ public class EmployeeDAOTest {
         employees.put("xubosen", "");
         employees.put("phanale1231423", "");
         assertEquals(employees.keySet(), inMemoryEmployeeDataAccessObject.getAllIDs());
-        // This test worked and didn't create duplicates of the documents either
     }
 }

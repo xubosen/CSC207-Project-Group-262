@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class EventDAOTest {
     @Before
     public void setUp() throws IOException {
+        // This part also tests whether the new Instructor is getting saved to the database.
         Instructor alexander = new Instructor("phanale1231423", "Alexander Phan12",
                 "alexander.phan@mail.utoronto.ca12", "123412");
 
@@ -79,6 +80,5 @@ public class EventDAOTest {
         events.put("BW101", "");
         events.put("LEC0101", "");
         assertEquals(events.keySet(), eventDAO.getAllIDs());
-        // This test worked and didn't create duplicates of the documents either
     }
 }

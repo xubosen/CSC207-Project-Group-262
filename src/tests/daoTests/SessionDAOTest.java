@@ -51,7 +51,6 @@ public class SessionDAOTest {
 
 
         FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/employeeInfo.csv");
-        // need new hashmap because of aliasing
         HashMap<String, Employee> employees = new HashMap<>(employeeDataAccessObject.getAccount());
         employees.put(alexander.getUID(), alexander);
         InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject(employees);
@@ -115,6 +114,5 @@ public class SessionDAOTest {
         classSessions.put("LEC0101M 11/27 1-2", "");
         classSessions.put("LEC0101F 12/01 1-2", "");
         assertEquals(classSessions.keySet(), sessionDAO.getAllIDs());
-        // This test worked and didn't create duplicates of the documents either
     }
 }
