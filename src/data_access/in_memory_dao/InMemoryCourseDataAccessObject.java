@@ -35,13 +35,13 @@ public class InMemoryCourseDataAccessObject {
         this.courses.put(course.getCourseCode(), course);
     }
 
-    public boolean removeCourse(Course course) {
-        if (this.courses.containsKey(course.getCourseCode())){
-            this.courses.remove(course.getCourseCode());
-            return true;
-        }
-        return false;
-    }
+//    public boolean removeCourse(Course course) {
+//        if (this.courses.containsKey(course.getCourseCode())){
+//            this.courses.remove(course.getCourseCode());
+//            return true;
+//        }
+//        return false;
+//    }
 
     public HashMap<String, Course> getCourses() {
         return new HashMap<>(courses);

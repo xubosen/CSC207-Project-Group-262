@@ -51,6 +51,8 @@ public class EmployeeDAOTest {
         InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
         System.out.println(inMemoryEmployeeDataAccessObject.getAllIDs());
         HashMap<String, String> employees = new HashMap<>();
+        employees.put("mdm", "");
+        employees.put("yoohamj", "");
         employees.put("phanale4", "");
         employees.put("testadmin", "");
         employees.put("testTA", "");

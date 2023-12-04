@@ -35,13 +35,13 @@ public class InMemoryEventDataAccessObject {
         return events.get(eventID);
     }
 
-    public boolean removeEvent(Event event) {
-        if (existsByID(event.getEventID())) {
-            this.events.remove(event.getEventID());
-            return true;
-        }
-        return false;
-    }
+//    public boolean removeEvent(Event event) {
+//        if (existsByID(event.getEventID())) {
+//            this.events.remove(event.getEventID());
+//            return true;
+//        }
+//        return false;
+//    }
 
     public Set<String> getAllIDs() {
         return events.keySet();

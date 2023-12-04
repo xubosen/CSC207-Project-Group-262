@@ -10,7 +10,6 @@ import entity.Employee;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -53,7 +52,6 @@ public class CourseDAOTest {
         InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject = new InMemoryCourseDataAccessObject(courseDataAccessObject.getCourses());
 
         HashMap<String, String> courses = new HashMap<>();
-        courses.put("testCourse", "");
         courses.put("CSC207", "");
         courses.put("CSC236", "");
         courses.put("MAT157", "");

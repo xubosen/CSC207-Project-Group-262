@@ -74,7 +74,6 @@ public class EventDAOTest {
         InMemoryEventDataAccessObject eventDAO = new InMemoryEventDataAccessObject(fileEventDataAccessObject.getEvents());
 
         HashMap<String, String> events = new HashMap<>();
-        events.put("testEvent", "");
         events.put("CSC207-LEC0101", "");
         events.put("TUT5201", "");
         events.put("BW101", "");

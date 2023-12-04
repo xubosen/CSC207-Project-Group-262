@@ -110,7 +110,6 @@ public class SessionDAOTest {
         HashMap<String, String> classSessions = new HashMap<>();
         classSessions.put("LECBW101 FRI", "");
         classSessions.put("BW101 Sat", "");
-        classSessions.put("testSession", "");
         classSessions.put("LEC0101M 11/27 1-2", "");
         classSessions.put("LEC0101F 12/01 1-2", "");
         assertEquals(classSessions.keySet(), sessionDAO.getAllIDs());

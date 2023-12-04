@@ -94,10 +94,10 @@ public class FileEmployeeDataAccessObject {
             return false;
         }
     }
-
-    public Employee findByID(String userID) {
-        return accounts.get(userID);
-    }
+//
+//    public Employee findByID(String userID) {
+//        return accounts.get(userID);
+//    }
 
     private void save() throws IOException {
         ArrayList<String> holder = getURIAndDBNames();
