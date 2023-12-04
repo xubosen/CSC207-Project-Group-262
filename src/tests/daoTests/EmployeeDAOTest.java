@@ -20,10 +20,10 @@ public class EmployeeDAOTest {
 
     @Before
     public void setUp() throws IOException {
-        Instructor alexander = new Instructor("phanale1231423", "Alexander Phan12",
-                "alexander.phan@mail.utoronto.ca12", "123412");
+        Instructor alexander = new Instructor("phanale4", "Alexander Phan",
+                "alexander.phan@mail.utoronto.ca", "1234");
 
-        Course csc207 = new Course("Software Design123", "CSC207123", alexander);
+        Course csc207 = new Course("Software Design", "CSC207", alexander);
 
         Event tut5201 = new Tutorial("Tutorial5201", "TUT5201", csc207);
 
@@ -37,8 +37,9 @@ public class EmployeeDAOTest {
         CSC207TUT5201M1123.addStaff(alexander);
 
         FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/employeeInfo.csv");
-
-        InMemoryEmployeeDataAccessObject memoryEmpDAO = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
+        HashMap<String, Employee> employees = employeeDataAccessObject.getAccount();
+        employees.put(alexander.getUID(), alexander);
+        InMemoryEmployeeDataAccessObject memoryEmpDAO = new InMemoryEmployeeDataAccessObject(employees);
 
         employeeDataAccessObject.save(memoryEmpDAO.getEmployees());
     }
@@ -50,12 +51,11 @@ public class EmployeeDAOTest {
         InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
         System.out.println(inMemoryEmployeeDataAccessObject.getAllIDs());
         HashMap<String, String> employees = new HashMap<>();
-        employees.put("phanale4", "bruh");
-        employees.put("simon", "bruh");
-        employees.put("yoohamj", "bruh");
-        employees.put("mdm", "bruh");
-        employees.put("xubosen", "asdifj");
+        employees.put("phanale4", "");
+        employees.put("testadmin", "");
+        employees.put("testTA", "");
+        employees.put("xubosen", "");
+        employees.put("phanale1231423", "");
         assertEquals(employees.keySet(), inMemoryEmployeeDataAccessObject.getAllIDs());
-        // This test worked and didn't create duplicates of the documents either
     }
 }
