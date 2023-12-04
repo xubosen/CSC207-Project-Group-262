@@ -121,23 +121,15 @@ public class FileSessionDataAccessObject {
         }
     }
 
-
-    /**
-     * Return whether a session exists with their identifier.
-     * @param sessionID
-     * @return whether the session ID is stored inside the sessions Hashmap
-     */
-    public boolean existsByID(String sessionID) {
-        return sessions.containsKey(sessionID);
-    }
-
-    public String getSessionsString() {
-        StringBuilder sessions = new StringBuilder();
-        for (Map.Entry<String, ClassSession> entry : this.sessions.entrySet()) {
-            sessions.append(entry.getKey()).append("\n");
-        }
-        return sessions.toString();
-    }
+//
+//    /**
+//     * Return whether a session exists with their identifier.
+//     * @param sessionID
+//     * @return whether the session ID is stored inside the sessions Hashmap
+//     */
+//    public boolean existsByID(String sessionID) {
+//        return sessions.containsKey(sessionID);
+//    }
 
     public HashMap<String, ClassSession> getSessions() {
         return sessions;

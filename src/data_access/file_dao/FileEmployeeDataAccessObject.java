@@ -84,16 +84,6 @@ public class FileEmployeeDataAccessObject {
         return uriAndNames;
     }
 
-//    public void save(Employee employee){
-//        accounts.put(employee.getUID(), employee);
-//        try {
-//            this.save();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-
     public boolean save(HashMap<String, Employee> employees) {
         accounts.clear();
         accounts.putAll(employees);
@@ -153,22 +143,14 @@ public class FileEmployeeDataAccessObject {
         }
     }
 
-    /**
-     * Return whether a Teaching Assistant sts with user identifier.
-     *
-     * @param userID the username to check.
-     * @return whether a Teaching Assistant exists with username identifier
-     */
-    public boolean existsByID(String userID) {
-        return accounts.containsKey(userID);
-    }
-
-//    public String getAccounts() {
-//        StringBuilder accounts = new StringBuilder();
-//        for (Map.Entry<String, Employee> entry : this.accounts.entrySet()) {
-//            accounts.append(entry.getKey()).append("\n");
-//        }
-//        return accounts.toString();
+//    /**
+//     * Return whether a Teaching Assistant sts with user identifier.
+//     *
+//     * @param userID the username to check.
+//     * @return whether a Teaching Assistant exists with username identifier
+//     */
+//    public boolean existsByID(String userID) {
+//        return accounts.containsKey(userID);
 //    }
 
     public HashMap<String, Employee> getAccount() {
