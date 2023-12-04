@@ -26,19 +26,19 @@ public class RemoveFromEventInteractor implements RemoveFromEventInputBoundary{
         } else if (!eventDAO.existsByID(inputData.getEventID())) {
             RemoveFromEventOutputData outputData = new RemoveFromEventOutputData(false, "Event does not exist");
             myPresenter.prepareView(outputData);
-        }
-
-        // Check if the employee is in the event
-        Employee curEmployee = employeeDAO.getByID(employeeID);
-        Event curEvent = eventDAO.getByID(inputData.getEventID());
-        if (!curEvent.listStaff().containsValue(curEmployee)) {
-            RemoveFromEventOutputData outputData = new RemoveFromEventOutputData(false, "Employee is not in event");
-            myPresenter.prepareView(outputData);
         } else {
-            // Remove the employee from the event
-            curEvent.removeStaff(curEmployee);
-            RemoveFromEventOutputData outputData = new RemoveFromEventOutputData(true, "Employee removed from event");
-            myPresenter.prepareView(outputData);
+            // Check if the employee is in the event
+            Employee curEmployee = employeeDAO.getByID(employeeID);
+            Event curEvent = eventDAO.getByID(inputData.getEventID());
+            if (!curEvent.listStaff().containsValue(curEmployee)) {
+                RemoveFromEventOutputData outputData = new RemoveFromEventOutputData(false, "Employee is not in event");
+                myPresenter.prepareView(outputData);
+            } else {
+                // Remove the employee from the event
+                curEvent.removeStaff(curEmployee);
+                RemoveFromEventOutputData outputData = new RemoveFromEventOutputData(true, "Employee removed from event");
+                myPresenter.prepareView(outputData);
+            }
         }
     }
 }
