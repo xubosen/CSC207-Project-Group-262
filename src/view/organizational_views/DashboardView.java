@@ -25,8 +25,10 @@ public class DashboardView extends JPanel implements ActionListener{
     private final JButton coursesButton = new JButton("Courses");
     private final JButton eventsButton = new JButton("Events");
     private final JButton sessionsButton = new JButton("Sessions");
-    private final JButton calendarButton = new JButton("Calendar");
-    private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
+//    private final JButton calendarButton = new JButton("Calendar");
+    private final JButton calendarButton = new JButton("");
+    private final JButton leavesOfAbsencesButton = new JButton("");
+//    private final JButton leavesOfAbsencesButton = new JButton("Leaves of Absences");
     private final JButton logOutButton = new JButton("Log Out");
 
     // Variables for linking to other views
