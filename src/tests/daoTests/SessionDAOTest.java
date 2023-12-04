@@ -1,9 +1,14 @@
-package daoTests;
+package tests.daoTests;
 
+import data_access.file_dao.FileCourseDataAccessObject;
+import data_access.file_dao.FileEmployeeDataAccessObject;
+import data_access.file_dao.FileEventDataAccessObject;
+import data_access.file_dao.FileSessionDataAccessObject;
 import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import data_access.in_memory_dao.InMemorySessionDataAccessObject;
+import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,53 +50,68 @@ public class SessionDAOTest {
         ClassSession lec0101F = new ClassSession("LEC0101F 12/01 1-2", "Friday Lecture Dec. 01 1-2pm", calendarEventF, "WI1016", lec0101);
 
 
-        FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("./employeeInformation.csv");
+        FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/employeeInfo.csv");
+        // need new hashmap because of aliasing
+        HashMap<String, Employee> employees = new HashMap<>(employeeDataAccessObject.getAccount());
+        employees.put(alexander.getUID(), alexander);
+        InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject(employees);
 
-        FileCourseDataAccessObject fileCourseDataAccessObject = new FileCourseDataAccessObject("./courseInformation.csv",
-                new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()));
 
-        FileEventDataAccessObject fileEventDAO = new FileEventDataAccessObject("./eventInformation.csv",
-                new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()),
-                new InMemoryCourseDataAccessObject(fileCourseDataAccessObject.getCourses()));
+        FileCourseDataAccessObject fileCourseDataAccessObject = new FileCourseDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/courseInfo.csv",
+                inMemoryEmployeeDataAccessObject);
+        HashMap<String, Course> courses = new HashMap<>(fileCourseDataAccessObject.getCourses());
+        courses.put(csc236.getCourseCode(), csc236);
+        InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject = new InMemoryCourseDataAccessObject(courses);
 
-        FileSessionDataAccessObject fileSessionDAO = new FileSessionDataAccessObject("./sessionInformation.csv",
-                new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount()),
-                new InMemoryEventDataAccessObject(fileEventDAO.getEvents()));
+        FileEventDataAccessObject fileEventDAO = new FileEventDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/eventInfo.csv",
+                inMemoryEmployeeDataAccessObject, inMemoryCourseDataAccessObject);
+        HashMap<String, Event> events = new HashMap<>(fileEventDAO.getEvents());
+        events.put(lec0101.getEventID(), lec0101);
+        events.put(tut5201.getEventID(), tut5201);
+        InMemoryEventDataAccessObject memEventDAO = new InMemoryEventDataAccessObject(events);
 
-//        // Updates current alexander to have CSC236 as one of their courses.
-//        employeeDataAccessObject.save(alexander);
-//
-//        // Updates courses to have MAT157 included.
-//        fileCourseDataAccessObject.save(csc236);
-//
-//        // Updates events to have one lecture and one tutorial.
-//        fileEventDAO.save(lec0101);
-//        fileEventDAO.save(tut5201);
-//
-//        // Updates Class Sessions to include the lectures class session.
-//        fileSessionDAO.save(lec0101M);
-//        fileSessionDAO.save(lec0101F);
+        FileSessionDataAccessObject fileSessionDAO = new FileSessionDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/sessionInfo.csv",
+                inMemoryEmployeeDataAccessObject, memEventDAO);
+        HashMap<String, ClassSession> sessions = new HashMap<>(fileSessionDAO.getSessions());
+        sessions.put(lec0101M.getSessionID(), lec0101M);
+        sessions.put(lec0101F.getSessionID(), lec0101F);
+
+
+        // Updates current alexander to have CSC236 as one of their courses.
+        employeeDataAccessObject.save(employees);
+
+        // Updates courses to have MAT157 included.
+        fileCourseDataAccessObject.save(courses);
+
+        // Updates events to have one lecture and one tutorial.
+        fileEventDAO.save(events);
+
+        // Updates Class Sessions to include the lectures class session.
+        fileSessionDAO.save(sessions);
     }
 
     @Test
     public void TestWritingAndReading() throws IOException {
-        FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("./employeeInformation.csv");
+        FileEmployeeDataAccessObject employeeDataAccessObject = new FileEmployeeDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/employeeInfo.csv");
         InMemoryEmployeeDataAccessObject inMemoryEmployeeDataAccessObject = new InMemoryEmployeeDataAccessObject(employeeDataAccessObject.getAccount());
 
-        FileCourseDataAccessObject courseDataAccessObject = new FileCourseDataAccessObject("./courseInformation.csv",
+        FileCourseDataAccessObject courseDataAccessObject = new FileCourseDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/courseInfo.csv",
                 inMemoryEmployeeDataAccessObject);
         InMemoryCourseDataAccessObject inMemoryCourseDataAccessObject = new InMemoryCourseDataAccessObject(courseDataAccessObject.getCourses());
 
-        FileEventDataAccessObject fileEventDataAccessObject = new FileEventDataAccessObject("./eventInformation.csv",
+        FileEventDataAccessObject fileEventDataAccessObject = new FileEventDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/eventInfo.csv",
                 inMemoryEmployeeDataAccessObject, inMemoryCourseDataAccessObject);
         InMemoryEventDataAccessObject eventDAO = new InMemoryEventDataAccessObject(fileEventDataAccessObject.getEvents());
 
-        FileSessionDataAccessObject fileSessionDAO = new FileSessionDataAccessObject("./sessionInformation.csv",
+        FileSessionDataAccessObject fileSessionDAO = new FileSessionDataAccessObject("src/data_access/file_dao/mongoDBFilePaths/sessionInfo.csv",
                 inMemoryEmployeeDataAccessObject, eventDAO);
 
         InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject(fileSessionDAO.getSessions());
 
         HashMap<String, String> classSessions = new HashMap<>();
+        classSessions.put("LECBW101 FRI", "");
+        classSessions.put("BW101 Sat", "");
+        classSessions.put("testSession", "");
         classSessions.put("LEC0101M 11/27 1-2", "");
         classSessions.put("LEC0101F 12/01 1-2", "");
         assertEquals(classSessions.keySet(), sessionDAO.getAllIDs());
