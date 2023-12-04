@@ -38,7 +38,6 @@ public class LoginInteractorTest {
         private boolean isFailCalled = false;
 
         public void prepareView(LoginOutputData outputData) {
-            // Handle success scenario here if needed
             isSuccessCalled = true;
         }
 
