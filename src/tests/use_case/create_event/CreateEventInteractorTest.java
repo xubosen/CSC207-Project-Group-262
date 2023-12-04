@@ -74,6 +74,17 @@ public class CreateEventInteractorTest {
 
         assertFalse(outputData.isSuccessful());
     }
+    @Test
+    public void testCreateEventSuccessLecture() {
+        CreateEventInputData inputData = new CreateEventInputData("New Lecture", "12345", "lecture", "instructor1", "TEST1");
+        CreateEventOutputSpy mockPresenter = new CreateEventOutputSpy();
+        CreateEventInteractor createEventInteractor = new CreateEventInteractor(mockPresenter, employeeDAO, eventDAO, courseDAO);
+        createEventInteractor.createEvent(inputData);
+
+        CreateEventOutputData outputData = mockPresenter.getOutputData();
+
+        assertTrue(outputData.isSuccessful());
+    }
 
     private class CreateEventOutputSpy implements CreateEventOutputBoundary {
         private CreateEventOutputData outputData;
