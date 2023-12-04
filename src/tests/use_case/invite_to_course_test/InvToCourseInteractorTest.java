@@ -1,13 +1,11 @@
 package tests.use_case.invite_to_course_test;
 
 // import entities
+import entity.Course;
 import entity.Instructor;
 import entity.TeachingAssistant;
 
 // import use cases
-import entity.Course;
-import entity.Instructor;
-import entity.TeachingAssistant;
 import use_case.enroll.EnrollOutputBoundary;
 import use_case.enroll.EnrollInputData;
 import use_case.enroll.EnrollOutputData;
@@ -20,7 +18,6 @@ import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 // junit imports
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class InvToCourseInteractorTest {
