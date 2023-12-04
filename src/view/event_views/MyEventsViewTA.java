@@ -33,7 +33,7 @@ public class MyEventsViewTA extends JPanel implements PropertyChangeListener, Ac
 
 
     public MyEventsViewTA(ViewManagerModel viewManagerModel, GetEventController getEventController,
-                                  GetEventViewModel getEventViewModel) {
+                                  GetEventViewModel getEventViewModel, UserState userState) {
         this.viewManagerModel = viewManagerModel;
         this.getEventController = getEventController;
         this.getEventViewModel = getEventViewModel;
