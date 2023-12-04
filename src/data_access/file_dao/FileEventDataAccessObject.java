@@ -68,10 +68,10 @@ public class FileEventDataAccessObject {
             return false;
         }
     }
-
-    public Event get(String eventID) {
-        return events.get(eventID);
-    }
+//
+//    public Event get(String eventID) {
+//        return events.get(eventID);
+//    }
 
     private void save() throws IOException {
         ArrayList<String> holder = getURIAndDBNames();

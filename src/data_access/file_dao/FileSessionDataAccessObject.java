@@ -70,10 +70,10 @@ public class FileSessionDataAccessObject {
             return false;
         }
     }
-
-    public ClassSession get(String sessionID) {
-        return sessions.get(sessionID);
-    }
+//
+//    public ClassSession get(String sessionID) {
+//        return sessions.get(sessionID);
+//    }
 
     private void save() throws IOException {
         ArrayList<String> holder = getURIAndDBNames();

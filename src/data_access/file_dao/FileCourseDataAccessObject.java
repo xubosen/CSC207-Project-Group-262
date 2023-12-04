@@ -81,14 +81,14 @@ public class FileCourseDataAccessObject {
         }
     }
 
-    /**
-     * Retrieves the course with the respective course code.
-     * @param courseCode The course code use to search through the course HashMap.
-     * @return The respective course
-     */
-    public Course get(String courseCode) {
-        return courses.get(courseCode);
-    }
+//    /**
+//     * Retrieves the course with the respective course code.
+//     * @param courseCode The course code use to search through the course HashMap.
+//     * @return The respective course
+//     */
+//    public Course get(String courseCode) {
+//        return courses.get(courseCode);
+//    }
 
     /**
      * Saves all the courses inside the HashMap into the courses collection on mongodb.
