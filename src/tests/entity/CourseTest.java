@@ -1,5 +1,6 @@
-package entityTests;
+package tests.entity;
 
+import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -94,7 +95,7 @@ public class CourseTest {
     @Test
     public void testListStaff() {
         course.addStaff(staffMember);
-        assertTrue("Listed staff should include added staff member", course.getStaff().containsKey(staffMember.getUserID()));
+        assertTrue("Listed staff should include added staff member", course.getStaff().containsKey(staffMember.getUID()));
     }
 
     @Test

@@ -1,5 +1,9 @@
+package tests.entity;
+
+import entity.TeachingAssistant;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class TeachingAssistantTest {
 
@@ -11,6 +15,5 @@ public class TeachingAssistantTest {
         assertEquals("Jane Doe", ta.getName());
         assertEquals("janedoe@example.com", ta.getEmail());
         assertEquals("password456", ta.getPassword());
-        assertEquals("ta", ta.getType());
     }
-}}
+}

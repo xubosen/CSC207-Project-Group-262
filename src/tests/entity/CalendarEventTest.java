@@ -1,16 +1,15 @@
-package entityTests;
+package tests.entity;
 
 // Testing imports
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
-// Project imports
 import entity.CalendarEvent;
 import entity.DateTimeSpan;
+import org.junit.Before;
+import org.junit.Test;
 
-// Java imports
 import java.time.LocalDateTime;
+
+import static org.junit.Assert.*;
 
 public class CalendarEventTest {
     private CalendarEvent myEvent;

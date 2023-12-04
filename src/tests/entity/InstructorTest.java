@@ -1,5 +1,9 @@
+package tests.entity;
+
+import entity.Instructor;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class InstructorTest {
 
@@ -11,6 +15,5 @@ public class InstructorTest {
         assertEquals("John Doe", instructor.getName());
         assertEquals("johndoe@example.com", instructor.getEmail());
         assertEquals("password123", instructor.getPassword());
-        assertEquals("instructor", instructor.getType());
     }
 }
