@@ -1,7 +1,6 @@
 package tests.use_case.invite_to_event_test;
 
 // import entities
-import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 import entity.*;
 
 // import use cases
@@ -13,6 +12,7 @@ import use_case.add_to_event.EventAdditionOutputData;
 // import data access objects
 import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
 import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
 
 // junit imports
 import org.junit.Before;

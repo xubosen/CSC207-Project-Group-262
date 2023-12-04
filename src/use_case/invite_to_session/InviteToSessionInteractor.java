@@ -21,27 +21,36 @@ public class InviteToSessionInteractor implements InviteToSessionInputBoundary{
 
     public void invite(InviteToSessionInputData inputData) {
         InviteToSessionOutputData output;
+        Employee invitee;
+        Employee invitor;
+        ClassSession curSession;
+        Event parentEvent;
 
-        Employee invitee = getEmployeeFromInputData(inputData.getInviteeID());
-        Employee invitor = getEmployeeFromInputData(inputData.getInvitorID());
-        ClassSession curSession = getSessionFromInputData(inputData);
-        Event parentEvent = curSession.getEvent();
+        // If the session does not exist return false and a corresponding message in output data. Otherwise, get the
+        // information required to add the invitee to the session
+        if (! doesSessionExist(inputData)) {
+            output = new InviteToSessionOutputData(false, "Session does not exist");
+            inviteToSessionPresenter.prepareView(output);
+            return;
+        } else {
+            invitee = getEmployeeFromInputData(inputData.getInviteeID());
+            invitor = getEmployeeFromInputData(inputData.getInvitorID());
+            curSession = getSessionFromInputData(inputData);
+            parentEvent = curSession.getEvent();
+        }
 
-        ClassSession session = getSessionFromInputData(inputData);
-
-        // If the employee does not exist return false and a corresponding message in output data
+        // If the invitee exists
         if (! doesEmployeeExist(inputData.getInviteeID())) {
             output = new InviteToSessionOutputData(false, "Invitee does not exist");
 
+        // Check if the invitee is staff of the event
         } else if (! parentEvent.containStaff(invitee)) {
             output = new InviteToSessionOutputData(false, "Invitee is not staff of the event");
+
+        // Check if the invitor is staff of the event
         } else if (! parentEvent.containStaff(invitor)) {
             output = new InviteToSessionOutputData(false, "Invitor is not staff of the event");
-        // If the session does not exist return false and a corresponding message in output data
-        } else if (! doesSessionExist(inputData)) {
-            output = new InviteToSessionOutputData(false, "Session does not exist");
 
-            // If the employee exists and the session exists, try to add the employee to the session
         } else {
             // Try to add the employee to the session
             boolean enrollSuccessful = curSession.addStaff(invitee);
