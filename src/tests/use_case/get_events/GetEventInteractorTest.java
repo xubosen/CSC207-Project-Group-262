@@ -1,16 +1,20 @@
-package tests.use_case.create_event;
+package tests.use_case.get_events;
 
-// import necessary entities, use cases, and DAOs
-import entity.*;
-import use_case.create_event.*;
-import data_access.in_memory_dao.*;
-
-// junit imports
+import data_access.in_memory_dao.InMemoryCourseDataAccessObject;
+import data_access.in_memory_dao.InMemoryEmployeeDataAccessObject;
 import org.junit.Before;
 import org.junit.Test;
+import tests.use_case.create_event.CreateEventInteractorTest;
+import use_case.create_event.CreateEventInputData;
+import use_case.create_event.CreateEventInteractor;
+import use_case.create_event.CreateEventOutputData;
+import use_case.get_events.*;
+import data_access.in_memory_dao.InMemoryEventDataAccessObject;
+import entity.*;
+
 import static org.junit.Assert.*;
 
-public class CreateEventInteractorTest {
+public class GetEventInteractorTest {
     // Data access objects
     private InMemoryEmployeeDataAccessObject employeeDAO = new InMemoryEmployeeDataAccessObject();
     private InMemoryCourseDataAccessObject courseDAO = new InMemoryCourseDataAccessObject();
@@ -29,6 +33,7 @@ public class CreateEventInteractorTest {
     // Events
     private Lecture lecture;
     private Tutorial tutorial;
+
 
     @Before
     public void setUp() {
@@ -64,37 +69,26 @@ public class CreateEventInteractorTest {
     }
 
     @Test
-    public void testCreateEventFail() {
-        CreateEventInputData inputData = new CreateEventInputData("event", "123", "lecture", "instructor1", "CSC101");
-        CreateEventOutputSpy mockPresenter = new CreateEventOutputSpy();
-        CreateEventInteractor createEventInteractor = new CreateEventInteractor(mockPresenter, employeeDAO, eventDAO, courseDAO);
-        createEventInteractor.createEvent(inputData);
+    public void testGetEventDetails() {
+        GetEventInputData inputData = new GetEventInputData("instructor1");
+        GetEventInteractorTest.GetEventOutputSpy mockPresenter = new GetEventOutputSpy();
+        GetEventInteractor getEventInteractor = new GetEventInteractor(mockPresenter, employeeDAO);
+        getEventInteractor.getEvent(inputData);
+        GetEventOutputData outputData = mockPresenter.getOutputData();
 
-        CreateEventOutputData outputData = mockPresenter.getOutputData();
-
-        assertFalse(outputData.isSuccessful());
-    }
-    @Test
-    public void testCreateEventSuccessLecture() {
-        CreateEventInputData inputData = new CreateEventInputData("New Lecture", "12345", "lecture", "instructor1", "TEST1");
-        CreateEventOutputSpy mockPresenter = new CreateEventOutputSpy();
-        CreateEventInteractor createEventInteractor = new CreateEventInteractor(mockPresenter, employeeDAO, eventDAO, courseDAO);
-        createEventInteractor.createEvent(inputData);
-
-        CreateEventOutputData outputData = mockPresenter.getOutputData();
-
-        assertTrue(outputData.isSuccessful());
+        assertNotNull(outputData);
+        assertFalse(outputData.getEventIDs().contains("EVENT123"));
     }
 
-    private class CreateEventOutputSpy implements CreateEventOutputBoundary {
-        private CreateEventOutputData outputData;
+    private class GetEventOutputSpy implements GetEventOutputBoundary {
+        private GetEventOutputData outputData;
 
         @Override
-        public void prepareView(CreateEventOutputData outputData) {
+        public void present(GetEventOutputData outputData) {
             this.outputData = outputData;
         }
 
-        public CreateEventOutputData getOutputData() {
+        public GetEventOutputData getOutputData() {
             return outputData;
         }
     }
