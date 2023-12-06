@@ -4,7 +4,6 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 
 ## Description of Application
 - Ability to create courses, Events (Lectures, Tutorials) and Sessions and add Instructors and TAs.
-- Request for leave button that notifies others with the same role (Prof, TA) and asks if there is anyone willing to fill for them by sending it to an announcements page.
 - Ability to view which courses/events/sessions they are a part of.
 - Ability to remove other employees from any instance of course, event and/or sessions.
 
@@ -14,14 +13,6 @@ Our Team is currently looking to develop a software that alleviates the hassle o
 ## Screen shot of tool for trying API
 Screenshot #1: MongoDB API
 [![access-To-Mongo-DB.png](https://i.postimg.cc/cHk2R54Q/access-To-Mongo-DB.png)](https://postimg.cc/47tWZPcd)
-
-## Minimal Example of Calling APIs from Java
-Email Verification API: [Email Verification API](https://github.com/xubosen/CSC207-Project-Group-262/blob/main/src/apiDocuments/emailValidationAPI.java)
-
-Holiday API: [src/CalendarificAPIAccessExample.java](https://github.com/xubosen/CSC207-Project-Group-262/blob/0caa7469006427fdb4fb71c89daffad34a697c88/src/CalendarificAPIAccessExample.java)
-
-## Example ouput of Running Java Program
-
 
 ## List of Technical Problems
 - Max amount allowed for data storage in mongo db is 512MB but it's not a major concern because it only takes up 100KB with the current amount of data stored.
